@@ -96,6 +96,5 @@ def deposit_options(request, fin_prdt_cd):
 def deposit_top_rate(request):
     top_option = DepositOptions.objects.order_by('-intr_rate2').first()
     serializer = TopRateSerializer(top_option)
-    
     return Response(serializer.data, status=status.HTTP_200_OK)
     
