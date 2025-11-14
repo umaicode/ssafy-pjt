@@ -4,7 +4,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from .models import DepositProducts, DepositOptions
-from .serialilzers import DepositProductsSerializer, DepositOptionsSerializer, TopRateSerializer
+from .serializers import DepositProductsSerializer, DepositOptionsSerializer, TopRateSerializer
 from django.shortcuts import get_object_or_404, get_list_or_404
 
 
