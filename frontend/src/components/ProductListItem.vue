@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h5>{{ deposit.kor_co_nm}} - {{ deposit.fin_prdt_nm }}</h5>
+    <h5>{{ product.kor_co_nm}} - {{ product.fin_prdt_nm }}</h5>
   </div>
 </template>
 
 <script setup>
   defineProps({
-    deposit: Object
+    product: Object
   })
 </script>
 

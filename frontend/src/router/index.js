@@ -3,7 +3,7 @@ import { useAccountStore } from '@/stores/accounts'
 import HomeView from '@/views/HomeView.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue'
-import DepositView from '@/views/DepositView.vue'
+import DepositView from '@/views/ProductView.vue'
 // import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
