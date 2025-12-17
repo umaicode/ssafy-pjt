@@ -3,6 +3,8 @@ import { useAccountStore } from '@/stores/accounts'
 import HomeView from '@/views/HomeView.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue'
+import DepositView from '@/views/DepositView.vue'
+// import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,7 +23,17 @@ const router = createRouter({
       path: '/login',
       name: 'LogInView',
       component: LogInView,
-    }
+    },
+    {
+      path: '/deposit',
+      name: 'DepositView',
+      component: DepositView,
+    },
+    // {
+    //   path: '/user/:nickname',
+    //   name: 'ProfileView',
+    //   component: ProfileView,
+    // },
   ],
 })
 

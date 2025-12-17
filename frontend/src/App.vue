@@ -10,6 +10,7 @@
     </nav>
   </header>
   <RouterView />
+
 </template>
 
 <script setup>
@@ -18,6 +19,7 @@
   const logOut = function () {
     accountStore.logOut()
   }
+  
 </script>
 
 <style scoped>
