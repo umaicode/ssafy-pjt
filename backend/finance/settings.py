@@ -37,8 +37,8 @@ API_KEY = env("API_KEY")
 
 INSTALLED_APPS = [
     # installed apps
-    "finlife",
     "accounts",
+    "products",
 
     # third party
     "rest_framework",
