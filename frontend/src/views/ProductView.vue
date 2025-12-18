@@ -24,8 +24,8 @@
                 기간(개월):
                 <select v-model.number="selectedTerm">
                     <option :value="0">전체</option>
-                    <option v-for="t in termOptions" :key="t" :value="t">
-                        {{ t }}개월
+                    <option v-for=" term in termOptions" :key="term" :value="term">
+                        {{ term }}개월
                     </option>
                 </select>
             </label>
@@ -33,7 +33,7 @@
             <!-- 키워드 -->
             <label>
                 검색:
-                <input v-model.trim="keyword" type="text" placeholder="상품명 키워드" />
+                <input v-model.trim="keyword" type="text" placeholder="은행명,상품명 키워드" />
             </label>
 
             <button @click="resetFilter">초기화</button>
