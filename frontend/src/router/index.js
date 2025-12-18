@@ -6,6 +6,8 @@ import LogInView from '@/views/LogInView.vue'
 import ProductView from '@/views/ProductView.vue'
 import ProductDetailView from '@/views/ProductDetailView.vue'
 
+import AnalysisView from '@/views/AnalysisView.vue'
+import AnalysisResultView from '@/views/AnalysisResultView.vue'
 // 프로필
 import ProfileView from '@/views/ProfileView.vue'
 import ProfileModify from '@/views/profile/ProfileModify.vue'
@@ -54,6 +56,17 @@ const router = createRouter({
         { path: 'wishlist', name: 'ProfileWishlist', component: ProfileWishlist },
         { path: 'modify', name: 'ProfileModify', component: ProfileModify },
       ],
+    },
+        {
+      path: '/analysis',
+      name: 'AnalysisView',
+      component: AnalysisView,
+    },
+    {
+      path: '/analysis/:id/result',
+      name: 'AnalysisResultView',
+      component: AnalysisResultView,
+      props: true,
     },
   ],
 })

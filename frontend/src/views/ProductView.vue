@@ -48,7 +48,7 @@
 <script setup>
     import { onMounted, ref, computed } from 'vue'
     import { useProductStore } from '@/stores/products'
-    import ProductList from '@/components/ProductList.vue'
+    import ProductList from '@/components/products/ProductList.vue'
 
     const store = useProductStore()
     const active = ref('deposits')

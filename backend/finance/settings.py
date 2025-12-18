@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +33,12 @@ env = environ.Env()
 environ.Env.read_env(BASE_DIR / ".env")
 API_KEY = env("API_KEY")
 
+# AI
+OPENAI_API_KEY = env("OPENAI_API_KEY")
+# GMS 사용하는 경우
+OPENAI_BASE_URL = env("OPENAI_BASE_URL", default="https://gms.ssafy.io/gmsapi/api.openai.com/v1")
+OPENAI_MODEL = env("OPENAI_MODEL", default="gpt-4.1-mini")
+
 
 # Application definition
 
@@ -39,6 +46,7 @@ INSTALLED_APPS = [
     # installed apps
     "accounts",
     "products",
+    'recommendations',
 
     # third party
     "rest_framework",
