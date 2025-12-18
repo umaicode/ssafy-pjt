@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import DepositProduct, DepositOption, SavingProduct, SavingOption
+from .models import DepositProduct, DepositOption, SavingProduct, SavingOption, Wishlist
 
 class DepositOptionSerializer(serializers.ModelSerializer):
     
@@ -65,3 +65,9 @@ class SavingProductSerializer(serializers.ModelSerializer):
             "etc_note",
             "options",
         )
+
+
+class WishlistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wishlist
+        fields = ["fin_prdt_cd", "product_type", "created_at"]

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 # Create your models here.
@@ -71,3 +72,14 @@ class SavingOption(models.Model):
     max_limit = models.IntegerField(null=True, blank=True)
     # 6. 이자율 유형명
     intr_rate_type_nm = models.CharField(max_length=50)
+
+
+User = settings.AUTH_USER_MODEL
+class Wishlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlists')
+    fin_prdt_cd = models.CharField(max_length=50)
+    product_type = models.CharField(max_length=10, choices=[("deposit", "예금"), ("saving", "적금")])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "fin_prdt_cd")
