@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-  import ProductListItem from '@/components/ProductListItem.vue';
+  import ProductListItem from '@/components/products/ProductListItem.vue';
   import { useProductStore } from '@/stores/products';
 
   defineProps({

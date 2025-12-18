@@ -31,7 +31,7 @@
   </div>
   <div>
     <button @click="toggleLike">
-      {{ wishlistStore.liked ? '좋아요 취소' : '좋아요' }}
+      {{ wishlistStore.liked ? '❤️' : '♡' }}
     </button>
   </div>
   <hr>

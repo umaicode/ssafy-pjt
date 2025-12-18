@@ -1,5 +1,6 @@
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
+from dj_rest_auth.serializers import UserDetailsSerializer
 
 
 class CustomRegisterSerializer(RegisterSerializer):
@@ -15,3 +16,10 @@ class CustomRegisterSerializer(RegisterSerializer):
         user.nickname = self.validated_data.get('nickname')
         user.save()
         return user
+
+
+class CustomUserDetailsSerializer(UserDetailsSerializer):
+    nickname = serializers.CharField(read_only=True)
+
+    class Meta(UserDetailsSerializer.Meta):
+        fields = UserDetailsSerializer.Meta.fields + ('nickname',)
