@@ -18,7 +18,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useWishlistStore } from '@/stores/wishlist'
-import ProductListItem from '@/components/ProductListItem.vue'
+import ProductListItem from '@/components/products/ProductListItem.vue'
 
 const wishlistStore = useWishlistStore()
 
