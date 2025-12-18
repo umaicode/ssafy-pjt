@@ -8,6 +8,21 @@ export const useAccountStore = defineStore('account', () => {
   const API_URL = 'http://127.0.0.1:8000'
   const token = ref(null)
   const router = useRouter()
+  const nickname = ref(null)
+
+  // 닉네임 가져오는 함수
+  const getUserInfo = function () {
+    return axios({
+      method: 'get',
+      url: `${API_URL}/accounts/user/`,
+      headers: {
+        Authorization: `Token ${token.value}`
+      }
+    })
+    .then(res => {
+      nickname.value = res.data.nickname
+    })
+  }
 
   // 회원가입 함수
   const signUp = function (payload) {
@@ -47,8 +62,9 @@ export const useAccountStore = defineStore('account', () => {
         password,
       }
     })
-    .then(res => { 
+    .then(async (res) => { 
       token.value = res.data.key
+      await getUserInfo()
       router.push({name: 'home'})
     })
     .catch(err => console.log(err))
@@ -72,6 +88,6 @@ export const useAccountStore = defineStore('account', () => {
     return token.value ? true : false
   })
 
-  return { API_URL, signUp, logIn, logOut, token, isLogin}
+  return { API_URL, signUp, logIn, logOut, token, isLogin, nickname, getUserInfo}
 
 }, {persist: true})

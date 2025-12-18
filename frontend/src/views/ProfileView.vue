@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <h2>님의 페이지</h2>
+    <h2>{{ accountStore.nickname }}님의 페이지</h2>
     <!-- {{ article.nickname }} 닉네임 추가 예정-->
     <nav class="menu">
       <RouterLink class="menu-link" :to="{ name: 'ProfileMyProduct' }">금융상품 그래프</RouterLink>
@@ -16,7 +16,9 @@
 </template>
 
 <script setup>
+  import { useAccountStore } from '@/stores/accounts';
 
+  const accountStore = useAccountStore()
 </script>
 
 <style scoped>
