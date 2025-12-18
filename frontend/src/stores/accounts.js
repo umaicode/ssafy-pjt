@@ -47,7 +47,7 @@ export const useAccountStore = defineStore('account', () => {
         password,
       }
     })
-    .then(res => {
+    .then(res => { 
       token.value = res.data.key
       router.push({name: 'home'})
     })
@@ -72,6 +72,6 @@ export const useAccountStore = defineStore('account', () => {
     return token.value ? true : false
   })
 
-  return { API_URL, signUp, logIn, logOut, token, isLogin }
+  return { API_URL, signUp, logIn, logOut, token, isLogin}
 
 }, {persist: true})

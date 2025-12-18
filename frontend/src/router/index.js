@@ -5,7 +5,13 @@ import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue'
 import ProductView from '@/views/ProductView.vue'
 import ProductDetailView from '@/views/ProductDetailView.vue'
-// import ProfileView from '@/views/ProfileView.vue'
+
+// 프로필
+import ProfileView from '@/views/ProfileView.vue'
+import ProfileModify from '@/views/profile/ProfileModify.vue'
+import ProfileMyProduct from '@/views/profile/ProfileMyProduct.vue'
+import ProfileWishlist from '@/views/profile/ProfileWishlist.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,12 +40,21 @@ const router = createRouter({
       path: '/products/:type/:fin_prdt_cd',
       name: 'ProductDetailView',
       component: ProductDetailView,
-    }
-    // {
-    //   path: '/user/:nickname',
-    //   name: 'ProfileView',
-    //   component: ProfileView,
-    // },
+    },
+    // 프로필페이지
+    {
+      path: '/profile',
+      name: 'ProfileView',
+      component: ProfileView,
+      children: [
+        // ✅ /mypage로 들어오면 첫 메뉴로 자동 이동
+        { path: '', redirect: { name: 'ProfileMyProduct' } },
+
+        { path: 'myproduct', name: 'ProfileMyProduct', component: ProfileMyProduct },
+        { path: 'wishlist', name: 'ProfileWishlist', component: ProfileWishlist },
+        { path: 'modify', name: 'ProfileModify', component: ProfileModify },
+      ],
+    },
   ],
 })
 
