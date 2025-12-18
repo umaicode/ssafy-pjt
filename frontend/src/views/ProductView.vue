@@ -3,8 +3,8 @@
         <button @click="active = 'deposits'">예금</button>
         <button @click="active = 'savings'">적금</button>
     </div>
-    <ProductList v-if="active === 'deposits'" :items= store.deposits />
-    <ProductList v-else :items= store.savings />
+    <ProductList v-if="active === 'deposits'" :items= store.deposits type="deposit"/>
+    <ProductList v-else :items= store.savings type="saving"/>
 
 </template>
 

@@ -3,7 +3,8 @@ import { useAccountStore } from '@/stores/accounts'
 import HomeView from '@/views/HomeView.vue'
 import SignUpView from '@/views/SignUpView.vue'
 import LogInView from '@/views/LogInView.vue'
-import DepositView from '@/views/ProductView.vue'
+import ProductView from '@/views/ProductView.vue'
+import ProductDetailView from '@/views/ProductDetailView.vue'
 // import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
@@ -25,10 +26,15 @@ const router = createRouter({
       component: LogInView,
     },
     {
-      path: '/deposit',
-      name: 'DepositView',
-      component: DepositView,
+      path: '/products',
+      name: 'ProductView',
+      component: ProductView,
     },
+    {
+      path: '/products/:type/:fin_prdt_cd',
+      name: 'ProductDetailView',
+      component: ProductDetailView,
+    }
     // {
     //   path: '/user/:nickname',
     //   name: 'ProfileView',

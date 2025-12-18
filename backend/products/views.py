@@ -3,9 +3,14 @@ from django.conf import settings
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from django.shortcuts import get_object_or_404
 
-from .models import DepositProduct, DepositOption, SavingProduct, SavingOption
-from .serializers import DepositProductSerializer, SavingProductSerializer
+# permission Decorators
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
+
+from .models import DepositProduct, DepositOption, SavingProduct, SavingOption, Wishlist
+from .serializers import DepositProductSerializer, SavingProductSerializer, WishlistSerializer
 
 # Create your views here.
 @api_view(['GET'])
@@ -208,3 +213,58 @@ def saving_products(request):
 
     serializer = SavingProductSerializer(products, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def deposit_product_detail(request, fin_prdt_cd):
+    deposit = get_object_or_404(DepositProduct, fin_prdt_cd=fin_prdt_cd)
+    data = DepositProductSerializer(deposit).data
+    
+    liked = False
+    if request.user.is_authenticated:
+        liked = Wishlist.objects.filter(user=request.user, fin_prdt_cd=fin_prdt_cd).exists()
+    
+    data["liked"] = liked
+
+    return Response(data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def saving_product_detail(request, fin_prdt_cd):
+    saving = get_object_or_404(SavingProduct, fin_prdt_cd=fin_prdt_cd)
+    data = SavingProductSerializer(saving).data
+
+    liked = False
+    if request.user.is_authenticated:
+        liked = Wishlist.objects.filter(user=request.user, fin_prdt_cd=fin_prdt_cd).exists()
+    
+    data["liked"] = liked
+
+    return Response(data, status=status.HTTP_200_OK)
+
+
+# wish리스트 좋아요 버튼
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def toggle_wishlist(request):
+    user = request.user
+    fin_prdt_cd = request.data.get('fin_prdt_cd')
+    product_type = request.data.get('product_type')
+
+    wish = Wishlist.objects.filter(user=user, fin_prdt_cd=fin_prdt_cd).first()
+
+    if wish:
+        wish.delete()
+        return Response({'liked': False})
+    else:
+        Wishlist.objects.create(user=user, fin_prdt_cd=fin_prdt_cd, product_type=product_type)
+        return Response({'liked': True}, status=status.HTTP_201_CREATED)
+
+
+# wish리스트 읽기
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def my_wishlist(request):
+    my_wishes = Wishlist.objects.filter(user=request.user)
+    serializer = WishlistSerializer(my_wishes, many=True)
+    return Response(serializer.data)
