@@ -21,6 +21,14 @@ import KakaoMapView from '@/views/kakaomap/KakaoMapView.vue'
 // NEWS
 import NewsView from '@/views/news/NewsView.vue'
 
+// Youtube
+import YoutubeChannelsView from '@/views/youtube/YoutubeChannelsView.vue'
+import YoutubeSavedView from '@/views/youtube/YoutubeSavedView.vue'
+import YoutubeSearchView from '@/views/youtube/YoutubeSearchView.vue'
+import YoutubeVideoDetailView from '@/views/youtube/YoutubeVideoDetailView.vue'
+import YoutubeLayoutView from '@/views/youtube/YoutubeLayoutView.vue'
+import YoutubeSavedLayoutView from '@/views/youtube/YoutubeSavedLayoutView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -90,6 +98,44 @@ const router = createRouter({
       name: 'NewsBookmarkView',
       component: NewsView,
     },
+    // Youtube
+    {
+      path: '/youtube',
+      name: 'YoutubeLayoutView',
+      component: YoutubeLayoutView,
+      redirect: {name: 'YoutubeSearchView'},
+      children: [
+        {
+          path: 'search',
+          name: 'YoutubeSearchView',
+          component: YoutubeSearchView
+        },
+        {
+          path: 'saved',
+          name: 'YoutubeSavedLayoutView',
+          component: YoutubeSavedLayoutView,
+          redirect: {name: 'YoutubeSavedView'},
+          children: [
+            {
+              path: 'videos',
+              name: 'YoutubeSavedView',
+              component: YoutubeSavedView,
+            },
+            {
+              path: 'channels',
+              name: 'YoutubeChannelsView',
+              component: YoutubeChannelsView,
+            }
+          ]
+        }
+      ]
+    },
+    {
+      path: '/youtube/video/:id',
+      name: 'YoutubeVideoDetailView',
+      component: YoutubeVideoDetailView,
+      props: true,
+    }
   ],
 })
 
