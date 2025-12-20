@@ -8,12 +8,15 @@ import ProductDetailView from '@/views/ProductDetailView.vue'
 
 import AnalysisView from '@/views/AnalysisView.vue'
 import AnalysisResultView from '@/views/AnalysisResultView.vue'
+
 // 프로필
 import ProfileView from '@/views/ProfileView.vue'
 import ProfileModify from '@/views/profile/ProfileModify.vue'
 import ProfileMyProduct from '@/views/profile/ProfileMyProduct.vue'
 import ProfileWishlist from '@/views/profile/ProfileWishlist.vue'
 
+// 카카오맵
+import KakaoMapView from '@/views/kakaomap/KakaoMapView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,6 +71,11 @@ const router = createRouter({
       component: AnalysisResultView,
       props: true,
     },
+    {
+      path: '/kakaomap',
+      name: 'KakaoMapView',
+      component: KakaoMapView,
+    }
   ],
 })
 
