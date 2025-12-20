@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="product-detail">
     <h1>금융 상품 상세 정보</h1>
     <div v-if="product">
       <p>은행 : {{ product.kor_co_nm }}</p>
@@ -28,22 +28,39 @@
         </tbody>
       </table>
     </div>
+    
+    <div class="action-buttons">
+      <button @click="toggleLike" class="like-btn" :class="{ liked: wishlistStore.liked }">
+        {{ wishlistStore.liked ? '❤️ 좋아요 취소' : '♡ 좋아요' }}
+      </button>
+      <button 
+        v-if="wishlistStore.liked && product" 
+        @click="toggleMap" 
+        class="map-btn"
+      >
+        {{ showMap ? '🗺️ 지도 닫기' : '🗺️ 은행 위치 찾기' }}
+      </button>
+    </div>
+    
+    <!-- 좋아요 상태일 때만 지도 표시 -->
+    <ProductBankMap 
+      v-if="showMap && product" 
+      :bank-name="product.kor_co_nm"
+      @close="showMap = false"
+    />
+    
+    <hr>
   </div>
-  <div>
-    <button @click="toggleLike">
-      {{ wishlistStore.liked ? '❤️' : '♡' }}
-    </button>
-  </div>
-  <hr>
 </template>
 
 <script setup>
   import axios from 'axios';
-  import { onMounted, ref, computed } from 'vue';
+  import { onMounted, ref, computed, watch } from 'vue';
   import { useRoute } from 'vue-router';
   import { useProductStore } from '@/stores/products';
   import { useWishlistStore } from '@/stores/wishlist';
-import { useAccountStore } from '@/stores/accounts';
+  import { useAccountStore } from '@/stores/accounts';
+  import ProductBankMap from '@/components/products/ProductBankMap.vue';
 
   const store = useProductStore()
   const wishlistStore = useWishlistStore()
@@ -52,6 +69,7 @@ import { useAccountStore } from '@/stores/accounts';
 
   const product = ref(null)
   const options = ref([])
+  const showMap = ref(false)
 
   // 가입 제한 텍스트 변경
   const joinDenyText = computed(() => {
@@ -75,6 +93,18 @@ import { useAccountStore } from '@/stores/accounts';
     wishlistStore.toggleWishlist(payload)
   }
 
+  // 지도 토글
+  const toggleMap = () => {
+    showMap.value = !showMap.value
+  }
+
+  // 좋아요 취소 시 지도 닫기
+  watch(() => wishlistStore.liked, (newVal) => {
+    if (!newVal) {
+      showMap.value = false
+    }
+  })
+
   onMounted(() => {
     axios({
       method: 'get',
@@ -91,5 +121,75 @@ import { useAccountStore } from '@/stores/accounts';
 </script>
 
 <style scoped>
+.product-detail {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
+.product-detail h1 {
+  color: #333;
+  border-bottom: 2px solid #e67e57;
+  padding-bottom: 10px;
+}
+
+.product-detail table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.product-detail th,
+.product-detail td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+.product-detail th {
+  background: #f5f5f5;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.like-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid #e67e57;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: white;
+  color: #e67e57;
+}
+
+.like-btn:hover {
+  background: #fff5f2;
+}
+
+.like-btn.liked {
+  background: #e67e57;
+  color: white;
+}
+
+.map-btn {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid #4A90E2;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #4A90E2;
+  color: white;
+}
+
+.map-btn:hover {
+  background: #357ABD;
+}
 </style>
