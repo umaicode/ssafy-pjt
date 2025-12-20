@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "products",
     'recommendations',
     'news',
+    'metals',
 
     # third party
     "rest_framework",

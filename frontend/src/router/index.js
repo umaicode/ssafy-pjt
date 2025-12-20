@@ -28,6 +28,7 @@ import YoutubeSearchView from '@/views/youtube/YoutubeSearchView.vue'
 import YoutubeVideoDetailView from '@/views/youtube/YoutubeVideoDetailView.vue'
 import YoutubeLayoutView from '@/views/youtube/YoutubeLayoutView.vue'
 import YoutubeSavedLayoutView from '@/views/youtube/YoutubeSavedLayoutView.vue'
+import MetalView from '@/views/MetalView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -135,6 +136,12 @@ const router = createRouter({
       name: 'YoutubeVideoDetailView',
       component: YoutubeVideoDetailView,
       props: true,
+    },
+    // 금/은
+    {
+      path: '/metals',
+      name: 'MetalView',
+      component: MetalView,
     }
   ],
 })
