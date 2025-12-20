@@ -39,6 +39,9 @@ OPENAI_API_KEY = env("OPENAI_API_KEY")
 OPENAI_BASE_URL = env("OPENAI_BASE_URL", default="https://gms.ssafy.io/gmsapi/api.openai.com/v1")
 OPENAI_MODEL = env("OPENAI_MODEL", default="gpt-4.1-mini")
 
+# Naver API
+NAVER_CLIENT_ID=env("NAVER_CLIENT_ID")
+NAVER_CLIENT_SECRET=env("NAVER_CLIENT_SECRET")
 
 # Application definition
 
@@ -47,6 +50,7 @@ INSTALLED_APPS = [
     "accounts",
     "products",
     'recommendations',
+    'news',
 
     # third party
     "rest_framework",
