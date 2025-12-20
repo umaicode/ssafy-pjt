@@ -6,8 +6,8 @@ import LogInView from '@/views/LogInView.vue'
 import ProductView from '@/views/ProductView.vue'
 import ProductDetailView from '@/views/ProductDetailView.vue'
 
-import AnalysisView from '@/views/AnalysisView.vue'
-import AnalysisResultView from '@/views/AnalysisResultView.vue'
+import AnalysisView from '@/views/analysis/AnalysisView.vue'
+import AnalysisResultView from '@/views/analysis/AnalysisResultView.vue'
 
 // 프로필
 import ProfileView from '@/views/ProfileView.vue'
@@ -17,6 +17,9 @@ import ProfileWishlist from '@/views/profile/ProfileWishlist.vue'
 
 // 카카오맵
 import KakaoMapView from '@/views/kakaomap/KakaoMapView.vue'
+
+// NEWS
+import NewsView from '@/views/news/NewsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -75,7 +78,18 @@ const router = createRouter({
       path: '/kakaomap',
       name: 'KakaoMapView',
       component: KakaoMapView,
-    }
+    },
+    //NEWS
+    {
+      path: '/news',
+      name: 'NewsView',
+      component: NewsView,
+    },
+    {
+      path: '/news/bookmark',
+      name: 'NewsBookmarkView',
+      component: NewsView,
+    },
   ],
 })
 
@@ -88,6 +102,11 @@ router.beforeEach((to, from) => {
     console.log('to:', to.name, 'isLogin:', accountStore.isLogin)
 
     return {name: 'home'}
+  }
+
+  if (to.name === 'NewsBookmarkView' && !accountStore.isLogin) {
+    window.alert('로그인이 필요합니다.')
+    return {name: 'LogInView'}
   }
 })
 
