@@ -7,6 +7,7 @@
       <RouterLink :to="{name:'ProfileView'}">마이페이지</RouterLink> |
       <RouterLink :to="{name:'KakaoMapView'}">은행찾기</RouterLink> |
       <RouterLink :to="{name:'NewsView'}">뉴스</RouterLink> |
+      <RouterLink :to="{ name: 'YoutubeLayoutView' }">YouTube</RouterLink> |
     </nav>
   </div>
 </template>
