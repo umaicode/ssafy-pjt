@@ -1,7 +1,6 @@
 <template>
   <div>
-    <!-- 메뉴 -->
-
+    
   </div>
 </template>
 

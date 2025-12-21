@@ -10,7 +10,7 @@ import AnalysisView from '@/views/analysis/AnalysisView.vue'
 import AnalysisResultView from '@/views/analysis/AnalysisResultView.vue'
 
 // 프로필
-import ProfileView from '@/views/ProfileView.vue'
+import ProfileView from '@/views/profile/ProfileView.vue'
 import ProfileModify from '@/views/profile/ProfileModify.vue'
 import ProfileMyProduct from '@/views/profile/ProfileMyProduct.vue'
 import ProfileWishlist from '@/views/profile/ProfileWishlist.vue'
@@ -26,7 +26,6 @@ import YoutubeChannelsView from '@/views/youtube/YoutubeChannelsView.vue'
 import YoutubeSavedView from '@/views/youtube/YoutubeSavedView.vue'
 import YoutubeSearchView from '@/views/youtube/YoutubeSearchView.vue'
 import YoutubeVideoDetailView from '@/views/youtube/YoutubeVideoDetailView.vue'
-import YoutubeLayoutView from '@/views/youtube/YoutubeLayoutView.vue'
 import YoutubeSavedLayoutView from '@/views/youtube/YoutubeSavedLayoutView.vue'
 import MetalView from '@/views/MetalView.vue'
 
@@ -63,8 +62,9 @@ const router = createRouter({
       path: '/profile',
       name: 'ProfileView',
       component: ProfileView,
+      meta: { requiresAuth: true },
       children: [
-        // ✅ /mypage로 들어오면 첫 메뉴로 자동 이동
+        //  /mypage로 들어오면 첫 메뉴로 자동 이동  --> 현재 작동안됨 확인중
         { path: '', redirect: { name: 'ProfileMyProduct' } },
 
         { path: 'myproduct', name: 'ProfileMyProduct', component: ProfileMyProduct },
@@ -75,6 +75,7 @@ const router = createRouter({
         {
       path: '/analysis',
       name: 'AnalysisView',
+      meta: { requiresAuth: true },
       component: AnalysisView,
     },
     {
@@ -97,24 +98,20 @@ const router = createRouter({
     {
       path: '/news/bookmark',
       name: 'NewsBookmarkView',
+      meta: { requiresAuth: true },
       component: NewsView,
     },
     // Youtube
     {
       path: '/youtube',
-      name: 'YoutubeLayoutView',
-      component: YoutubeLayoutView,
-      redirect: {name: 'YoutubeSearchView'},
+      name: 'YoutubeSearchView',
+      component: YoutubeSearchView,
       children: [
-        {
-          path: 'search',
-          name: 'YoutubeSearchView',
-          component: YoutubeSearchView
-        },
         {
           path: 'saved',
           name: 'YoutubeSavedLayoutView',
           component: YoutubeSavedLayoutView,
+          meta: { requiresAuth: true },
           redirect: {name: 'YoutubeSavedView'},
           children: [
             {
@@ -147,19 +144,20 @@ const router = createRouter({
 })
 
 // 인증된 사용자는 회원가입과 로그인 페이지에 접근 제한
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
   const accountStore = useAccountStore()
 
-  if ((to.name === 'SignUpView' || to.name === 'LogInView') && (accountStore.isLogin)) {
-    window.alert('이미 로그인 되어있습니다.')
-    console.log('to:', to.name, 'isLogin:', accountStore.isLogin)
+  // 로그인/로그아웃 상태 구현해서 필요없음 확인바람
+  // if ((to.name === 'SignUpView' || to.name === 'LogInView') && (accountStore.isLogin)) {
+  //   window.alert('이미 로그인 되어있습니다.')
+  //   console.log('to:', to.name, 'isLogin:', accountStore.isLogin)
 
-    return {name: 'home'}
-  }
+  //   return {name: 'home'}
+  // }
 
-  if (to.name === 'NewsBookmarkView' && !accountStore.isLogin) {
+  if (to.matched.some(record => record.meta.requiresAuth) && !accountStore.isLogin) {
     window.alert('로그인이 필요합니다.')
-    return {name: 'LogInView'}
+    return { name: 'LogInView' }
   }
 })
 
