@@ -33,28 +33,40 @@ const oldPassword = ref('')
 const newPassword1 = ref('')
 const newPassword2 = ref('')
 
+// 비밀번호 입력 완료 여부
 const canSubmitPw = computed(() => {
   return oldPassword.value && newPassword1.value && newPassword2.value
 })
 
-const onUpdateNickname = async () => {
-  await accountStore.updateNickname(newNickname.value)
-  newNickname.value = ''
+// 닉네임 변경
+const onUpdateNickname = () => {
+  accountStore.updateNickname(newNickname.value)
+    .then(() => {
+      newNickname.value = '' // 입력값 초기화
+    })
+    .catch(() => {
+      // updateNickname 내부에서 alert 처리 중이므로 여기선 생략 가능
+    })
 }
 
-const onChangePassword = async () => {
+// 비밀번호 변경
+const onChangePassword = () => {
   if (newPassword1.value !== newPassword2.value) {
     alert('새 비밀번호가 서로 일치하지 않습니다.')
     return
   }
 
-  await accountStore.changePassword({
+  accountStore.changePassword({
     old_password: oldPassword.value,
     new_password1: newPassword1.value,
     new_password2: newPassword2.value,
   })
-
-  // changePassword 안에서 로그아웃/이동 처리함
+  .then(() => {
+    // changePassword 내부에서 로그아웃 + 이동 처리
+  })
+  .catch(() => {
+    // 에러 메시지도 store에서 처리 중
+  })
 }
 </script>
 

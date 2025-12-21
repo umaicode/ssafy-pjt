@@ -77,85 +77,109 @@ export const useAccountStore = defineStore('account', () => {
     })
     .then((res) => {
       token.value = null
+      nickname.value = null
       router.push({ name: 'home' })
     })
     .catch((err) => console.log(err))
   }
+
+  // 회원탈퇴
+  const deleteUser = function () {
+    // 1️⃣ 사용자 실수 방지용 확인창
+    const ok = window.confirm('정말 회원탈퇴 하시겠습니까?\n삭제 후 복구할 수 없습니다.')
+
+    // 취소 누르면 아무 것도 안 함
+    if (!ok) return
+
+    // 2️⃣ 확인 누르면 삭제 요청
+    axios({
+      method: 'delete',
+      url: `${API_URL}/accounts/delete/`,
+      headers: {
+        Authorization: `Token ${token.value}`,
+      }
+    })
+    .then(() => {
+      // 3️⃣ 탈퇴 성공 시 프론트 상태 정리
+      token.value = null
+      nickname.value = null
+
+      alert('계정이 삭제되었습니다.')
+      router.push({ name: 'home' })
+    })
+    .catch(err => {
+      console.log(err)
+      alert('회원탈퇴에 실패했습니다.')
+    })
+  }
+
 
   // 인증 상태 여부 확인(로그인)
   const isLogin = computed(() => {
     return token.value ? true : false
   })
 
-  // ---------------------------------(확인중)
-    // ✅ 닉네임 변경 (PATCH /accounts/user/)
-  const updateNickname = function (newNickname) {
+  // 닉네임 변경 (PATCH /accounts/user/)
+  const updateNickname = async function (newNickname) {
     if (!token.value) {
       alert('로그인이 필요합니다.')
       router.push({ name: 'LogInView' })
-      return Promise.reject('need login')
+      return
     }
 
-    return axios({
-      method: 'patch',
-      url: `${API_URL}/accounts/user/`,
-      data: { nickname: newNickname },
-      headers: { Authorization: `Token ${token.value}` }
-    })
-    .then(async () => {
-      // 서버 반영 후 내 정보 다시 가져와서 상단 닉네임 즉시 갱신
+    try {
+      await axios({
+        method: 'patch',
+        url: `${API_URL}/accounts/update/`,
+        data: { nickname: newNickname },
+        headers: { Authorization: `Token ${token.value}` },
+      })
+
+      // 수정 후 내 정보 갱신
       await getUserInfo()
       alert('닉네임이 수정되었습니다.')
-    })
-    .catch(err => {
+    } catch (err) {
       console.log(err)
       alert('닉네임 수정에 실패했습니다.')
-      return Promise.reject(err)
-    })
+    }
   }
 
-  // ✅ 비밀번호 변경 (dj-rest-auth 기본: POST /accounts/password/change/)
-  // payload: { old_password, new_password1, new_password2 }
-  const changePassword = function (payload) {
+
+  // 비밀번호 변경 (POST /accounts/password/change/)
+  const changePassword = async function (payload) {
     if (!token.value) {
       alert('로그인이 필요합니다.')
       router.push({ name: 'LogInView' })
-      return Promise.reject('need login')
+      return
     }
 
-    const old_password = payload.old_password
-    const new_password1 = payload.new_password1
-    const new_password2 = payload.new_password2
+    const { old_password, new_password1, new_password2 } = payload
 
-    return axios({
-      method: 'post',
-      url: `${API_URL}/accounts/password/change/`,
-      data: { old_password, new_password1, new_password2 },
-      headers: { Authorization: `Token ${token.value}` }
-    })
-    .then(() => {
+    try {
+      await axios({
+        method: 'post',
+        url: `${API_URL}/accounts/password/change/`,
+        data: { old_password, new_password1, new_password2 },
+        headers: { Authorization: `Token ${token.value}` },
+      })
+
       alert('비밀번호가 변경되었습니다. 다시 로그인해주세요.')
-      // 보안상 토큰 제거 후 로그인으로 이동 권장
+
+      // 보안상 토큰/닉네임 제거 후 로그인 화면으로
       token.value = null
       nickname.value = null
       router.push({ name: 'LogInView' })
-    })
-    .catch(err => {
+    } catch (err) {
       console.log(err)
-      // 서버에서 에러 메시지 내려주면 보여주기(선택)
       const msg = err?.response?.data
-      if (msg) {
-        alert(`비밀번호 변경 실패: ${JSON.stringify(msg)}`)
-      } else {
-        alert('비밀번호 변경에 실패했습니다.')
-      }
-      return Promise.reject(err)
-    })
+      if (msg) alert(`비밀번호 변경 실패: ${JSON.stringify(msg)}`)
+      else alert('비밀번호 변경에 실패했습니다.')
+    }
   }
 
+
   return { API_URL, signUp, logIn, logOut, token, isLogin, nickname, getUserInfo,
-        updateNickname,   // ✅ 추가
-    changePassword,   // ✅ 추가
+  updateNickname,changePassword, deleteUser,
   }
 
 }, {persist: true})
