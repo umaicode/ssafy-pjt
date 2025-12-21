@@ -29,6 +29,11 @@ import YoutubeVideoDetailView from '@/views/youtube/YoutubeVideoDetailView.vue'
 import YoutubeSavedLayoutView from '@/views/youtube/YoutubeSavedLayoutView.vue'
 import MetalView from '@/views/MetalView.vue'
 
+// 커뮤니티
+import CommunityView from '@/views/community/CommunityView.vue'
+import CommunityCreateView from '@/views/community/CommunityCreateView.vue'
+import CommunityDetailView from '@/views/community/CommunityDetailView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -139,21 +144,17 @@ const router = createRouter({
       path: '/metals',
       name: 'MetalView',
       component: MetalView,
-    }
+    },
+    // 커뮤니티
+    { path: '/community', name: 'CommunityView', component: CommunityView },
+    { path: '/community/create', name: 'CreateView', component: CommunityCreateView },
+    { path: '/community/:id', name: 'DetailView', component: CommunityDetailView, props: true },
   ],
 })
 
 // 인증된 사용자는 회원가입과 로그인 페이지에 접근 제한
 router.beforeEach((to) => {
   const accountStore = useAccountStore()
-
-  // 로그인/로그아웃 상태 구현해서 필요없음 확인바람
-  // if ((to.name === 'SignUpView' || to.name === 'LogInView') && (accountStore.isLogin)) {
-  //   window.alert('이미 로그인 되어있습니다.')
-  //   console.log('to:', to.name, 'isLogin:', accountStore.isLogin)
-
-  //   return {name: 'home'}
-  // }
 
   if (to.matched.some(record => record.meta.requiresAuth) && !accountStore.isLogin) {
     window.alert('로그인이 필요합니다.')
