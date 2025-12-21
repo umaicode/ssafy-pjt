@@ -6,8 +6,10 @@
 
     <div v-else class="detail-card">
       <h2 class="detail-title">
-        {{ newsStore.newsDetail.is_bookmarked ? '★' : '☆' }}
-        {{ newsStore.newsDetail.title }}
+        <span class="star">
+          {{ newsStore.newsDetail.is_bookmarked ? '★' : '☆' }}</span>
+        <span>{{ newsStore.newsDetail.title }}</span>
+        
       </h2>
 
       <p class="meta">발행일: {{ newsStore.newsDetail.pubDate || '정보 없음' }}</p>
@@ -63,4 +65,8 @@ const toggle = function () {
   cursor: pointer;
 }
 .btn.primary { background: #2d6cdf; border-color: #2d6cdf; color: #fff; }
+.star { width: 30px; 
+        color: rgb(191, 194, 33);
+        padding: 2px;
+}
 </style>

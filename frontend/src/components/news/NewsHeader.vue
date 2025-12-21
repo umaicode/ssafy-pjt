@@ -6,10 +6,10 @@
       <input
         v-model.trim="query"
         type="text"
-        placeholder="검색어를 입력하세요 (예: 인공지능, 금융, SSAFY)"
+        placeholder="검색어를 입력하세요 (예: ai, 금융, SSAFY)"
         @keyup.enter="onFetch"
       />
-      <button class="btn primary" @click="onFetch">가져오기</button>
+      <button class="btn primary" @click="onFetch">검색하기</button>
 
       <button
         class="btn filter-btn"
@@ -54,7 +54,7 @@ const goAll = function () {
 }
 
 const goBookmark = function () {
-  router.push({ name: 'NewsBookmarkView' }) // 로그인 아니면 router guard에서 막힘
+  router.push({ name: 'NewsBookmarkView' })
 }
 </script>
 
