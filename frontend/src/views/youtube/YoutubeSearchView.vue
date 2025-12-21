@@ -1,25 +1,35 @@
 <template>
   <section>
-    <h3>비디오 검색</h3>
+    <header class="top">
+      <div class="top-row">
+        <h2>YouTube</h2>
+        <nav class="nav">
+          <RouterLink class="link" :to="{ name: 'YoutubeSearchView' }">검색</RouterLink>
+          <RouterLink class="link" :to="{ name: 'YoutubeSavedView' }">저장됨</RouterLink>
+        </nav>
+      </div>
 
-    <form class="search" @submit.prevent="onSearch">
-      <input
-        v-model.trim="q"
-        class="input"
-        placeholder="검색어를 입력하세요 (예: 삼성전자)"
-      />
-      <button class="btn" :disabled="loading || !q">
-        {{ loading ? '검색중...' : 'Search' }}
-      </button>
-    </form>
+      <div class="search-area">
+        <h3>비디오 검색</h3>
+        <form class="search" @submit.prevent="onSearch">
+          <input
+            v-model.trim="q"
+            class="input"
+            placeholder="검색어를 입력하세요 (예: 삼성전자, 주식, 금융)"
+          />
+          <button class="btn" :disabled="loading || !q">
+            {{ loading ? '검색중...' : 'Search' }}
+          </button>
+        </form>
 
-    <p v-if="error" class="error">{{ error }}</p>
+        <p v-if="error" class="error">{{ error }}</p>
+      </div>
+    </header>
+    <RouterView />
 
     <div v-if="items.length" class="grid">
       <VideoCard v-for="it in items" :key="it.etag" :item="it" />
     </div>
-
-    <p v-else class="empty">검색 결과가 없습니다.</p>
   </section>
 </template>
 
@@ -49,6 +59,25 @@ async function onSearch() {
 </script>
 
 <style scoped>
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+/* 제목 + 네비 한 줄 정렬 */
+.top-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.search-area {
+  padding: auto;
+}
+
 .search {
   display: flex;
   gap: 8px;
@@ -94,5 +123,23 @@ async function onSearch() {
 
 .empty {
   color: #777;
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+}
+
+.link {
+  text-decoration: none;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  color: inherit;
+}
+
+.link.router-link-active {
+  border-color: #333;
+  font-weight: 700;
 }
 </style>

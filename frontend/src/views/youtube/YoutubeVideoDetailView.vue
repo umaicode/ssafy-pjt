@@ -41,6 +41,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { fetchVideoDetail } from '@/stores/youtube/youtube'
 import { useVideoStore } from '@/stores/youtube/videos'
 import { useChannelStore } from '@/stores//youtube/channels'
+import { useAccountStore } from '@/stores/accounts' 
 
 const props = defineProps({
   id: String,
@@ -48,6 +49,7 @@ const props = defineProps({
 
 const videoStore = useVideoStore()
 const channelStore = useChannelStore()
+const accountStore = useAccountStore()  
 
 const video = ref(null)
 const loading = ref(false)
@@ -64,20 +66,31 @@ async function load() {
   }
 }
 
+// 로그인체크
 function toggleVideo() {
+  if (!accountStore.isLogin) {
+    window.alert('로그인이 필요합니다.')
+    return
+  }
+
   if (!video.value) return
   videoStore.toggleVideo({
     id: props.id,
     title: video.value.snippet.title,
     channelTitle: video.value.snippet.channelTitle,
     thumbnail:
-      video.value.snippet.thumbnails?.medium?.url
-      ?? video.value.snippet.thumbnails?.default?.url
-      ?? '',
+      video.value.snippet.thumbnails?.medium?.url ??
+      video.value.snippet.thumbnails?.default?.url ??
+      '',
   })
 }
 
 function toggleChannel() {
+  if (!accountStore.isLogin) {
+    window.alert('로그인이 필요합니다.')
+    return
+  }
+
   if (!video.value) return
   channelStore.toggleChannel({
     id: video.value.snippet.channelId,

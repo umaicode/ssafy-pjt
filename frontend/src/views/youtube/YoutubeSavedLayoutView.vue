@@ -1,14 +1,11 @@
 <template>
   <section class="saved-layout">
     <header class="top">
-      <h3>저장됨</h3>
-
       <nav class="nav">
         <RouterLink class="link" :to="{ name: 'YoutubeSavedView' }">비디오</RouterLink>
         <RouterLink class="link" :to="{ name: 'YoutubeChannelsView' }">채널</RouterLink>
       </nav>
     </header>
-
     <main class="content">
       <RouterView />
     </main>
