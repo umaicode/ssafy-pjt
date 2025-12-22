@@ -3,6 +3,8 @@ import { ref, computed } from "vue"
 import { useRouter } from "vue-router"
 import axios from "axios"
 import { useNewsStore } from "@/stores/news"
+import { useExchangeStore } from './exchange'
+
 
 export const useAccountStore = defineStore('account', () => {
   const API_URL = 'http://127.0.0.1:8000'
@@ -65,6 +67,16 @@ export const useAccountStore = defineStore('account', () => {
     .then(async (res) => { 
       token.value = res.data.key
       await getUserInfo()
+      
+      // 로그인 성공 시 환율 데이터 가져와서 DB에 저장
+      const exchangeStore = useExchangeStore()
+      try {
+        await exchangeStore.fetchAndSaveExchangeRates()
+        console.log('환율 정보를 DB에 저장했습니다.')
+      } catch (err) {
+        console.warn('환율 정보를 가져오지 못했습니다:', err)
+      }
+      
       router.push({name: 'home'})
     })
     .catch(err => console.log(err))
