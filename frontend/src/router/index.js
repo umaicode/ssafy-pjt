@@ -68,16 +68,14 @@ const router = createRouter({
       name: 'ProfileView',
       component: ProfileView,
       meta: { requiresAuth: true },
+      redirect: '/profile/myproduct',
       children: [
-        //  /mypage로 들어오면 첫 메뉴로 자동 이동  --> 현재 작동안됨 확인중
-        { path: '', redirect: { name: 'ProfileMyProduct' } },
-
         { path: 'myproduct', name: 'ProfileMyProduct', component: ProfileMyProduct },
         { path: 'wishlist', name: 'ProfileWishlist', component: ProfileWishlist },
         { path: 'modify', name: 'ProfileModify', component: ProfileModify },
       ],
     },
-        {
+    {
       path: '/analysis',
       name: 'AnalysisView',
       meta: { requiresAuth: true },
