@@ -73,8 +73,10 @@ def fetch_news(request):
         link = item.get("link", "")
         pubDate = format_pubdate(item.get("pubDate", ""))
 
-        if not News.objects.filter(title=title).exists():
+        # 해당 사용자의 뉴스 중 같은 제목이 없으면 생성
+        if not News.objects.filter(user=request.user, title=title).exists():
             News.objects.create(
+                user=request.user,
                 title=title,
                 link=link,
                 description=description,
@@ -94,32 +96,57 @@ def fetch_news(request):
 
 @api_view(["GET"])
 def news_list(request):
+    # 로그인 필수
+    if not request.user.is_authenticated:
+        return Response(
+            {"detail": "로그인이 필요합니다."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
+
     mode = request.query_params.get("mode")
 
-    news = News.objects.all().order_by("-id")
+    # 현재 로그인한 사용자의 뉴스만 조회
+    news = News.objects.filter(user=request.user).order_by("-id")
 
     if mode == "bookmark":
-        news = news.filter(is_bookmarked=True)
+        news = request.user.bookmarked_news.filter(user=request.user).order_by("-id")
 
-    serializer = NewsSerializer(news, many=True)
+    serializer = NewsSerializer(news, many=True, context={"request": request})
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["GET"])
 def news_detail(request, pk):
-    news = get_object_or_404(News, pk=pk)
-    serializer = NewsSerializer(news)
+    # 로그인 필수
+    if not request.user.is_authenticated:
+        return Response(
+            {"detail": "로그인이 필요합니다."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
+
+    # 현재 사용자의 뉴스만 조회
+    news = get_object_or_404(News, pk=pk, user=request.user)
+    serializer = NewsSerializer(news, context={"request": request})
 
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])
 def toggle_bookmark(request, pk):
-    news = get_object_or_404(News, pk=pk)
-    news.is_bookmarked = not news.is_bookmarked
-    news.save()
+    if not request.user.is_authenticated:
+        return Response(
+            {"detail": "로그인이 필요합니다."},
+            status=status.HTTP_401_UNAUTHORIZED,
+        )
 
-    serializer = NewsSerializer(news)
+    news = get_object_or_404(News, pk=pk)
+
+    if request.user.bookmarked_news.filter(pk=news.pk).exists():
+        request.user.bookmarked_news.remove(news)
+    else:
+        request.user.bookmarked_news.add(news)
+
+    serializer = NewsSerializer(news, context={"request": request})
 
     return Response(serializer.data, status=status.HTTP_200_OK)
