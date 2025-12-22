@@ -1,31 +1,58 @@
 <template>
-  <header class="nav">
-    <div class="title">SSAFY 뉴스 검색기</div>
+  <header class="news-header">
+    <div class="header-content">
+      <div class="header-title">
+        <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+        </svg>
+        <span>뉴스</span>
+      </div>
 
-    <div class="search-box">
-      <input
-        v-model.trim="query"
-        type="text"
-        placeholder="검색어를 입력하세요 (예: ai, 금융, SSAFY)"
-        @keyup.enter="onFetch"
-      />
-      <button class="btn primary" @click="onFetch">검색하기</button>
+      <div class="header-controls">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            v-model.trim="query"
+            type="text"
+            placeholder="뉴스 검색어를 입력하세요"
+            @keyup.enter="onFetch"
+          />
+          <button class="search-btn" @click="onFetch">
+            검색
+          </button>
+        </div>
 
-      <button
-        class="btn filter-btn"
-        :class="{ active: route.name === 'NewsView' }"
-        @click="goAll"
-      >
-        전체 보기
-      </button>
+        <div class="filter-tabs">
+          <button
+            class="filter-tab"
+            :class="{ active: route.name === 'NewsView' }"
+            @click="goAll"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            전체
+          </button>
 
-      <button
-        class="btn filter-btn"
-        :class="{ active: route.name === 'NewsBookmarkView' }"
-        @click="goBookmark"
-      >
-        북마크 보기
-      </button>
+          <button
+            class="filter-tab"
+            :class="{ active: route.name === 'NewsBookmarkView' }"
+            @click="goBookmark"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+            </svg>
+            북마크
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 </template>
@@ -59,35 +86,143 @@ const goBookmark = function () {
 </script>
 
 <style scoped>
-.nav {
-  height: 56px;
-  background: #e67e57;
-  color: white;
+.news-header {
+  background: linear-gradient(135deg, #1a1625 0%, #2d1f47 100%);
+  padding: 20px 24px;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
-}
-.title { font-weight: 600; }
-.search-box { display: flex; align-items: center; gap: 8px; }
-.search-box input {
-  width: 360px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
-.btn {
-  padding: 8px 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  background: #fff;
-  cursor: pointer;
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
 }
-.btn.primary { background: #2d6cdf; border-color: #2d6cdf; color: #fff; }
-.btn.filter-btn.active {
-  background: #fff3ee;
-  border-color: #e67e57;
-  color: #b24b2a;
+
+.title-icon {
+  width: 24px;
+  height: 24px;
+  color: #c084fc;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s;
+}
+
+.search-box:focus-within {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(147, 51, 234, 0.5);
+}
+
+.search-icon {
+  width: 18px;
+  height: 18px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 12px;
+}
+
+.search-box input {
+  width: 280px;
+  padding: 10px 12px;
+  font-size: 0.9375rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.search-btn {
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.search-btn:hover {
+  opacity: 0.9;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-tab svg {
+  width: 16px;
+  height: 16px;
+}
+
+.filter-tab:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.filter-tab.active {
+  color: #9333ea;
+  background: white;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  .filter-tabs {
+    justify-content: center;
+  }
 }
 </style>

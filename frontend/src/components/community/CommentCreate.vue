@@ -1,10 +1,25 @@
 <template>
-  <form class="card" @submit.prevent="submit">
-    <h3>댓글 작성</h3>
-
-    <div class="row">
-      <input v-model.trim="content" class="input" placeholder="댓글을 입력하세요" />
-      <button class="btn" type="submit" :disabled="!content">등록</button>
+  <form class="comment-create" @submit.prevent="submit">
+    <div class="create-header">
+      <div class="avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div class="input-wrapper">
+        <input 
+          v-model.trim="content" 
+          class="comment-input" 
+          placeholder="댓글을 입력하세요..." 
+        />
+      </div>
+      <button class="btn-submit" type="submit" :disabled="!content">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
     </div>
   </form>
 </template>
@@ -23,9 +38,90 @@ const submit = () => {
 </script>
 
 <style scoped>
-.card { border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-top: 12px; }
-.row { display: flex; gap: 10px; align-items: center; }
-.input { flex: 1; padding: 10px 12px; border: 1px solid #ddd; border-radius: 10px; }
-.btn { padding: 10px 12px; border: 1px solid #333; border-radius: 10px; background: #fff; cursor: pointer; }
-.btn:disabled { opacity: .5; cursor: not-allowed; }
+.comment-create {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin-top: 12px;
+}
+
+.create-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.avatar svg {
+  width: 20px;
+  height: 20px;
+  color: #7c3aed;
+}
+
+.input-wrapper {
+  flex: 1;
+}
+
+.comment-input {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 0.9375rem;
+  border: 1px solid #e4e4e7;
+  border-radius: 12px;
+  background: #fafafa;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.comment-input:focus {
+  outline: none;
+  border-color: #9333ea;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+}
+
+.comment-input::placeholder {
+  color: #a1a1aa;
+}
+
+.btn-submit {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-submit svg {
+  width: 20px;
+  height: 20px;
+  color: white;
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.4);
+}
+
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 </style>

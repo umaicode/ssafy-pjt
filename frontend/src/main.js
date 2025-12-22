@@ -5,6 +5,8 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import App from './App.vue'
 import router from './router'
 
+// F!NK Design System
+import './assets/styles/global.css'
 
 const app = createApp(App)
 const pinia = createPinia()

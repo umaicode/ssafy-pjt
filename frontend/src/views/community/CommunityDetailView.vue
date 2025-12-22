@@ -1,60 +1,125 @@
 <template>
-  <div class="wrap">
-    <RouterLink class="back" :to="{ name: 'CommunityView' }">← 목록으로</RouterLink>
+  <div class="detail-page">
+    <div class="container">
+      <RouterLink class="back-link" :to="{ name: 'CommunityView' }">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5"/>
+          <path d="M12 19l-7-7 7-7"/>
+        </svg>
+        목록으로 돌아가기
+      </RouterLink>
 
-    <section v-if="store.article" class="card">
-      <!-- 수정 모드 -->
-      <template v-if="isEditing">
-        <h2 class="h2">게시글 수정</h2>
-        <form class="edit-form" @submit.prevent="onUpdateArticle">
-          <input v-model.trim="editTitle" class="input" placeholder="제목" />
-          <textarea v-model.trim="editContent" class="textarea" placeholder="내용"></textarea>
-          <div class="edit-actions">
-            <button class="btn" type="submit" :disabled="!canSave">저장</button>
-            <button class="btn ghost" type="button" @click="cancelEdit">취소</button>
+      <article v-if="store.article" class="article-card">
+        <!-- Edit Mode -->
+        <template v-if="isEditing">
+          <div class="card-header">
+            <h2 class="card-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+              게시글 수정
+            </h2>
           </div>
-        </form>
-      </template>
 
-      <!-- 보기 모드 -->
-      <template v-else>
-        <div class="top">
-          <h2 class="h2">{{ store.article.title }}</h2>
+          <form class="edit-form" @submit.prevent="onUpdateArticle">
+            <div class="form-group">
+              <label class="form-label">제목</label>
+              <input v-model.trim="editTitle" class="form-input" placeholder="제목을 입력하세요" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">내용</label>
+              <textarea v-model.trim="editContent" class="form-textarea" placeholder="내용을 입력하세요"></textarea>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" type="submit" :disabled="!canSave">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/>
+                  <polyline points="17 21 17 13 7 13 7 21"/>
+                  <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                저장하기
+              </button>
+              <button class="btn btn-secondary" type="button" @click="cancelEdit">취소</button>
+            </div>
+          </form>
+        </template>
 
-          <div v-if="isAuthor" class="actions">
-            <button class="edit" type="button" @click="startEdit">수정</button>
-            <button class="danger" type="button" @click="onDeleteArticle">삭제</button>
+        <!-- View Mode -->
+        <template v-else>
+          <div class="card-header">
+            <div class="header-top">
+              <div class="author-info">
+                <div class="avatar">
+                  {{ (store.article.author_nickname ?? 'U').charAt(0).toUpperCase() }}
+                </div>
+                <div class="author-details">
+                  <span class="author-name">{{ store.article.author_nickname ?? '익명' }}</span>
+                  <span class="article-meta">
+                    {{ formatDate(store.article.created_at) }} · 조회 {{ store.article.views ?? 0 }}
+                  </span>
+                </div>
+              </div>
+
+              <div v-if="isAuthor" class="article-actions">
+                <button class="action-btn edit-btn" type="button" @click="startEdit">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                  수정
+                </button>
+                <button class="action-btn delete-btn" type="button" @click="onDeleteArticle">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/>
+                  </svg>
+                  삭제
+                </button>
+              </div>
+            </div>
+
+            <h1 class="article-title">{{ store.article.title }}</h1>
           </div>
-        </div>
 
-        <div class="meta">
-          <span>작성자: {{ store.article.author_nickname ?? '익명' }}</span>
-          <span>작성일: {{ formatDate(store.article.created_at) }}</span>
-          <span>조회: {{ store.article.views ?? 0 }}</span>
-        </div>
+          <div class="article-content">
+            <p>{{ store.article.content }}</p>
+          </div>
 
-        <p class="body">{{ store.article.content }}</p>
-        <!-- ✅ 게시글 좋아요 버튼 (content 바로 아래) -->
-        <div class="like-row">
-          <button class="like-btn" type="button" @click="onToggleArticleLike">
-            {{ store.article.is_liked ? '❤️' : '🤍' }}
-            좋아요 {{ store.article.likes_count ?? 0 }}
-          </button>
-        </div>
-      </template>
-    </section>
+          <div class="like-section">
+            <button 
+              class="like-btn" 
+              :class="{ liked: store.article.is_liked }"
+              type="button" 
+              @click="onToggleArticleLike"
+            >
+              <svg v-if="store.article.is_liked" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              <span>좋아요</span>
+              <span class="like-count">{{ store.article.likes_count ?? 0 }}</span>
+            </button>
+          </div>
+        </template>
+      </article>
 
-    <p v-else class="loading">게시글을 불러오는 중...</p>
+      <div v-else class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>게시글을 불러오는 중...</p>
+      </div>
 
-    <!-- 댓글 목록 -->
-    <Comment
-      :comments="store.comments"
-      @delete="onDeleteComment"
-      @update="onUpdateComment"
-      @toggle-like="onToggleCommentLike"
-    />
-    <!-- 댓글 작성 -->
-    <CommentCreate @submit="onCreateComment" />
+      <!-- Comments Section -->
+      <Comment
+        :comments="store.comments"
+        @delete="onDeleteComment"
+        @update="onUpdateComment"
+        @toggle-like="onToggleCommentLike"
+      />
+      <CommentCreate @submit="onCreateComment" />
+    </div>
   </div>
 </template>
 
@@ -73,15 +138,12 @@ const accountStore = useAccountStore()
 
 const articleId = route.params.id
 
-// 수정 모드 상태
 const isEditing = ref(false)
 const editTitle = ref('')
 const editContent = ref('')
 
-// 저장 버튼 활성화 조건
 const canSave = computed(() => editTitle.value && editContent.value)
 
-// 현재 로그인 유저가 작성자인지 확인
 const isAuthor = computed(() => {
   if (!accountStore.nickname || !store.article) return false
   return accountStore.nickname === store.article.author_nickname
@@ -93,21 +155,18 @@ onMounted(() => {
     .catch(() => {})
 })
 
-// 수정 모드 시작
 const startEdit = () => {
   editTitle.value = store.article.title
   editContent.value = store.article.content
   isEditing.value = true
 }
 
-// 수정 취소
 const cancelEdit = () => {
   isEditing.value = false
   editTitle.value = ''
   editContent.value = ''
 }
 
-// 게시글 수정
 const onUpdateArticle = () => {
   store.updateArticle(articleId, {
     title: editTitle.value,
@@ -123,7 +182,6 @@ const onUpdateArticle = () => {
     })
 }
 
-// 게시글 삭제
 const onDeleteArticle = () => {
   const ok = window.confirm('게시글을 삭제할까요?\n삭제 후 복구할 수 없습니다.')
   if (!ok) return
@@ -138,10 +196,8 @@ const onDeleteArticle = () => {
     })
 }
 
-// 댓글 작성
 const onCreateComment = (content) => {
   if (!content.trim()) return
-
   store.createComment(articleId, content)
     .then(() => {})
     .catch(() => {
@@ -149,7 +205,6 @@ const onCreateComment = (content) => {
     })
 }
 
-// 댓글 수정
 const onUpdateComment = ({ id, content }) => {
   store.updateComment(id, content)
     .then(() => {})
@@ -158,7 +213,6 @@ const onUpdateComment = ({ id, content }) => {
     })
 }
 
-// 댓글 삭제
 const onDeleteComment = (commentId) => {
   store.deleteComment(commentId)
     .then(() => {})
@@ -176,9 +230,7 @@ const formatDate = (iso) => {
   return `${y}.${m}.${day}`
 }
 
-// ✅ 게시글 좋아요 토글 (로그인 체크 없음)
 const onToggleArticleLike = () => {
-  // store에 toggle 함수가 있어야 함 (아래 3번 참고)
   store.toggleArticleLike(articleId)
     .then(() => {})
     .catch((err) => {
@@ -186,7 +238,7 @@ const onToggleArticleLike = () => {
       alert('좋아요 처리에 실패했습니다.')
     })
 }
-// 댓글좋아요
+
 const onToggleCommentLike = (commentId) => {
   store.toggleCommentLike(commentId)
     .then(() => {})
@@ -195,50 +247,369 @@ const onToggleCommentLike = (commentId) => {
       alert('댓글 좋아요 처리에 실패했습니다.')
     })
 }
-
 </script>
 
 <style scoped>
-.wrap { max-width: 1000px; margin: 0 auto; padding: 24px 16px; }
-.back { display: inline-block; margin-bottom: 12px; text-decoration: none; color: #333; }
-.card { border: 1px solid #eee; border-radius: 12px; padding: 16px; }
-.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.h2 { margin: 0; }
-.actions { display: flex; gap: 8px; }
-.meta { display: flex; gap: 12px; color: #666; font-size: 13px; margin-top: 8px; flex-wrap: wrap; }
-.body { margin-top: 14px; white-space: pre-wrap; }
-.loading { color: #777; }
+.detail-page {
+  min-height: calc(100vh - 72px);
+  padding: 48px 24px;
+  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+}
 
-/* 버튼 스타일 */
-.edit { border: 1px solid #ddd; background: #fff; border-radius: 10px; padding: 8px 10px; cursor: pointer; }
-.edit:hover { background: #f5f5f5; }
-.danger { border: 1px solid #f2b8c6; color: #b00020; background: #fff; border-radius: 10px; padding: 8px 10px; cursor: pointer; }
-.danger:hover { background: #fff5f7; border-color: #b00020; }
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
 
-/* 수정 폼 */
-.edit-form { display: grid; gap: 10px; margin-top: 12px; }
-.input, .textarea { padding: 10px 12px; border: 1px solid #ddd; border-radius: 10px; }
-.textarea { min-height: 180px; resize: vertical; }
-.edit-actions { display: flex; gap: 10px; }
-.btn { padding: 10px 12px; border: 1px solid #333; border-radius: 10px; background: #fff; cursor: pointer; }
-.btn:disabled { opacity: .5; cursor: not-allowed; }
-.ghost { border-color: #ddd; }
-.like-row {
-  margin-top: 14px;
+/* Back Link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #71717a;
+  text-decoration: none;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #9333ea;
+}
+
+.back-link svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Article Card */
+.article-card {
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.card-header {
+  padding: 28px 32px;
+  border-bottom: 1px solid #f4f4f5;
+}
+
+.card-title {
   display: flex;
-  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #18181b;
+  margin: 0;
+}
+
+.card-title svg {
+  width: 24px;
+  height: 24px;
+  color: #9333ea;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+}
+
+.author-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.author-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #18181b;
+}
+
+.article-meta {
+  font-size: 0.8125rem;
+  color: #71717a;
+}
+
+.article-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.edit-btn {
+  background: white;
+  color: #52525b;
+  border: 1px solid #e4e4e7;
+}
+
+.edit-btn:hover {
+  border-color: #9333ea;
+  color: #9333ea;
+}
+
+.delete-btn {
+  background: white;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+.delete-btn:hover {
+  background: #fef2f2;
+  border-color: #dc2626;
+}
+
+.article-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #18181b;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.article-content {
+  padding: 28px 32px;
+}
+
+.article-content p {
+  font-size: 1rem;
+  color: #3f3f46;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.like-section {
+  padding: 20px 32px 28px;
+  border-top: 1px solid #f4f4f5;
 }
 
 .like-btn {
-  border: 1px solid #ddd;
-  background: #fff;
-  border-radius: 999px;
-  padding: 8px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  background: white;
+  color: #71717a;
+  border: 2px solid #e4e4e7;
+  border-radius: 24px;
   cursor: pointer;
-  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.like-btn svg {
+  width: 20px;
+  height: 20px;
 }
 
 .like-btn:hover {
-  background: #f7f7f7;
+  border-color: #9333ea;
+  color: #9333ea;
+}
+
+.like-btn.liked {
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  border-color: transparent;
+  color: white;
+}
+
+.like-count {
+  padding: 2px 8px;
+  font-size: 0.8125rem;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.like-btn:not(.liked) .like-count {
+  background: #f4f4f5;
+}
+
+/* Edit Form */
+.edit-form {
+  padding: 24px 32px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #52525b;
+  margin-bottom: 8px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 1rem;
+  background: #fafafa;
+  border: 2px solid #e4e4e7;
+  border-radius: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #9333ea;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.1);
+}
+
+.form-textarea {
+  min-height: 200px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: white;
+  color: #52525b;
+  border: 2px solid #e4e4e7;
+}
+
+.btn-secondary:hover {
+  border-color: #9333ea;
+  color: #9333ea;
+}
+
+/* Loading State */
+.loading-state {
+  text-align: center;
+  padding: 80px 24px;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  border: 4px solid #f3e8ff;
+  border-top-color: #9333ea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .detail-page {
+    padding: 32px 16px;
+  }
+
+  .card-header,
+  .article-content,
+  .like-section,
+  .edit-form {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .article-title {
+    font-size: 1.25rem;
+  }
+
+  .header-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .article-actions {
+    width: 100%;
+  }
+
+  .action-btn {
+    flex: 1;
+    justify-content: center;
+  }
 }
 </style>
