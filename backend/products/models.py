@@ -75,11 +75,11 @@ class SavingOption(models.Model):
 
 
 User = settings.AUTH_USER_MODEL
-class Wishlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlists')
+class Like(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="likes")
     fin_prdt_cd = models.CharField(max_length=50)
     product_type = models.CharField(max_length=10, choices=[("deposit", "예금"), ("saving", "적금")])
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user", "fin_prdt_cd")
+        unique_together = ("user", "fin_prdt_cd", "product_type")

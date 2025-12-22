@@ -19,7 +19,12 @@ class CustomRegisterSerializer(RegisterSerializer):
 
 
 class CustomUserDetailsSerializer(UserDetailsSerializer):
-    nickname = serializers.CharField(read_only=True)
+    """
+    /accounts/user/ 에서 GET(조회) + PATCH(수정) 둘 다 쓰려고
+    nickname을 read_only=False로 둔 버전
+    """
+    # 기존엔 read_only=True 였는데, PATCH로 수정하려면 read_only 제거/변경 필요
+    nickname = serializers.CharField(required=False)
 
     class Meta(UserDetailsSerializer.Meta):
         fields = UserDetailsSerializer.Meta.fields + ('nickname',)

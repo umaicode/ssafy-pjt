@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import DepositProduct, DepositOption, SavingProduct, SavingOption, Wishlist
+from .models import DepositProduct, DepositOption, SavingProduct, SavingOption, Like
 
 class DepositOptionSerializer(serializers.ModelSerializer):
     
@@ -66,8 +66,7 @@ class SavingProductSerializer(serializers.ModelSerializer):
             "options",
         )
 
-
-class WishlistSerializer(serializers.ModelSerializer):
+class LikeSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Wishlist
-        fields = ["fin_prdt_cd", "product_type", "created_at"]
+        model = Like
+        fields = ("id", "fin_prdt_cd", "product_type", "created_at")

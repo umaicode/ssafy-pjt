@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/products/', include('products.urls')),
     path("api/v1/", include("recommendations.urls")),
+    path('api/v1/', include('articles.urls')), 
     path('api/news/', include("news.urls")),
     path('api/metals/', include('metals.urls')),
     path('api/exchange/', include('exchange.urls')),
@@ -29,5 +30,6 @@ urlpatterns = [
     path('schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     path('accounts/', include('dj_rest_auth.urls')),
+    path('accounts/', include('accounts.urls')),
     path('accounts/signup/', include('dj_rest_auth.registration.urls')),
 ]

@@ -37,7 +37,10 @@ onMounted(() => {
 
 <style scoped>
 .page {
-  max-width: 900px;
+  width: 100%;
+  max-width: 1400px;
+  min-height: calc(100vh - 72px);
   margin: 0 auto;
+  padding: 24px;
 }
 </style>

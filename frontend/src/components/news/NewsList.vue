@@ -11,7 +11,9 @@
       :class="{ selected: newsStore.newsDetail && newsStore.newsDetail.id === n.id }"
       @click="openDetail(n.id)"
     >
-      <span class="star">{{ n.is_bookmarked ? '★' : '☆' }}</span>
+      <button class="star"
+        @click.stop="toggleBookmark(n.id)"
+        type="button">{{ n.is_bookmarked ? '★' : '☆' }}</button>
       <span class="text">{{ n.title }}</span>
     </div>
   </section>
@@ -19,10 +21,22 @@
 
 <script setup>
 import { useNewsStore } from '@/stores/news'
-const newsStore = useNewsStore()
+import { useAccountStore } from '@/stores/accounts'
 
-const openDetail = function (id) {
+const newsStore = useNewsStore()
+const accountStore = useAccountStore()
+
+const openDetail = (id) => {
   newsStore.getNewsDetail(id)
+}
+
+// 북마크버튼기능, 로그인체크
+const toggleBookmark = (id) => {
+  if (!accountStore.isLogin) {
+    alert('로그인이 필요합니다.')
+    return
+  }
+  newsStore.toggleBookmark(id)
 }
 </script>
 
@@ -45,6 +59,9 @@ const openDetail = function (id) {
 }
 .news-item:hover { background: #fafafa; }
 .news-item.selected { background: #fff3ee; }
-.star { width: 20px; }
+.star { width: 30px; 
+        color: rgb(191, 194, 33);
+        padding: 2px;
+}
 .news-empty { color: #777; padding: 12px; }
 </style>
