@@ -23,6 +23,8 @@
       <RouterLink :to="{name:'NewsView'}">뉴스</RouterLink> |
       <RouterLink :to="{ name: 'YoutubeSearchView' }">YouTube</RouterLink> |
       <RouterLink :to="{ name: 'MetalView' }">현물상품</RouterLink> |
+      <RouterLink :to="{ name: 'CommunityView' }">커뮤니티</RouterLink> |
+
     </nav>
   </header>
   <RouterView />

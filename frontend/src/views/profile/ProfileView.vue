@@ -14,6 +14,9 @@
         <RouterLink class="menu-link" :to="{ name: 'ProfileModify' }">
           회원정보 수정
         </RouterLink>
+
+        <!-- ✅ 간격용 spacer -->
+        <div class="menu-spacer"></div>
         <!-- 회원탈퇴 버튼 추가 -->
         <button class="menu-link danger" type="button" @click="onDeleteAccount">
           회원탈퇴
@@ -57,6 +60,7 @@
   flex-direction: column;
   gap: 15px;
   min-width: 160px;
+  text-align: center;
 }
 
 .menu-link {
@@ -77,7 +81,7 @@
   /* flex: 1;   남은 영역 차지 */
   border: 1px solid #ddcfcf;
   border-radius: 20px;
-  height: 1000px;
+  height: 800px;
   width: 1200px;
   padding: 30px;
 }
@@ -88,7 +92,9 @@
   border-color: #f2b8c6;
   cursor: pointer;
 }
-
+.menu-spacer {
+  height: 500px; /* ← 여기 숫자로 위치 조절 */
+}
 /* hover 시 더 강조 */
 .danger:hover {
   background: #fff5f7;
