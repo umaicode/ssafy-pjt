@@ -6,42 +6,45 @@ from .models import Article, Comment
 class ArticleCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ('title', 'content') 
+        fields = ('title', 'content')
+
+
+# 댓글 시리얼라이저
+class CommentSerializer(serializers.ModelSerializer):
+    author_nickname = serializers.CharField(source='user.nickname', read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'content', 'author_nickname', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'author_nickname', 'created_at', 'updated_at')
 
 
 # 게시글 상세 조회용 (GET)
 class ArticleSerializer(serializers.ModelSerializer):
-    class CommentDetailSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Comment
-            fields = ('id', 'content')
-
-    comment_set = CommentDetailSerializer(many=True, read_only=True)
-    num_of_comments = serializers.SerializerMethodField()
+    author_nickname = serializers.CharField(source='user.nickname', read_only=True)
+    comment_set = CommentSerializer(many=True, read_only=True)
+    comments_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Article
-        fields = '__all__'
+        fields = (
+            'id', 'title', 'content', 'views',
+            'author_nickname', 'created_at', 'updated_at',
+            'comment_set', 'comments_count'
+        )
 
-    def get_num_of_comments(self, obj):
-        return getattr(obj, 'num_of_comments', obj.comment_set.count())
+    def get_comments_count(self, obj):
+        return obj.comment_set.count()
 
 
 # 게시글 목록용
 class ArticleListSerializer(serializers.ModelSerializer):
+    author_nickname = serializers.CharField(source='user.nickname', read_only=True)
+    comments_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Article
-        fields = ('id', 'title', 'content')
+        fields = ('id', 'title', 'author_nickname', 'views', 'created_at', 'comments_count')
 
-
-class CommentSerializer(serializers.ModelSerializer):
-    class ArticleTitleSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Article
-            fields = ('id', 'title')
-
-    article = ArticleTitleSerializer(read_only=True)
-
-    class Meta:
-        model = Comment
-        fields = '__all__'
+    def get_comments_count(self, obj):
+        return obj.comment_set.count()
