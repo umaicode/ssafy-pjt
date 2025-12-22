@@ -10,14 +10,39 @@ from rest_framework import status
 from .models import News
 from .serializers import NewsSerializer
 
+# html 처리
+from django.utils.html import strip_tags
+from html import unescape
+
+# 발행일 처리
+from datetime import datetime
+
+
+# html 엔티티 제거 함수
+def clean_naver_html(s: str) -> str:
+    s = unescape(s or "")
+    s = strip_tags(s)
+
+    return s
+
+
+# 발행일 포맷 변경 함수
+def format_pubdate(pubdate: str) -> str:
+    dt = datetime.strptime(pubdate, "%a, %d %b %Y %H:%M:%S %z")
+    return dt.strftime("%Y-%m-%d %H:%M")
+
+
 # Create your views here.
 @api_view(["POST"])
 def fetch_news(request):
     query = request.data.get("query")
 
     if not query:
-        return Response({"detail": "검색어가 필요합니다."}, status=status.HTTP_400_BAD_REQUEST,)
-    
+        return Response(
+            {"detail": "검색어가 필요합니다."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     url = "https://openapi.naver.com/v1/search/news.json"
 
     headers = {
@@ -33,17 +58,20 @@ def fetch_news(request):
 
     res = requests.get(url, headers=headers, params=params)
     if res.status_code != 200:
-        return Response({"detail": "Naver API 호출 실패", "status_code": res.status_code}, status=status.HTTP_502_BAD_GATEWAY,)
-    
+        return Response(
+            {"detail": "Naver API 호출 실패", "status_code": res.status_code},
+            status=status.HTTP_502_BAD_GATEWAY,
+        )
+
     data = res.json()
     items = data.get("items", [])
 
     created_count = 0
     for item in items:
-        title = item.get("title", "")
-        description = item.get("description", "")
+        title = clean_naver_html(item.get("title", ""))
+        description = clean_naver_html(item.get("description", ""))
         link = item.get("link", "")
-        pubDate = item.get("pubDate", "")
+        pubDate = format_pubdate(item.get("pubDate", ""))
 
         if not News.objects.filter(title=title).exists():
             News.objects.create(
@@ -53,13 +81,14 @@ def fetch_news(request):
                 pubDate=pubDate,
             )
             created_count += 1
-    
-    return Response({
-        "message": "뉴스 수집 완료",
-        "created": created_count,
-        "total_From_naver": len(items),
-    },
-    status=status.HTTP_201_CREATED,
+
+    return Response(
+        {
+            "message": "뉴스 수집 완료",
+            "created": created_count,
+            "total_From_naver": len(items),
+        },
+        status=status.HTTP_201_CREATED,
     )
 
 
@@ -71,9 +100,9 @@ def news_list(request):
 
     if mode == "bookmark":
         news = news.filter(is_bookmarked=True)
-    
+
     serializer = NewsSerializer(news, many=True)
-    
+
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
