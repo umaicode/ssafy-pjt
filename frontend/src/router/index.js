@@ -111,25 +111,23 @@ const router = createRouter({
       path: '/youtube',
       name: 'YoutubeSearchView',
       component: YoutubeSearchView,
+    },
+    {
+      path: '/youtube/saved',
+      name: 'YoutubeSavedLayoutView',
+      component: YoutubeSavedLayoutView,
+      meta: { requiresAuth: true },
+      redirect: {name: 'YoutubeSavedView'},
       children: [
         {
-          path: 'saved',
-          name: 'YoutubeSavedLayoutView',
-          component: YoutubeSavedLayoutView,
-          meta: { requiresAuth: true },
-          redirect: {name: 'YoutubeSavedView'},
-          children: [
-            {
-              path: 'videos',
-              name: 'YoutubeSavedView',
-              component: YoutubeSavedView,
-            },
-            {
-              path: 'channels',
-              name: 'YoutubeChannelsView',
-              component: YoutubeChannelsView,
-            }
-          ]
+          path: 'videos',
+          name: 'YoutubeSavedView',
+          component: YoutubeSavedView,
+        },
+        {
+          path: 'channels',
+          name: 'YoutubeChannelsView',
+          component: YoutubeChannelsView,
         }
       ]
     },

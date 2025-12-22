@@ -110,7 +110,7 @@ def comment_list(request, article_pk):
 # PATCH  /api/v1/comments/<comment_pk>/
 # DELETE /api/v1/comments/<comment_pk>/
 # --------------------------------------------------
-@api_view(["GET", "PUT", "DELETE"])
+@api_view(["GET", "PATCH", "DELETE"])
 def comment_detail(request, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
 

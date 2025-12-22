@@ -25,7 +25,6 @@
         <p v-if="error" class="error">{{ error }}</p>
       </div>
     </header>
-    <RouterView />
 
     <div v-if="items.length" class="grid">
       <VideoCard v-for="it in items" :key="it.etag" :item="it" />
@@ -34,9 +33,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { searchVideos } from '@/stores/youtube/youtube'
 import VideoCard from '@/components/youtube/VideoCard.vue'
+
+const route = useRoute()
 
 const q = ref('')
 const items = ref([])
@@ -56,6 +58,15 @@ async function onSearch() {
     loading.value = false
   }
 }
+
+// 페이지 로드 시 query parameter에서 검색어를 가져와서 자동 검색
+onMounted(() => {
+  const queryParam = route.query.q
+  if (queryParam) {
+    q.value = queryParam
+    onSearch()
+  }
+})
 </script>
 
 <style scoped>
