@@ -133,6 +133,13 @@ export const useNewsStore = defineStore('news', () => {
     newsDetail.value = null
   }
 
+  // 로그아웃 시 전체 데이터 초기화
+  const clearAllData = function () {
+    newsList.value = []
+    newsDetail.value = null
+    mode.value = 'all'
+  }
+
   return {
     newsList,
     newsDetail,
@@ -144,6 +151,7 @@ export const useNewsStore = defineStore('news', () => {
     toggleBookmark,
     setMode,
     clearDetail,
+    clearAllData,
   }
 
-}, { persist: true })
+})

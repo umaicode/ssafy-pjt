@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import { ref, computed } from "vue"
 import { useRouter } from "vue-router"
 import axios from "axios"
+import { useNewsStore } from "@/stores/news"
 
 export const useAccountStore = defineStore('account', () => {
   const API_URL = 'http://127.0.0.1:8000'
@@ -78,6 +79,14 @@ export const useAccountStore = defineStore('account', () => {
     .then((res) => {
       token.value = null
       nickname.value = null
+      
+      // 다른 store들 초기화 (뉴스 store 초기화)
+      const newsStore = useNewsStore()
+      newsStore.clearAllData()
+      
+      // 로컬 스토리지에서 news store 데이터 제거
+      localStorage.removeItem('news')
+      
       router.push({ name: 'home' })
     })
     .catch((err) => console.log(err))
