@@ -2,7 +2,6 @@
   <section class="card">
     <h2 class="h2">게시글 작성</h2>
 
-    <!-- ✅ submit 시 axios로 POST 보내야 하므로 onSubmit 연결 -->
     <form class="form" @submit.prevent="onSubmit">
       <input v-model.trim="title" class="input" placeholder="제목" />
       <textarea v-model.trim="content" class="textarea" placeholder="내용"></textarea>
@@ -21,8 +20,10 @@
 import { computed, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useCommunityStore } from '@/stores/community'
+import { useAccountStore } from '@/stores/accounts'
 
 const store = useCommunityStore()
+const accountStore = useAccountStore()
 const router = useRouter()
 
 const title = ref('')
@@ -31,21 +32,20 @@ const content = ref('')
 const canSubmit = computed(() => title.value && content.value)
 
 const onSubmit = () => {
-  // ✅ 2) store의 createArticle 호출 → Django로 POST 요청 발생
+  if (!accountStore.isLogin) {
+    alert('로그인이 필요합니다.')
+    router.push({ name: 'LogInView' })
+    return
+  }
+
   store.createArticle({ title: title.value, content: content.value })
-    .then((created) => {
-      // ✅ 3) 입력 초기화
+    .then(() => {
       title.value = ''
       content.value = ''
-
-      // ✅ 4) 목록으로 이동 (또는 상세로 이동도 가능)
       router.push({ name: 'CommunityView' })
-      // 상세로 가고 싶으면:
-      // router.push({ name: 'DetailView', params: { id: created.id } })
     })
     .catch((err) => {
       console.log(err)
-      // ✅ 5) 서버 에러 메시지 표시 (400이면 여기로 들어옴)
       alert(`저장 실패: ${JSON.stringify(err.response?.data)}`)
     })
 }
