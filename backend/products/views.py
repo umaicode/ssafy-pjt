@@ -9,8 +9,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
 
-from .models import DepositProduct, DepositOption, SavingProduct, SavingOption, Wishlist
-from .serializers import DepositProductSerializer, SavingProductSerializer, WishlistSerializer
+from .models import DepositProduct, DepositOption, SavingProduct, SavingOption, Like
+from .serializers import DepositProductSerializer, SavingProductSerializer, LikeSerializer
 
 # Create your views here.
 @api_view(['GET'])
@@ -222,12 +222,22 @@ def deposit_product_detail(request, fin_prdt_cd):
     
     liked = False
     if request.user.is_authenticated:
-        liked = Wishlist.objects.filter(user=request.user, fin_prdt_cd=fin_prdt_cd).exists()
+        liked = Like.objects.filter(
+            user=request.user,
+            fin_prdt_cd=fin_prdt_cd,
+            product_type="deposit",
+        ).exists()
     
+    # ✅ 좋아요 수(로그인 상관없이 계산 가능)
+    likes_count = Like.objects.filter(
+        fin_prdt_cd=fin_prdt_cd,
+        product_type="deposit",
+    ).count()
+
     data["liked"] = liked
+    data["likes_count"] = likes_count
 
     return Response(data, status=status.HTTP_200_OK)
-
 
 @api_view(['GET'])
 def saving_product_detail(request, fin_prdt_cd):
@@ -236,35 +246,54 @@ def saving_product_detail(request, fin_prdt_cd):
 
     liked = False
     if request.user.is_authenticated:
-        liked = Wishlist.objects.filter(user=request.user, fin_prdt_cd=fin_prdt_cd).exists()
-    
+        liked = Like.objects.filter(
+            user=request.user,
+            fin_prdt_cd=fin_prdt_cd,
+            product_type="saving",
+        ).exists()
+
+    likes_count = Like.objects.filter(
+        fin_prdt_cd=fin_prdt_cd,
+        product_type="saving",
+    ).count()
+
     data["liked"] = liked
+    data["likes_count"] = likes_count
 
     return Response(data, status=status.HTTP_200_OK)
 
 
-# wish리스트 좋아요 버튼
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def toggle_wishlist(request):
+def toggle_like(request):
     user = request.user
     fin_prdt_cd = request.data.get('fin_prdt_cd')
     product_type = request.data.get('product_type')
 
-    wish = Wishlist.objects.filter(user=user, fin_prdt_cd=fin_prdt_cd).first()
+    if not fin_prdt_cd or product_type not in ["deposit", "saving"]:
+        return Response({"detail": "fin_prdt_cd/product_type이 필요합니다."}, status=status.HTTP_400_BAD_REQUEST)
 
-    if wish:
-        wish.delete()
-        return Response({'liked': False})
+    like, created = Like.objects.get_or_create(
+        user=request.user,
+        fin_prdt_cd=fin_prdt_cd,
+        product_type=product_type,
+    )
+
+    if not created:
+        like.delete()
+        liked = False
     else:
-        Wishlist.objects.create(user=user, fin_prdt_cd=fin_prdt_cd, product_type=product_type)
-        return Response({'liked': True}, status=status.HTTP_201_CREATED)
+        liked = True
+
+    likes_count = Like.objects.filter(fin_prdt_cd=fin_prdt_cd, product_type=product_type).count()
+
+    return Response({"liked": liked, "likes_count": likes_count}, status=status.HTTP_200_OK)
 
 
-# wish리스트 읽기
+# ✅ 내 좋아요 목록 읽기
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def my_wishlist(request):
-    my_wishes = Wishlist.objects.filter(user=request.user)
-    serializer = WishlistSerializer(my_wishes, many=True)
+def my_likes(request):
+    my_likes_qs = Like.objects.filter(user=request.user).order_by('-created_at')
+    serializer = LikeSerializer(my_likes_qs, many=True)
     return Response(serializer.data)

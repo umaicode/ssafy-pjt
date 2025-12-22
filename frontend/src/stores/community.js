@@ -42,10 +42,22 @@ export const useCommunityStore = defineStore('community', () => {
 
   // 3) 게시글 상세
   const getArticleDetail = (id) => {
-    return axios.get(`${API_URL}/api/v1/articles/${id}/`)
-      .then((res) => { article.value = res.data })
-      .catch((err) => { console.log(err); article.value = null })
+    return axios({
+      method: 'get',
+      url: `${API_URL}/api/v1/articles/${id}/`,
+      headers: accountStore.token
+        ? { Authorization: `Token ${accountStore.token}` }
+        : {},
+    })
+      .then((res) => {
+        article.value = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+        article.value = null
+      })
   }
+
 
   // 4) 게시글 수정
   const updateArticle = (id, payload) => {
@@ -77,9 +89,20 @@ export const useCommunityStore = defineStore('community', () => {
 
   // 6) 댓글 목록
   const getComments = (articleId) => {
-    return axios.get(`${API_URL}/api/v1/articles/${articleId}/comments/`)
-      .then((res) => { comments.value = res.data })
-      .catch((err) => { console.log(err); comments.value = [] })
+    return axios({
+      method: 'get',
+      url: `${API_URL}/api/v1/articles/${articleId}/comments/`,
+      headers: accountStore.token
+        ? { Authorization: `Token ${accountStore.token}` }
+        : {},
+    })
+      .then((res) => {
+        comments.value = res.data
+      })
+      .catch((err) => {
+        console.log(err)
+        comments.value = []
+      })
   }
 
   // 7) 댓글 생성
@@ -135,6 +158,47 @@ export const useCommunityStore = defineStore('community', () => {
       })
   }
 
+  // ✅ 게시글 좋아요 토글
+  const toggleArticleLike = function (articleId) {
+    return axios({
+      method: "post",
+      url: `${API_URL}/api/v1/articles/${articleId}/like/`,
+      headers: accountStore.token ? { Authorization: `Token ${accountStore.token}` } : {},
+    })
+      .then((res) => {
+        // res.data = { liked, likes_count }
+        if (article.value) {
+          article.value.is_liked = res.data.liked
+          article.value.likes_count = res.data.likes_count
+        }
+      })
+  }
+
+  // ✅ 댓글 좋아요 토글 추가
+  const toggleCommentLike = function (commentId) {
+    return axios({
+      method: "post",
+      url: `${API_URL}/api/v1/comments/${commentId}/like/`,
+      headers: accountStore.token
+        ? { Authorization: `Token ${accountStore.token}` }
+        : {}, // 로그인 체크는 안 하지만 토큰 있으면 넣기
+    })
+      .then((res) => {
+        // res.data = { liked, likes_count }
+
+        // ✅ store.comments에서 해당 댓글 찾아 값 갱신
+        const target = comments.value.find((c) => c.id === commentId)
+        if (target) {
+          target.is_liked = res.data.liked
+          target.likes_count = res.data.likes_count
+        }
+      })
+      .catch((err) => {
+        console.log("toggleCommentLike 실패:", err)
+        throw err
+      })
+  }
+
   return {
     API_URL,
     articles,
@@ -151,5 +215,7 @@ export const useCommunityStore = defineStore('community', () => {
     createComment,
     updateComment,
     deleteComment,
+    toggleArticleLike,
+    toggleCommentLike,
   }
 })

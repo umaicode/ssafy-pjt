@@ -11,6 +11,9 @@ class Article(models.Model):
     views = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="liked_articles")
+
 
 
 class Comment(models.Model):
@@ -21,3 +24,6 @@ class Comment(models.Model):
     content = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="liked_comments",)
+

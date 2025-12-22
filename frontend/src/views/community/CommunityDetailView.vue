@@ -34,6 +34,13 @@
         </div>
 
         <p class="body">{{ store.article.content }}</p>
+        <!-- ✅ 게시글 좋아요 버튼 (content 바로 아래) -->
+        <div class="like-row">
+          <button class="like-btn" type="button" @click="onToggleArticleLike">
+            {{ store.article.is_liked ? '❤️' : '🤍' }}
+            좋아요 {{ store.article.likes_count ?? 0 }}
+          </button>
+        </div>
       </template>
     </section>
 
@@ -44,6 +51,7 @@
       :comments="store.comments"
       @delete="onDeleteComment"
       @update="onUpdateComment"
+      @toggle-like="onToggleCommentLike"
     />
     <!-- 댓글 작성 -->
     <CommentCreate @submit="onCreateComment" />
@@ -167,6 +175,27 @@ const formatDate = (iso) => {
   const day = String(d.getDate()).padStart(2, '0')
   return `${y}.${m}.${day}`
 }
+
+// ✅ 게시글 좋아요 토글 (로그인 체크 없음)
+const onToggleArticleLike = () => {
+  // store에 toggle 함수가 있어야 함 (아래 3번 참고)
+  store.toggleArticleLike(articleId)
+    .then(() => {})
+    .catch((err) => {
+      console.log(err)
+      alert('좋아요 처리에 실패했습니다.')
+    })
+}
+// 댓글좋아요
+const onToggleCommentLike = (commentId) => {
+  store.toggleCommentLike(commentId)
+    .then(() => {})
+    .catch((err) => {
+      console.log(err)
+      alert('댓글 좋아요 처리에 실패했습니다.')
+    })
+}
+
 </script>
 
 <style scoped>
@@ -194,4 +223,22 @@ const formatDate = (iso) => {
 .btn { padding: 10px 12px; border: 1px solid #333; border-radius: 10px; background: #fff; cursor: pointer; }
 .btn:disabled { opacity: .5; cursor: not-allowed; }
 .ghost { border-color: #ddd; }
+.like-row {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.like-btn {
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.like-btn:hover {
+  background: #f7f7f7;
+}
 </style>

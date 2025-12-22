@@ -11,6 +11,6 @@ urlpatterns = [
     path("deposit/<str:fin_prdt_cd>/", views.deposit_product_detail),
     path("saving/<str:fin_prdt_cd>/", views.saving_product_detail),
     # wishlist
-    path("wishlist/", views.toggle_wishlist),
-    path("wishlist/me/", views.my_wishlist),
+    path("likes/toggle/", views.toggle_like),
+    path("likes/me/", views.my_likes),
 ]

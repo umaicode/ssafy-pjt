@@ -21,6 +21,12 @@
               <span class="date">{{ formatDate(c.created_at) }}</span>
             </div>
             <div class="content">{{ c.content }}</div>
+            <div class="like-row">
+              <button class="like-btn" type="button" @click="onToggleCommentLike(c.id)">
+                {{ c.is_liked ? '❤️' : '🤍' }}
+                좋아요 {{ c.likes_count ?? 0 }}
+              </button>
+            </div>
           </div>
 
           <div v-if="isAuthor(c)" class="actions">
@@ -43,7 +49,7 @@ const props = defineProps({
   comments: { type: Array, default: () => [] },
 })
 
-const emit = defineEmits(['delete', 'update'])
+const emit = defineEmits(['delete', 'update', 'toggle-like'])
 
 const accountStore = useAccountStore()
 
@@ -90,6 +96,12 @@ const formatDate = (iso) => {
   const day = String(d.getDate()).padStart(2, '0')
   return `${y}.${m}.${day}`
 }
+
+// ✅ 댓글 좋아요 토글 요청 (로그인 체크 없음)
+const onToggleCommentLike = (commentId) => {
+  emit('toggle-like', commentId)
+}
+
 </script>
 
 <style scoped>
@@ -117,4 +129,23 @@ const formatDate = (iso) => {
 .ghost { border-color: #ddd; }
 
 .empty { color: #777; margin: 10px 0 0; }
+
+.like-row {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.like-btn {
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.like-btn:hover {
+  background: #f7f7f7;
+}
 </style>
