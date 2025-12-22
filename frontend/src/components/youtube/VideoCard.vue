@@ -25,9 +25,17 @@ const props = defineProps({
   item: { type: Object, required: true },
 })
 
+// HTML 엔티티 디코딩 함수
+const decodeHtmlEntities = (text) => {
+  if (!text) return ''
+  const textarea = document.createElement('textarea')
+  textarea.innerHTML = text
+  return textarea.value
+}
+
 const videoId = computed(() => props.item?.id?.videoId)
-const title = computed(() => props.item?.snippet?.title ?? '')
-const channel = computed(() => props.item?.snippet?.channelTitle ?? '')
+const title = computed(() => decodeHtmlEntities(props.item?.snippet?.title ?? ''))
+const channel = computed(() => decodeHtmlEntities(props.item?.snippet?.channelTitle ?? ''))
 const thumb = computed(() =>
   props.item?.snippet?.thumbnails?.medium?.url
   ?? props.item?.snippet?.thumbnails?.default?.url

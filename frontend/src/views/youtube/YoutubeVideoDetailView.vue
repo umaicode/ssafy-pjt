@@ -13,10 +13,10 @@
         />
       </div>
 
-      <h3 class="title">{{ video.snippet.title }}</h3>
+      <h3 class="title">{{ decodedTitle }}</h3>
 
       <div class="meta">
-        <span class="badge">{{ video.snippet.channelTitle }}</span>
+        <span class="badge">{{ decodedChannelTitle }}</span>
 
         <button class="btn"
           @click="toggleVideo"
@@ -31,7 +31,7 @@
         </button>
       </div>
 
-      <p class="desc">{{ video.snippet.description }}</p>
+      <p class="desc">{{ decodedDescription }}</p>
     </div>
   </section>
 </template>
@@ -54,8 +54,19 @@ const accountStore = useAccountStore()
 const video = ref(null)
 const loading = ref(false)
 
+// HTML 엔티티 디코딩 함수
+const decodeHtmlEntities = (text) => {
+  if (!text) return ''
+  const textarea = document.createElement('textarea')
+  textarea.innerHTML = text
+  return textarea.value
+}
+
 const embedUrl = computed(() => `https://www.youtube.com/embed/${props.id}`)
 const channelId = computed(() => video.value?.snippet?.channelId ?? '')
+const decodedTitle = computed(() => decodeHtmlEntities(video.value?.snippet?.title ?? ''))
+const decodedChannelTitle = computed(() => decodeHtmlEntities(video.value?.snippet?.channelTitle ?? ''))
+const decodedDescription = computed(() => decodeHtmlEntities(video.value?.snippet?.description ?? ''))
 
 async function load() {
   loading.value = true
@@ -76,8 +87,8 @@ function toggleVideo() {
   if (!video.value) return
   videoStore.toggleVideo({
     id: props.id,
-    title: video.value.snippet.title,
-    channelTitle: video.value.snippet.channelTitle,
+    title: decodeHtmlEntities(video.value.snippet.title),
+    channelTitle: decodeHtmlEntities(video.value.snippet.channelTitle),
     thumbnail:
       video.value.snippet.thumbnails?.medium?.url ??
       video.value.snippet.thumbnails?.default?.url ??
@@ -94,7 +105,7 @@ function toggleChannel() {
   if (!video.value) return
   channelStore.toggleChannel({
     id: video.value.snippet.channelId,
-    name: video.value.snippet.channelTitle,
+    name: decodeHtmlEntities(video.value.snippet.channelTitle),
   })
 }
 
