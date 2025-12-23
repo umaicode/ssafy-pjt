@@ -187,7 +187,7 @@ watch(() => props.id, load)
   width: 40px;
   height: 40px;
   border: 3px solid #e4e4e7;
-  border-top-color: #9333ea;
+  border-top-color: #7469B6;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-bottom: 16px;
@@ -210,7 +210,7 @@ watch(() => props.id, load)
 .empty-icon {
   width: 80px;
   height: 80px;
-  background: #f3e8ff;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -221,7 +221,7 @@ watch(() => props.id, load)
 .empty-icon svg {
   width: 40px;
   height: 40px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .empty-title {
@@ -238,8 +238,8 @@ watch(() => props.id, load)
   padding: 12px 20px;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #9333ea;
-  background: #f3e8ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 12px;
   text-decoration: none;
   transition: all 0.2s;
@@ -251,7 +251,7 @@ watch(() => props.id, load)
 }
 
 .back-link:hover {
-  background: #9333ea;
+  background: #7469B6;
   color: white;
 }
 
@@ -313,7 +313,7 @@ watch(() => props.id, load)
 .channel-avatar {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -355,13 +355,13 @@ watch(() => props.id, load)
 }
 
 .action-btn:hover {
-  border-color: #9333ea;
-  color: #9333ea;
+  border-color: #7469B6;
+  color: #7469B6;
 }
 
 .action-btn.active {
-  background: #9333ea;
-  border-color: #9333ea;
+  background: #7469B6;
+  border-color: #7469B6;
   color: white;
 }
 
@@ -386,7 +386,7 @@ watch(() => props.id, load)
 .description-title svg {
   width: 20px;
   height: 20px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .description-text {

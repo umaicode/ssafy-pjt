@@ -102,7 +102,7 @@ const channelStore = useChannelStore()
 .header-icon {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -172,7 +172,7 @@ const channelStore = useChannelStore()
 .empty-icon {
   width: 72px;
   height: 72px;
-  background: #f3e8ff;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -183,7 +183,7 @@ const channelStore = useChannelStore()
 .empty-icon svg {
   width: 36px;
   height: 36px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .empty-title {

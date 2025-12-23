@@ -509,7 +509,7 @@ const purposes = [
     label: '여행', 
     emoji: '✈️', 
     desc: '국내외 여행 자금',
-    bgColor: '#f3e8ff'
+    bgColor: 'rgba(116, 105, 182, 0.15)'
   },
 ]
 
@@ -688,12 +688,12 @@ const submit = () => {
 <style scoped>
 .analysis-page {
   min-height: calc(100vh - 200px);
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 /* Page Header */
 .page-header {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   padding: 40px 24px;
 }
 
@@ -774,7 +774,7 @@ const submit = () => {
   height: 32px;
   border-radius: 50%;
   background: white;
-  color: #9333ea;
+  color: #7469B6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -784,7 +784,7 @@ const submit = () => {
 }
 
 .step-item.active .step-number {
-  background: #9333ea;
+  background: #7469B6;
   color: white;
 }
 
@@ -820,7 +820,7 @@ const submit = () => {
 .card-icon {
   width: 48px;
   height: 48px;
-  background: #f3e8ff;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -830,7 +830,7 @@ const submit = () => {
 .card-icon svg {
   width: 24px;
   height: 24px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .card-title {
@@ -864,13 +864,13 @@ const submit = () => {
 }
 
 .purpose-card:hover {
-  border-color: #9333ea;
+  border-color: #7469B6;
   transform: translateY(-2px);
 }
 
 .purpose-card.selected {
-  border-color: #9333ea;
-  background: #faf5ff;
+  border-color: #7469B6;
+  background: rgba(116, 105, 182, 0.05);
 }
 
 .purpose-icon {
@@ -921,12 +921,12 @@ const submit = () => {
 }
 
 .option-card:hover {
-  border-color: #9333ea;
+  border-color: #7469B6;
 }
 
 .option-card.selected {
-  border-color: #9333ea;
-  background: #faf5ff;
+  border-color: #7469B6;
+  background: rgba(116, 105, 182, 0.05);
 }
 
 .option-emoji {
@@ -966,7 +966,7 @@ const submit = () => {
 .form-label svg {
   width: 18px;
   height: 18px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .input-wrapper {
@@ -996,8 +996,8 @@ const submit = () => {
 
 .form-input:focus {
   outline: none;
-  border-color: #9333ea;
-  box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.1);
+  border-color: #7469B6;
+  box-shadow: 0 0 0 4px rgba(116, 105, 182, 0.1);
 }
 
 .input-suffix {
@@ -1033,8 +1033,8 @@ const submit = () => {
 
 .form-select:focus {
   outline: none;
-  border-color: #9333ea;
-  box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.1);
+  border-color: #7469B6;
+  box-shadow: 0 0 0 4px rgba(116, 105, 182, 0.1);
 }
 
 .select-arrow {
@@ -1068,12 +1068,12 @@ const submit = () => {
 }
 
 .period-option:hover {
-  border-color: #9333ea;
+  border-color: #7469B6;
 }
 
 .period-option.selected {
-  border-color: #9333ea;
-  background: #9333ea;
+  border-color: #7469B6;
+  background: #7469B6;
   color: white;
 }
 
@@ -1109,7 +1109,7 @@ const submit = () => {
 .preview-title svg {
   width: 18px;
   height: 18px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .preview-stats {
@@ -1136,7 +1136,7 @@ const submit = () => {
 }
 
 .stat-value.highlight {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .preview-stat.success .stat-value {
@@ -1168,13 +1168,13 @@ const submit = () => {
 }
 
 .country-card:hover {
-  border-color: #9333ea;
+  border-color: #7469B6;
   transform: translateY(-2px);
 }
 
 .country-card.selected {
-  border-color: #9333ea;
-  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+  border-color: #7469B6;
+  background: linear-gradient(135deg, #FFE6E6 0%, rgba(116, 105, 182, 0.1) 100%);
 }
 
 .country-flag {
@@ -1235,7 +1235,7 @@ const submit = () => {
   font-size: 1rem;
   font-weight: 700;
   color: white;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border: none;
   border-radius: 14px;
   cursor: pointer;
@@ -1249,7 +1249,7 @@ const submit = () => {
 
 .next-btn:hover:not(:disabled), .submit-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(147, 51, 234, 0.4);
+  box-shadow: 0 8px 24px rgba(116, 105, 182, 0.4);
 }
 
 .next-btn:disabled, .submit-btn:disabled {
@@ -1280,8 +1280,8 @@ const submit = () => {
 }
 
 .back-btn:hover {
-  border-color: #9333ea;
-  color: #9333ea;
+  border-color: #7469B6;
+  color: #7469B6;
 }
 
 .loading-spinner {
@@ -1331,11 +1331,11 @@ const submit = () => {
 }
 
 .info-icon.purple {
-  background: #f3e8ff;
+  background: rgba(116, 105, 182, 0.1);
 }
 
 .info-icon.purple svg {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .info-icon.amber {

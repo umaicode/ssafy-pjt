@@ -182,8 +182,8 @@ const thumb = computed(() =>
   padding: 10px 16px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #9333ea;
-  background: #f3e8ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 10px;
   text-decoration: none;
   text-align: center;
@@ -198,7 +198,7 @@ const thumb = computed(() =>
 }
 
 .detail-link:hover {
-  background: #9333ea;
+  background: #7469B6;
   color: white;
 }
 

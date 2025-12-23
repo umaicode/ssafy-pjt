@@ -268,7 +268,7 @@ watch(activeTab, (tab) => {
 .header-icon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -336,7 +336,7 @@ watch(activeTab, (tab) => {
 }
 
 .category-tab.active {
-  color: #9333ea;
+  color: #7469B6;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
@@ -361,13 +361,13 @@ watch(activeTab, (tab) => {
 }
 
 .sub-tab:hover {
-  border-color: #9333ea;
-  color: #9333ea;
+  border-color: #7469B6;
+  color: #7469B6;
 }
 
 .sub-tab.active {
-  background: #9333ea;
-  border-color: #9333ea;
+  background: #7469B6;
+  border-color: #7469B6;
   color: white;
 }
 
@@ -434,7 +434,7 @@ watch(activeTab, (tab) => {
 .empty-icon {
   width: 64px;
   height: 64px;
-  background: #f3e8ff;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -445,7 +445,7 @@ watch(activeTab, (tab) => {
 .empty-icon svg {
   width: 32px;
   height: 32px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .empty-title {
@@ -537,7 +537,7 @@ watch(activeTab, (tab) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #9333ea;
+  color: #7469B6;
   transition: transform 0.2s;
 }
 
@@ -589,13 +589,13 @@ watch(activeTab, (tab) => {
 }
 
 .view-btn {
-  background: #f3e8ff;
-  color: #9333ea;
+  background: rgba(116, 105, 182, 0.1);
+  color: #7469B6;
   border: none;
 }
 
 .view-btn:hover {
-  background: #9333ea;
+  background: #7469B6;
   color: white;
 }
 
@@ -632,7 +632,7 @@ watch(activeTab, (tab) => {
 .channel-avatar {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 50%;
   display: flex;
   align-items: center;

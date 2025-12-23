@@ -489,12 +489,12 @@ const formatDate = (dateString) => {
 <style scoped>
 .result-page {
   min-height: calc(100vh - 200px);
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 /* Page Header */
 .page-header {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   padding: 40px 24px;
 }
 
@@ -570,7 +570,7 @@ const formatDate = (dateString) => {
   width: 48px;
   height: 48px;
   border: 3px solid #e4e4e7;
-  border-top-color: #9333ea;
+  border-top-color: #7469B6;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-bottom: 20px;
@@ -645,7 +645,7 @@ const formatDate = (dateString) => {
   font-size: 0.875rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -654,7 +654,7 @@ const formatDate = (dateString) => {
 
 .retry-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(147, 51, 234, 0.35);
+  box-shadow: 0 6px 16px rgba(116, 105, 182, 0.35);
 }
 
 /* Section Title */
@@ -671,7 +671,7 @@ const formatDate = (dateString) => {
 .section-title svg {
   width: 22px;
   height: 22px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 /* Summary Card */
@@ -679,7 +679,7 @@ const formatDate = (dateString) => {
   display: flex;
   gap: 20px;
   padding: 24px;
-  background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.1) 0%, rgba(225, 175, 209, 0.2) 100%);
   border-radius: 20px;
   margin-bottom: 24px;
   margin-top: -40px;
@@ -700,7 +700,7 @@ const formatDate = (dateString) => {
 .summary-icon svg {
   width: 24px;
   height: 24px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .summary-content {
@@ -710,7 +710,7 @@ const formatDate = (dateString) => {
 .summary-title {
   font-size: 1rem;
   font-weight: 700;
-  color: #7c3aed;
+  color: #7469B6;
   margin: 0 0 8px;
 }
 
@@ -799,18 +799,18 @@ const formatDate = (dateString) => {
 
 /* 대안 전략 카드 스타일 */
 .combination-card.alternatives-as-strategies {
-  background: linear-gradient(135deg, #fefbff 0%, #fdf4ff 100%);
-  border: 2px solid #f3e8ff;
+  background: linear-gradient(135deg, #FDFBFD 0%, #FFF5F8 100%);
+  border: 2px solid rgba(116, 105, 182, 0.1);
 }
 
 .alternatives-notice {
   font-size: 0.875rem;
-  color: #9333ea;
-  background: #faf5ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.05);
   padding: 12px 16px;
   border-radius: 10px;
   margin-bottom: 20px;
-  border-left: 4px solid #9333ea;
+  border-left: 4px solid #7469B6;
 }
 
 /* 상품 기간 표시 */
@@ -829,7 +829,7 @@ const formatDate = (dateString) => {
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.05) 0%, rgba(225, 175, 209, 0.1) 100%);
   border-radius: 16px;
   margin-bottom: 20px;
   flex-wrap: wrap;
@@ -907,7 +907,7 @@ const formatDate = (dateString) => {
 .rp-rate-value {
   font-size: 1.125rem;
   font-weight: 800;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .rp-rate-label {
@@ -918,7 +918,7 @@ const formatDate = (dateString) => {
 .rp-plus {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #9333ea;
+  color: #7469B6;
   flex-shrink: 0;
 }
 
@@ -936,8 +936,8 @@ const formatDate = (dateString) => {
 }
 
 .combination-item.best {
-  border-color: #9333ea;
-  background: #faf5ff;
+  border-color: #7469B6;
+  background: rgba(116, 105, 182, 0.05);
 }
 
 .combination-header {
@@ -955,7 +955,7 @@ const formatDate = (dateString) => {
 
 .best-badge {
   padding: 4px 10px;
-  background: #9333ea;
+  background: #7469B6;
   color: white;
   font-size: 0.75rem;
   font-weight: 600;
@@ -1048,7 +1048,7 @@ const formatDate = (dateString) => {
 .sp-rate {
   font-size: 1rem;
   font-weight: 800;
-  color: #9333ea;
+  color: #7469B6;
   flex-shrink: 0;
 }
 
@@ -1080,7 +1080,7 @@ const formatDate = (dateString) => {
 }
 
 .combo-value.highlight {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .combo-value.achievable {
@@ -1168,8 +1168,8 @@ const formatDate = (dateString) => {
 .alt-type.reduce_target::before { content: '🎯'; }
 
 .alt-type.combined { 
-  color: #8b5cf6;
-  background: #f5f3ff;
+  color: #AD88C6;
+  background: rgba(116, 105, 182, 0.08);
 }
 .alt-type.combined::before { content: '🔄'; }
 
@@ -1299,7 +1299,7 @@ const formatDate = (dateString) => {
 .alt-product-rate .rate-value {
   font-size: 1rem;
   font-weight: 700;
-  color: #8b5cf6;
+  color: #7469B6;
 }
 
 /* Products Section */
@@ -1462,7 +1462,7 @@ const formatDate = (dateString) => {
 
 /* Destinations Card */
 .destinations-card {
-  background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.15) 0%, rgba(225, 175, 209, 0.2) 100%);
   border-radius: 20px;
   padding: 24px;
   margin-bottom: 24px;
@@ -1470,7 +1470,7 @@ const formatDate = (dateString) => {
 
 .destinations-subtitle {
   font-size: 0.875rem;
-  color: #7c3aed;
+  color: #7469B6;
   margin: -8px 0 16px;
 }
 
@@ -1489,8 +1489,8 @@ const formatDate = (dateString) => {
   border-radius: 20px;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #7c3aed;
-  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.15);
+  color: #7469B6;
+  box-shadow: 0 2px 8px rgba(116, 105, 182, 0.15);
 }
 
 .destination-icon {
@@ -1559,7 +1559,7 @@ const formatDate = (dateString) => {
 }
 
 .news-item:hover {
-  background: #f3e8ff;
+  background: rgba(116, 105, 182, 0.1);
 }
 
 .news-title {
@@ -1654,7 +1654,7 @@ const formatDate = (dateString) => {
   padding: 14px 28px;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #9333ea;
+  color: #7469B6;
   background: white;
   border: 2px solid #e4e4e7;
   border-radius: 14px;
@@ -1668,8 +1668,8 @@ const formatDate = (dateString) => {
 }
 
 .back-btn:hover {
-  border-color: #9333ea;
-  background: #faf5ff;
+  border-color: #7469B6;
+  background: rgba(116, 105, 182, 0.05);
 }
 
 /* Responsive */

@@ -99,7 +99,7 @@ const onSubmit = () => {
 .create-page {
   min-height: calc(100vh - 72px);
   padding: 48px 24px;
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 .container {
@@ -121,7 +121,7 @@ const onSubmit = () => {
 }
 
 .back-link:hover {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .back-link svg {
@@ -155,7 +155,7 @@ const onSubmit = () => {
 .card-title svg {
   width: 28px;
   height: 28px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .card-description {
@@ -195,9 +195,9 @@ const onSubmit = () => {
 
 .form-input:focus,
 .form-textarea:focus {
-  border-color: #9333ea;
+  border-color: #7469B6;
   background: white;
-  box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.1);
+  box-shadow: 0 0 0 4px rgba(116, 105, 182, 0.1);
 }
 
 .form-input::placeholder,
@@ -236,14 +236,14 @@ const onSubmit = () => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
   border: none;
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(147, 51, 234, 0.3);
+  box-shadow: 0 8px 20px rgba(116, 105, 182, 0.3);
 }
 
 .btn-primary:disabled {
@@ -258,8 +258,8 @@ const onSubmit = () => {
 }
 
 .btn-secondary:hover {
-  border-color: #9333ea;
-  color: #9333ea;
+  border-color: #7469B6;
+  color: #7469B6;
 }
 
 /* Responsive */

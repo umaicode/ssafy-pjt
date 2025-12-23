@@ -81,7 +81,7 @@ const onDeleteAccount = async () => {
 .profile-page {
   min-height: calc(100vh - 72px);
   padding: 48px 24px;
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 .container {
@@ -104,7 +104,7 @@ const onDeleteAccount = async () => {
 .profile-avatar {
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #E1AFD1 0%, #AD88C6 50%, #7469B6 100%);
   border-radius: 24px;
   display: flex;
   align-items: center;
@@ -193,13 +193,13 @@ const onDeleteAccount = async () => {
 }
 
 .menu-link:hover {
-  color: #9333ea;
-  background: #faf5ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.06);
 }
 
 .menu-link.router-link-active {
-  color: #9333ea;
-  background: #f3e8ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
   font-weight: 600;
 }
 

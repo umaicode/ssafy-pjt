@@ -55,7 +55,7 @@ const submit = () => {
 .avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+  background: linear-gradient(135deg, #E1AFD1 0%, #AD88C6 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -66,7 +66,7 @@ const submit = () => {
 .avatar svg {
   width: 20px;
   height: 20px;
-  color: #7c3aed;
+  color: #7469B6;
 }
 
 .input-wrapper {
@@ -86,9 +86,9 @@ const submit = () => {
 
 .comment-input:focus {
   outline: none;
-  border-color: #9333ea;
+  border-color: #7469B6;
   background: white;
-  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(116, 105, 182, 0.1);
 }
 
 .comment-input::placeholder {
@@ -101,7 +101,7 @@ const submit = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border: none;
   border-radius: 12px;
   cursor: pointer;
@@ -117,7 +117,7 @@ const submit = () => {
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.4);
 }
 
 .btn-submit:disabled {

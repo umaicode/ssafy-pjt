@@ -47,7 +47,7 @@ watch(
 <style scoped>
 .news-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 .news-container {

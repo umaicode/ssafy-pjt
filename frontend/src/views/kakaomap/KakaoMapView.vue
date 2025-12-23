@@ -176,12 +176,12 @@ onMounted(() => {
 <style scoped>
 .kakao-map-page {
   min-height: 100vh;
-  background: #f4f4f5;
+  background: #FDFBFD;
 }
 
 /* Header */
 .page-header {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   padding: 32px 24px;
 }
 
@@ -266,7 +266,7 @@ onMounted(() => {
 .input-label svg {
   width: 16px;
   height: 16px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .input-field {
@@ -282,9 +282,9 @@ onMounted(() => {
 
 .input-field:focus {
   outline: none;
-  border-color: #9333ea;
+  border-color: #7469B6;
   background: white;
-  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(116, 105, 182, 0.1);
 }
 
 .origin-row {
@@ -329,9 +329,9 @@ onMounted(() => {
   padding: 10px;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #9333ea;
-  background: #faf5ff;
-  border: 1px solid #e9d5ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.08);
+  border: 1px solid rgba(116, 105, 182, 0.2);
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s;
@@ -343,8 +343,8 @@ onMounted(() => {
 }
 
 .btn-current-location:hover {
-  background: #f3e8ff;
-  border-color: #d8b4fe;
+  background: rgba(116, 105, 182, 0.12);
+  border-color: rgba(116, 105, 182, 0.3);
 }
 
 .origin-badge {
@@ -389,9 +389,9 @@ onMounted(() => {
 
 .select-field:focus {
   outline: none;
-  border-color: #9333ea;
+  border-color: #7469B6;
   background: white;
-  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+  box-shadow: 0 0 0 3px rgba(116, 105, 182, 0.1);
 }
 
 .select-arrow {
@@ -415,7 +415,7 @@ onMounted(() => {
   font-size: 0.9375rem;
   font-weight: 700;
   color: white;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border: none;
   border-radius: 14px;
   cursor: pointer;
@@ -430,7 +430,7 @@ onMounted(() => {
 
 .btn-search:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(147, 51, 234, 0.4);
+  box-shadow: 0 8px 20px rgba(116, 105, 182, 0.4);
 }
 
 /* Info Card */

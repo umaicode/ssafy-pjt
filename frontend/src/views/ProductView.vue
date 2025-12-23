@@ -254,7 +254,7 @@ const resetFilter = () => {
 .products-page {
   min-height: calc(100vh - 72px);
   padding: 48px 24px;
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 .container {
@@ -314,13 +314,13 @@ const resetFilter = () => {
 }
 
 .tab:hover {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .tab.active {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
 }
 
 .tab-icon {
@@ -365,7 +365,7 @@ const resetFilter = () => {
 .filter-icon {
   width: 14px;
   height: 14px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .filter-select,
@@ -382,9 +382,9 @@ const resetFilter = () => {
 
 .filter-select:focus,
 .filter-input:focus {
-  border-color: #9333ea;
+  border-color: #7469B6;
   background: white;
-  box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.1);
+  box-shadow: 0 0 0 4px rgba(116, 105, 182, 0.1);
 }
 
 .search-input-wrapper {
@@ -446,8 +446,8 @@ const resetFilter = () => {
   padding: 6px 12px;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #9333ea;
-  background: #f3e8ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 20px;
 }
 
@@ -457,7 +457,7 @@ const resetFilter = () => {
   padding: 0;
   background: transparent;
   border: none;
-  color: #9333ea;
+  color: #7469B6;
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
@@ -480,7 +480,7 @@ const resetFilter = () => {
 }
 
 .results-count strong {
-  color: #9333ea;
+  color: #7469B6;
   font-weight: 700;
 }
 

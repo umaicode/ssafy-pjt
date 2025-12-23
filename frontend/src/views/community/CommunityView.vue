@@ -163,7 +163,7 @@ const formatDate = (iso) => {
 .community-page {
   min-height: calc(100vh - 72px);
   padding: 48px 24px;
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 .container {
@@ -208,7 +208,7 @@ const formatDate = (iso) => {
   font-size: 0.9375rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 14px;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -216,7 +216,7 @@ const formatDate = (iso) => {
 
 .create-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(147, 51, 234, 0.3);
+  box-shadow: 0 8px 20px rgba(116, 105, 182, 0.3);
 }
 
 .create-btn svg {
@@ -271,7 +271,7 @@ const formatDate = (iso) => {
 }
 
 .board-row.notice {
-  background: #faf5ff;
+  background: rgba(116, 105, 182, 0.04);
 }
 
 .col-title {
@@ -292,7 +292,7 @@ const formatDate = (iso) => {
 }
 
 .article-link:hover .article-title {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .comment-count {
@@ -301,8 +301,8 @@ const formatDate = (iso) => {
   gap: 3px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #9333ea;
-  background: #f3e8ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
   padding: 3px 8px;
   border-radius: 12px;
 }
@@ -400,12 +400,12 @@ const formatDate = (iso) => {
 
 .page-btn:hover:not(:disabled),
 .page-num:hover {
-  border-color: #9333ea;
-  color: #9333ea;
+  border-color: #7469B6;
+  color: #7469B6;
 }
 
 .page-num.active {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-color: transparent;
   color: white;
 }

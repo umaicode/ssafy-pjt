@@ -188,7 +188,7 @@ const uniqueTerms = computed(() => {
 
 .product-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(147, 51, 234, 0.15);
+  box-shadow: 0 12px 40px rgba(116, 105, 182, 0.15);
 }
 
 .product-card-header {
@@ -203,8 +203,8 @@ const uniqueTerms = computed(() => {
   padding: 6px 12px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #9333ea;
-  background: #f3e8ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 20px;
 }
 
@@ -217,7 +217,7 @@ const uniqueTerms = computed(() => {
 .bank-logo {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -268,7 +268,7 @@ const uniqueTerms = computed(() => {
 }
 
 .rate-item.rate-max {
-  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+  background: linear-gradient(135deg, #FFE6E6 0%, rgba(116, 105, 182, 0.1) 100%);
 }
 
 .rate-label {
@@ -286,7 +286,7 @@ const uniqueTerms = computed(() => {
 }
 
 .rate-max .rate-value {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .product-terms {
@@ -319,7 +319,7 @@ const uniqueTerms = computed(() => {
   gap: 8px;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #9333ea;
+  color: #7469B6;
   text-decoration: none;
   transition: gap 0.2s ease;
 }

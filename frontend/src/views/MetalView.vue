@@ -62,12 +62,12 @@ onMounted(() => {
 <style scoped>
 .metal-page {
   min-height: calc(100vh - 200px);
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 /* Page Header */
 .page-header {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  background: linear-gradient(135deg, #E1AFD1 0%, #AD88C6 50%, #7469B6 100%);
   padding: 40px 24px;
 }
 
@@ -136,7 +136,7 @@ onMounted(() => {
   width: 40px;
   height: 40px;
   border: 3px solid #e4e4e7;
-  border-top-color: #f59e0b;
+  border-top-color: #7469B6;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   margin-bottom: 16px;

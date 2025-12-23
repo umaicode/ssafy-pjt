@@ -184,7 +184,7 @@ const signUp = function () {
 /* Branding Section */
 .auth-branding {
   position: relative;
-  background: linear-gradient(135deg, #1a1625 0%, #2d1f47 50%, #1a1625 100%);
+  background: linear-gradient(135deg, #1d1d1f 0%, #2D2660 50%, #1d1d1f 100%);
   padding: 60px 48px;
   display: flex;
   flex-direction: column;
@@ -200,7 +200,7 @@ const signUp = function () {
 .branding-logo {
   font-size: 2rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #c084fc 0%, #ec4899 100%);
+  background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 35%, #AD88C6 70%, #7469B6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -216,7 +216,7 @@ const signUp = function () {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #c084fc 0%, #ec4899 100%);
+  background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 35%, #AD88C6 70%, #7469B6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -247,12 +247,12 @@ const signUp = function () {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(147, 51, 234, 0.3);
+  background: rgba(116, 105, 182, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.75rem;
-  color: #c084fc;
+  color: #E1AFD1;
 }
 
 .branding-decoration {
@@ -271,7 +271,7 @@ const signUp = function () {
   right: -100px;
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(147, 51, 234, 0.4) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(116, 105, 182, 0.4) 0%, transparent 70%);
 }
 
 .orb-2 {
@@ -279,7 +279,7 @@ const signUp = function () {
   left: -50px;
   width: 200px;
   height: 200px;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(225, 175, 209, 0.3) 0%, transparent 70%);
 }
 
 /* Form Section */
@@ -361,9 +361,9 @@ const signUp = function () {
 }
 
 .input:focus {
-  border-color: #9333ea;
+  border-color: #7469B6;
   background: white;
-  box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.1);
+  box-shadow: 0 0 0 4px rgba(116, 105, 182, 0.1);
 }
 
 .input::placeholder {
@@ -406,7 +406,7 @@ const signUp = function () {
   gap: 6px;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #9333ea;
+  color: #7469B6;
   text-decoration: none;
   transition: gap 0.2s ease;
 }

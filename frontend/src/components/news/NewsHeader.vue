@@ -87,7 +87,7 @@ const goBookmark = function () {
 
 <style scoped>
 .news-header {
-  background: linear-gradient(135deg, #1a1625 0%, #2d1f47 100%);
+  background: linear-gradient(135deg, #1d1d1f 0%, #2D2660 100%);
   padding: 20px 24px;
 }
 
@@ -113,7 +113,7 @@ const goBookmark = function () {
 .title-icon {
   width: 24px;
   height: 24px;
-  color: #c084fc;
+  color: #E1AFD1;
 }
 
 .header-controls {
@@ -136,7 +136,7 @@ const goBookmark = function () {
 
 .search-box:focus-within {
   background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(147, 51, 234, 0.5);
+  border-color: rgba(116, 105, 182, 0.5);
 }
 
 .search-icon {
@@ -164,7 +164,7 @@ const goBookmark = function () {
   padding: 10px 20px;
   font-size: 0.875rem;
   font-weight: 600;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -207,7 +207,7 @@ const goBookmark = function () {
 }
 
 .filter-tab.active {
-  color: #9333ea;
+  color: #7469B6;
   background: white;
 }
 

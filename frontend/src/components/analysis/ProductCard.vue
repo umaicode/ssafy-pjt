@@ -348,8 +348,8 @@ const scoreClass = computed(() => {
 }
 
 .product-card.selected {
-  border-color: #9333ea;
-  background: linear-gradient(to bottom, #faf5ff, white);
+  border-color: #7469B6;
+  background: linear-gradient(to bottom, rgba(116, 105, 182, 0.05), white);
 }
 
 /* Header */
@@ -363,7 +363,7 @@ const scoreClass = computed(() => {
 .bank-badge {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -447,7 +447,7 @@ const scoreClass = computed(() => {
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.08) 0%, rgba(225, 175, 209, 0.12) 100%);
   border-radius: 12px;
   margin-bottom: 12px;
 }
@@ -460,14 +460,14 @@ const scoreClass = computed(() => {
 .rate-number {
   font-size: 2rem;
   font-weight: 800;
-  color: #9333ea;
+  color: #7469B6;
   line-height: 1;
 }
 
 .rate-unit {
   font-size: 1rem;
   font-weight: 700;
-  color: #9333ea;
+  color: #7469B6;
   margin-left: 2px;
 }
 
@@ -479,7 +479,7 @@ const scoreClass = computed(() => {
 
 .rate-type {
   font-size: 0.75rem;
-  color: #7c3aed;
+  color: #7469B6;
   font-weight: 600;
 }
 
@@ -703,13 +703,13 @@ const scoreClass = computed(() => {
 
 .action-btn.select {
   flex: 1;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
 }
 
 .action-btn.select:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
 }
 
 .action-btn.select.active {

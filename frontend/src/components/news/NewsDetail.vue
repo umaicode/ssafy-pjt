@@ -161,8 +161,8 @@ const toggle = function () {
 }
 
 .bookmark-badge.active {
-  color: #9333ea;
-  background: #f3e8ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
 }
 
 .pub-date {
@@ -226,14 +226,14 @@ const toggle = function () {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
   border: none;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
 }
 
 .btn-secondary {
@@ -243,8 +243,8 @@ const toggle = function () {
 }
 
 .btn-secondary:hover {
-  border-color: #9333ea;
-  color: #9333ea;
+  border-color: #7469B6;
+  color: #7469B6;
 }
 
 @media (max-width: 768px) {

@@ -93,8 +93,8 @@ const toggleBookmark = (id) => {
 .list-count {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #9333ea;
-  background: #f3e8ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
   padding: 4px 10px;
   border-radius: 20px;
 }
@@ -148,7 +148,7 @@ const toggleBookmark = (id) => {
 }
 
 .news-item.selected {
-  background: #f3e8ff;
+  background: rgba(116, 105, 182, 0.1);
 }
 
 .bookmark-btn {
@@ -172,11 +172,11 @@ const toggleBookmark = (id) => {
 }
 
 .bookmark-btn:hover svg {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .bookmark-btn.active svg {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .news-title {
@@ -204,6 +204,6 @@ const toggleBookmark = (id) => {
 }
 
 .news-item.selected .chevron {
-  color: #9333ea;
+  color: #7469B6;
 }
 </style>

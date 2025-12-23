@@ -131,7 +131,7 @@ const videoStore = useVideoStore()
 .header-icon {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -236,7 +236,7 @@ const videoStore = useVideoStore()
   font-size: 0.875rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 12px;
   text-decoration: none;
   transition: all 0.2s;
@@ -249,7 +249,7 @@ const videoStore = useVideoStore()
 
 .search-link:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35);
+  box-shadow: 0 6px 16px rgba(116, 105, 182, 0.35);
 }
 
 /* Video Grid */
@@ -394,13 +394,13 @@ const videoStore = useVideoStore()
 }
 
 .view-btn {
-  color: #9333ea;
-  background: #f3e8ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
   border: none;
 }
 
 .view-btn:hover {
-  background: #9333ea;
+  background: #7469B6;
   color: white;
 }
 

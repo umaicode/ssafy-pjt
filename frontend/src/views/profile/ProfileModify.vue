@@ -203,7 +203,7 @@ const onChangePassword = () => {
 .header-icon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -348,8 +348,8 @@ const onChangePassword = () => {
 
 .input:focus {
   outline: none;
-  border-color: #9333ea;
-  box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.1);
+  border-color: #7469B6;
+  box-shadow: 0 0 0 4px rgba(116, 105, 182, 0.1);
 }
 
 /* Button */
@@ -362,7 +362,7 @@ const onChangePassword = () => {
   font-size: 0.9375rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border: none;
   border-radius: 14px;
   cursor: pointer;
@@ -377,7 +377,7 @@ const onChangePassword = () => {
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(147, 51, 234, 0.35);
+  box-shadow: 0 8px 20px rgba(116, 105, 182, 0.35);
 }
 
 .btn-primary:disabled {

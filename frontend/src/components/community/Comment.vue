@@ -176,7 +176,7 @@ const onToggleCommentLike = (commentId) => {
 .header-icon {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -197,7 +197,7 @@ const onToggleCommentLike = (commentId) => {
 }
 
 .comments-header .count {
-  color: #9333ea;
+  color: #7469B6;
   margin-left: 4px;
 }
 
@@ -235,14 +235,14 @@ const onToggleCommentLike = (commentId) => {
 .comment-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%);
+  background: linear-gradient(135deg, #E1AFD1 0%, #AD88C6 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.875rem;
   font-weight: 700;
-  color: #7c3aed;
+  color: #7469B6;
   flex-shrink: 0;
 }
 
@@ -377,8 +377,8 @@ const onToggleCommentLike = (commentId) => {
 
 .edit-input:focus {
   outline: none;
-  border-color: #9333ea;
-  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+  border-color: #7469B6;
+  box-shadow: 0 0 0 3px rgba(116, 105, 182, 0.1);
 }
 
 .edit-actions {
@@ -407,12 +407,12 @@ const onToggleCommentLike = (commentId) => {
 
 .btn-save {
   color: white;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border: none;
 }
 
 .btn-save:hover {
-  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.4);
 }
 
 .btn-save:disabled {

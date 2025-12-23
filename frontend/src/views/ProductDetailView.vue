@@ -308,7 +308,7 @@ onMounted(() => {
 .product-detail-page {
   min-height: calc(100vh - 72px);
   padding: 48px 24px;
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 .container {
@@ -330,7 +330,7 @@ onMounted(() => {
 }
 
 .back-link:hover {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .back-link svg {
@@ -357,8 +357,8 @@ onMounted(() => {
   padding: 6px 14px;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #9333ea;
-  background: #f3e8ff;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 20px;
 }
 
@@ -442,17 +442,17 @@ onMounted(() => {
 
 .like-btn {
   background: white;
-  color: #9333ea;
-  border: 2px solid #e9d5ff;
+  color: #7469B6;
+  border: 2px solid #E1AFD1;
 }
 
 .like-btn:hover {
-  background: #faf5ff;
-  border-color: #9333ea;
+  background: rgba(116, 105, 182, 0.05);
+  border-color: #7469B6;
 }
 
 .like-btn.liked {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
   border-color: transparent;
 }
@@ -470,8 +470,8 @@ onMounted(() => {
 }
 
 .like-btn:not(.liked) .like-count {
-  background: #f3e8ff;
-  color: #9333ea;
+  background: rgba(116, 105, 182, 0.1);
+  color: #7469B6;
 }
 
 .map-btn {
@@ -513,7 +513,7 @@ onMounted(() => {
 .card-title svg {
   width: 24px;
   height: 24px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .options-table-wrapper {
@@ -570,7 +570,7 @@ onMounted(() => {
 }
 
 .rate-max {
-  color: #9333ea;
+  color: #7469B6;
   font-size: 1rem;
 }
 
@@ -613,8 +613,8 @@ onMounted(() => {
   width: 48px;
   height: 48px;
   margin: 0 auto 16px;
-  border: 4px solid #f3e8ff;
-  border-top-color: #9333ea;
+  border: 4px solid rgba(116, 105, 182, 0.1);
+  border-top-color: #7469B6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

@@ -253,7 +253,7 @@ const onToggleCommentLike = (commentId) => {
 .detail-page {
   min-height: calc(100vh - 72px);
   padding: 48px 24px;
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 .container {
@@ -275,7 +275,7 @@ const onToggleCommentLike = (commentId) => {
 }
 
 .back-link:hover {
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .back-link svg {
@@ -310,7 +310,7 @@ const onToggleCommentLike = (commentId) => {
 .card-title svg {
   width: 24px;
   height: 24px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .header-top {
@@ -331,7 +331,7 @@ const onToggleCommentLike = (commentId) => {
 .avatar {
   width: 44px;
   height: 44px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -387,8 +387,8 @@ const onToggleCommentLike = (commentId) => {
 }
 
 .edit-btn:hover {
-  border-color: #9333ea;
-  color: #9333ea;
+  border-color: #7469B6;
+  color: #7469B6;
 }
 
 .delete-btn {
@@ -448,12 +448,12 @@ const onToggleCommentLike = (commentId) => {
 }
 
 .like-btn:hover {
-  border-color: #9333ea;
-  color: #9333ea;
+  border-color: #7469B6;
+  color: #7469B6;
 }
 
 .like-btn.liked {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-color: transparent;
   color: white;
 }
@@ -500,9 +500,9 @@ const onToggleCommentLike = (commentId) => {
 
 .form-input:focus,
 .form-textarea:focus {
-  border-color: #9333ea;
+  border-color: #7469B6;
   background: white;
-  box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.1);
+  box-shadow: 0 0 0 4px rgba(116, 105, 182, 0.1);
 }
 
 .form-textarea {
@@ -534,14 +534,14 @@ const onToggleCommentLike = (commentId) => {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
   border: none;
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
 }
 
 .btn-primary:disabled {
@@ -556,8 +556,8 @@ const onToggleCommentLike = (commentId) => {
 }
 
 .btn-secondary:hover {
-  border-color: #9333ea;
-  color: #9333ea;
+  border-color: #7469B6;
+  color: #7469B6;
 }
 
 /* Loading State */
@@ -570,8 +570,8 @@ const onToggleCommentLike = (commentId) => {
   width: 48px;
   height: 48px;
   margin: 0 auto 16px;
-  border: 4px solid #f3e8ff;
-  border-top-color: #9333ea;
+  border: 4px solid rgba(116, 105, 182, 0.1);
+  border-top-color: #7469B6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

@@ -271,11 +271,11 @@ const chartData = computed(() => {
       {
         label: '이자 포함 총액',
         data: totalData,
-        borderColor: '#9333ea',
-        backgroundColor: 'rgba(147, 51, 234, 0.1)',
+        borderColor: '#7469B6',
+        backgroundColor: 'rgba(116, 105, 182, 0.1)',
         fill: true,
         tension: 0.4,
-        pointBackgroundColor: '#9333ea',
+        pointBackgroundColor: '#7469B6',
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
         pointRadius: 4,
@@ -284,11 +284,11 @@ const chartData = computed(() => {
       {
         label: '납입 원금',
         data: principalData,
-        borderColor: '#c4b5fd',
-        backgroundColor: 'rgba(196, 181, 253, 0.2)',
+        borderColor: '#E1AFD1',
+        backgroundColor: 'rgba(225, 175, 209, 0.2)',
         fill: true,
         tension: 0.4,
-        pointBackgroundColor: '#c4b5fd',
+        pointBackgroundColor: '#E1AFD1',
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
         pointRadius: 4,
@@ -396,7 +396,7 @@ const formatCurrency = (value) => {
 .header-icon {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border-radius: 14px;
   display: flex;
   align-items: center;
@@ -445,7 +445,7 @@ const formatCurrency = (value) => {
 .placeholder-icon {
   width: 80px;
   height: 80px;
-  background: #f3e8ff;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -456,7 +456,7 @@ const formatCurrency = (value) => {
 .placeholder-icon svg {
   width: 40px;
   height: 40px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .placeholder-title {
@@ -478,7 +478,7 @@ const formatCurrency = (value) => {
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
   border: none;
   border-radius: 12px;
@@ -495,7 +495,7 @@ const formatCurrency = (value) => {
 
 .go-analysis-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
 }
 
 /* Products Container */
@@ -524,12 +524,12 @@ const formatCurrency = (value) => {
 }
 
 .product-mini-card:hover {
-  border-color: #c4b5fd;
+  border-color: #E1AFD1;
 }
 
 .product-mini-card.active {
-  border-color: #9333ea;
-  background: #faf5ff;
+  border-color: #7469B6;
+  background: rgba(116, 105, 182, 0.05);
 }
 
 .mini-card-header {
@@ -611,7 +611,7 @@ const formatCurrency = (value) => {
 .rate-value {
   font-size: 1rem;
   font-weight: 800;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 /* Simulation Section */
@@ -649,7 +649,7 @@ const formatCurrency = (value) => {
 
 .sim-rate-badge {
   padding: 8px 16px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
   font-size: 1rem;
   font-weight: 700;
@@ -688,7 +688,7 @@ const formatCurrency = (value) => {
 
 .input-wrapper input:focus {
   outline: none;
-  border-color: #9333ea;
+  border-color: #7469B6;
 }
 
 .input-suffix {
@@ -702,7 +702,7 @@ const formatCurrency = (value) => {
   display: flex;
   gap: 16px;
   padding: 20px;
-  background: #faf5ff;
+  background: rgba(116, 105, 182, 0.05);
   border-radius: 16px;
   margin-bottom: 24px;
 }
@@ -732,7 +732,7 @@ const formatCurrency = (value) => {
 
 .summary-item.total .summary-value {
   font-size: 1.25rem;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 /* Chart Container */

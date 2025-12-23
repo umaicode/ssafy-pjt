@@ -148,13 +148,13 @@ onMounted(() => {
 <style scoped>
 .youtube-search {
   min-height: calc(100vh - 200px);
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
   padding-bottom: 60px;
 }
 
 /* Page Header */
 .page-header {
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   padding: 40px 24px 32px;
 }
 
@@ -185,7 +185,7 @@ onMounted(() => {
 .youtube-icon svg {
   width: 32px;
   height: 32px;
-  color: #dc2626;
+  color: #7469B6;
 }
 
 .page-title {
@@ -233,7 +233,7 @@ onMounted(() => {
 
 .nav-tab.router-link-active {
   background: white;
-  color: #dc2626;
+  color: #7469B6;
 }
 
 /* Search Section */
@@ -263,7 +263,7 @@ onMounted(() => {
 .search-title svg {
   width: 20px;
   height: 20px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .search-form {
@@ -303,9 +303,9 @@ onMounted(() => {
 
 .search-input:focus {
   outline: none;
-  border-color: #dc2626;
+  border-color: #7469B6;
   background: white;
-  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.1);
+  box-shadow: 0 0 0 4px rgba(116, 105, 182, 0.1);
 }
 
 .search-btn {
@@ -316,7 +316,7 @@ onMounted(() => {
   font-size: 0.9375rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border: none;
   border-radius: 14px;
   cursor: pointer;
@@ -325,7 +325,7 @@ onMounted(() => {
 
 .search-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.35);
+  box-shadow: 0 6px 16px rgba(116, 105, 182, 0.35);
 }
 
 .search-btn:disabled {
@@ -418,7 +418,7 @@ onMounted(() => {
 .empty-icon {
   width: 80px;
   height: 80px;
-  background: #f3e8ff;
+  background: rgba(116, 105, 182, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -429,7 +429,7 @@ onMounted(() => {
 .empty-icon svg {
   width: 40px;
   height: 40px;
-  color: #9333ea;
+  color: #7469B6;
 }
 
 .empty-title {

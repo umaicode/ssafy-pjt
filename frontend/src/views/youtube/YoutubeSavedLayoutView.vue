@@ -92,12 +92,12 @@ const onSearch = () => {
 <style scoped>
 .saved-layout {
   min-height: calc(100vh - 200px);
-  background: linear-gradient(180deg, #faf5ff 0%, #f5f3ff 50%, #fafafa 100%);
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
 /* Page Header */
 .page-header {
-  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   padding: 40px 24px 32px;
 }
 
