@@ -67,4 +67,26 @@ defineProps({
   color: #71717a;
   line-height: 1.5;
 }
+
+/* Dark Mode */
+[data-theme="dark"] .empty-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .empty-icon {
+  background: #422006;
+}
+
+[data-theme="dark"] .empty-icon svg {
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .empty-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .empty-text {
+  color: #a1a1aa;
+}
 </style>

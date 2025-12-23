@@ -69,4 +69,9 @@ watch(
     height: auto;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .news-page {
+  background: linear-gradient(180deg, #0a0a0a 0%, #18181b 50%, #0f0f0f 100%);
+}
 </style>

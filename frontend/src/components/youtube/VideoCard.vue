@@ -205,4 +205,36 @@ const thumb = computed(() =>
 .detail-link:hover svg {
   transform: translateX(3px);
 }
+
+/* Dark Mode */
+[data-theme="dark"] .video-card {
+  background: #18181b;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .video-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .thumb {
+  background: #27272a;
+}
+
+[data-theme="dark"] .title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .channel {
+  color: #71717a;
+}
+
+[data-theme="dark"] .detail-link {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .detail-link:hover {
+  background: #7469B6;
+  color: white;
+}
 </style>

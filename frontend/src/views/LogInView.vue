@@ -406,4 +406,68 @@ const logIn = () => {
     padding: 40px 24px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Dark Mode Styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="dark"] .auth-page {
+  background: #0a0a0a;
+}
+
+[data-theme="dark"] .auth-container {
+  background: #18181b;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .auth-form-section {
+  background: #18181b;
+}
+
+[data-theme="dark"] .auth-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .auth-subtitle {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .input-label {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .input {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .input:focus {
+  background: #27272a;
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .input::placeholder {
+  color: #71717a;
+}
+
+[data-theme="dark"] .input-icon {
+  color: #71717a;
+}
+
+[data-theme="dark"] .auth-divider::before,
+[data-theme="dark"] .auth-divider::after {
+  background: #3f3f46;
+}
+
+[data-theme="dark"] .auth-divider span {
+  color: #71717a;
+}
+
+[data-theme="dark"] .auth-footer p {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .auth-link {
+  color: #E1AFD1;
+}
 </style>

@@ -470,4 +470,57 @@ onMounted(() => {
     grid-template-columns: 1fr;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .youtube-search {
+  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 50%, #0a0a0a 100%);
+}
+
+[data-theme="dark"] .search-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .search-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .search-input {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .search-input::placeholder {
+  color: #71717a;
+}
+
+[data-theme="dark"] .search-input:focus {
+  background: #18181b;
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .error-message {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+[data-theme="dark"] .results-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .results-count {
+  color: #71717a;
+}
+
+[data-theme="dark"] .empty-icon {
+  background: rgba(116, 105, 182, 0.2);
+}
+
+[data-theme="dark"] .empty-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .empty-text {
+  color: #71717a;
+}
 </style>

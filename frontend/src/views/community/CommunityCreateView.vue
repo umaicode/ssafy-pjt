@@ -286,4 +286,67 @@ const onSubmit = () => {
     width: 100%;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .create-page {
+  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 50%, #0a0a0a 100%);
+}
+
+[data-theme="dark"] .back-link {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .back-link:hover {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .create-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .card-header {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .card-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .card-description {
+  color: #71717a;
+}
+
+[data-theme="dark"] .form-label {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-textarea {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .form-input:focus,
+[data-theme="dark"] .form-textarea:focus {
+  background: #18181b;
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .form-input::placeholder,
+[data-theme="dark"] .form-textarea::placeholder {
+  color: #71717a;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  border-color: #7469B6;
+  color: #E1AFD1;
+}
 </style>

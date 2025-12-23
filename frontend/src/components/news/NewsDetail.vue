@@ -264,4 +264,63 @@ const toggle = function () {
     justify-content: center;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .news-detail-section {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .empty-icon {
+  background: #27272a;
+}
+
+[data-theme="dark"] .empty-icon svg {
+  color: #71717a;
+}
+
+[data-theme="dark"] .empty-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .empty-desc {
+  color: #71717a;
+}
+
+[data-theme="dark"] .bookmark-badge {
+  background: #27272a;
+  color: #71717a;
+}
+
+[data-theme="dark"] .bookmark-badge.active {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .pub-date {
+  color: #71717a;
+}
+
+[data-theme="dark"] .detail-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .detail-body {
+  background: #27272a;
+}
+
+[data-theme="dark"] .detail-body p {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  border-color: #7469B6;
+  color: #E1AFD1;
+}
 </style>

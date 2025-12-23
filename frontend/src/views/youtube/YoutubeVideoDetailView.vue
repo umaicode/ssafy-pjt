@@ -424,4 +424,74 @@ watch(() => props.id, load)
     justify-content: center;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .video-detail-page {
+  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 30%, #0a0a0a 30%);
+}
+
+[data-theme="dark"] .loading-state {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .loading-spinner {
+  border-color: #3f3f46;
+  border-top-color: #7469B6;
+}
+
+[data-theme="dark"] .empty-icon {
+  background: rgba(116, 105, 182, 0.2);
+}
+
+[data-theme="dark"] .empty-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .back-link {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .back-link:hover {
+  background: #7469B6;
+  color: white;
+}
+
+[data-theme="dark"] .video-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .channel-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .action-btn {
+  background: #18181b;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .action-btn:hover {
+  border-color: #7469B6;
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .action-btn.active {
+  background: #7469B6;
+  border-color: #7469B6;
+  color: white;
+}
+
+[data-theme="dark"] .description-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .description-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .description-text {
+  color: #a1a1aa;
+}
 </style>

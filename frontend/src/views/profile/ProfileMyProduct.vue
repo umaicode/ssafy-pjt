@@ -808,4 +808,126 @@ const formatCurrency = (value) => {
 .clear-all-btn:hover {
   background: #fecaca;
 }
+
+/* Dark Mode */
+[data-theme="dark"] .section-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .section-description {
+  color: #71717a;
+}
+
+[data-theme="dark"] .chart-placeholder {
+  background: #18181b;
+}
+
+[data-theme="dark"] .placeholder-icon {
+  background: rgba(116, 105, 182, 0.2);
+}
+
+[data-theme="dark"] .placeholder-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .placeholder-text {
+  color: #71717a;
+}
+
+[data-theme="dark"] .product-mini-card {
+  background: #27272a;
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .product-mini-card:hover {
+  border-color: #AD88C6;
+}
+
+[data-theme="dark"] .product-mini-card.active {
+  background: rgba(116, 105, 182, 0.1);
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .mini-card-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .mini-card-bank {
+  color: #71717a;
+}
+
+[data-theme="dark"] .mini-card-rate {
+  border-top-color: #3f3f46;
+}
+
+[data-theme="dark"] .rate-value {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .simulation-section {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .sim-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .sim-subtitle {
+  color: #71717a;
+}
+
+[data-theme="dark"] .input-label {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .input-wrapper input {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .input-wrapper input:focus {
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .input-suffix {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .simulation-summary {
+  background: rgba(116, 105, 182, 0.1);
+}
+
+[data-theme="dark"] .summary-value {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .summary-item.total .summary-value {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .chart-container {
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .chart-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .deposit-notice {
+  background: rgba(217, 119, 6, 0.1);
+}
+
+[data-theme="dark"] .deposit-notice p {
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .clear-all-btn {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+[data-theme="dark"] .clear-all-btn:hover {
+  background: rgba(220, 38, 38, 0.2);
+}
 </style>

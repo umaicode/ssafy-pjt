@@ -680,4 +680,114 @@ watch(activeTab, (tab) => {
     grid-template-columns: 1fr;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .section-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .section-description {
+  color: #71717a;
+}
+
+[data-theme="dark"] .category-tabs {
+  background: #27272a;
+}
+
+[data-theme="dark"] .category-tab {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .category-tab:hover {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .category-tab.active {
+  color: #E1AFD1;
+  background: #18181b;
+}
+
+[data-theme="dark"] .sub-tab {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .sub-tab:hover {
+  border-color: #7469B6;
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .sub-tab.active {
+  background: #7469B6;
+  border-color: #7469B6;
+  color: white;
+}
+
+[data-theme="dark"] .content-section {
+  background: #0f0f0f;
+}
+
+[data-theme="dark"] .content-count {
+  color: #71717a;
+}
+
+[data-theme="dark"] .clear-btn {
+  background: #27272a;
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+[data-theme="dark"] .clear-btn:hover:not(:disabled) {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+[data-theme="dark"] .empty-icon {
+  background: rgba(116, 105, 182, 0.2);
+}
+
+[data-theme="dark"] .empty-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .empty-text {
+  color: #71717a;
+}
+
+[data-theme="dark"] .video-card {
+  background: #18181b;
+}
+
+[data-theme="dark"] .video-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .video-channel {
+  color: #71717a;
+}
+
+[data-theme="dark"] .view-btn {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .remove-btn {
+  background: #27272a;
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+[data-theme="dark"] .remove-btn:hover {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+[data-theme="dark"] .channel-item {
+  background: #18181b;
+}
+
+[data-theme="dark"] .channel-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .channel-id {
+  color: #71717a;
+}
 </style>

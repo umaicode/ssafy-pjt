@@ -1615,4 +1615,166 @@ const getBankLogo = (bankName) => {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.7; transform: scale(1.1); }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Dark Mode Styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="dark"] .home {
+  background: #0a0a0a;
+}
+
+[data-theme="dark"] .hero-gradient-mesh {
+  background: 
+    radial-gradient(at 40% 20%, rgba(116, 105, 182, 0.25) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(173, 136, 198, 0.2) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(116, 105, 182, 0.2) 0px, transparent 50%);
+}
+
+[data-theme="dark"] .ai-chip {
+  background: rgba(24, 24, 27, 0.9);
+  border-color: rgba(116, 105, 182, 0.3);
+}
+
+[data-theme="dark"] .ai-chip-text {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .hero-title .title-word {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .hero-description {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .hero-description strong {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .stat-number {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .stat-divider {
+  background: rgba(116, 105, 182, 0.3);
+}
+
+[data-theme="dark"] .floating-card {
+  background: rgba(24, 24, 27, 0.95);
+  border-color: rgba(116, 105, 182, 0.2);
+}
+
+[data-theme="dark"] .card-title,
+[data-theme="dark"] .card-value {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .mini-label {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .mini-value {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .notif-text {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .ai-section {
+  background: linear-gradient(180deg, #0a0a0a 0%, #18181b 100%);
+}
+
+[data-theme="dark"] .section-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .section-subtitle {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .ai-feature-card.main-feature {
+  background: linear-gradient(145deg, rgba(39, 39, 42, 0.9), rgba(24, 24, 27, 0.95));
+  border-color: rgba(116, 105, 182, 0.2);
+}
+
+[data-theme="dark"] .feature-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .feature-description {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .feature-link {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .ai-mini-feature {
+  background: #18181b;
+  border-color: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .ai-mini-feature:hover {
+  border-color: rgba(116, 105, 182, 0.4);
+}
+
+[data-theme="dark"] .mini-feature-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .mini-feature-desc {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .services-section {
+  background: #0a0a0a;
+}
+
+[data-theme="dark"] .service-card {
+  background: #18181b;
+  border-color: rgba(116, 105, 182, 0.1);
+}
+
+[data-theme="dark"] .service-card:hover {
+  border-color: rgba(116, 105, 182, 0.3);
+}
+
+[data-theme="dark"] .service-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .service-description {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .partners-section {
+  background: linear-gradient(180deg, #0a0a0a 0%, #18181b 100%);
+}
+
+[data-theme="dark"] .partners-grid {
+  background: #18181b;
+  border-color: rgba(116, 105, 182, 0.1);
+}
+
+[data-theme="dark"] .cta-section {
+  background: #0a0a0a;
+}
+
+[data-theme="dark"] .cta-container {
+  background: linear-gradient(145deg, rgba(39, 39, 42, 0.9), rgba(24, 24, 27, 0.95));
+  border-color: rgba(116, 105, 182, 0.2);
+}
+
+[data-theme="dark"] .cta-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .cta-description {
+  color: #a1a1aa;
+}
 </style>

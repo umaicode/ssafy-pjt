@@ -428,4 +428,66 @@ const onChangePassword = () => {
     width: 100%;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .section-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .section-description {
+  color: #71717a;
+}
+
+[data-theme="dark"] .card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .card-header {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .nickname-icon {
+  background: rgba(22, 163, 74, 0.1);
+}
+
+[data-theme="dark"] .password-icon {
+  background: rgba(217, 119, 6, 0.1);
+}
+
+[data-theme="dark"] .card-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .card-subtitle {
+  color: #71717a;
+}
+
+[data-theme="dark"] .input-label {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .input {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .input::placeholder {
+  color: #71717a;
+}
+
+[data-theme="dark"] .input:focus {
+  border-color: #7469B6;
+  background: #18181b;
+}
+
+[data-theme="dark"] .hint-box {
+  background: rgba(217, 119, 6, 0.1);
+  border-color: rgba(217, 119, 6, 0.3);
+}
+
+[data-theme="dark"] .hint {
+  color: #fbbf24;
+}
 </style>

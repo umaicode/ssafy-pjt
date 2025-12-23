@@ -1167,3 +1167,137 @@ h6 { font-size: 1rem; }
 .ai-glow-card:hover::before {
   opacity: 1;
 }
+/* ═══════════════════════════════════════════════════════════════════════════
+   19. Dark Mode Theme
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  /* Primary Pink/Purple Palette - Dark mode adjustments */
+  --primary-50: #1a1625;
+  --primary-100: #2d2640;
+  --primary-200: #3d3560;
+  --primary-300: #5B4E9E;
+  --primary-400: #7469B6;
+  --primary-500: #AD88C6;
+  --primary-600: #E1AFD1;
+  --primary-700: #FFE6E6;
+  --primary-800: #FFF5F8;
+  --primary-900: #FFFFFF;
+
+  /* Neutral Colors - Dark */
+  --gray-50: #0a0a0a;
+  --gray-100: #18181b;
+  --gray-200: #27272a;
+  --gray-300: #3f3f46;
+  --gray-400: #52525b;
+  --gray-500: #71717a;
+  --gray-600: #a1a1aa;
+  --gray-700: #d4d4d8;
+  --gray-800: #e4e4e7;
+  --gray-900: #fafafa;
+
+  /* Background - Dark */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #18181b;
+  --bg-dark: #000000;
+  --bg-gradient-light: linear-gradient(180deg, #0a0a0a 0%, #1a1625 50%, #2d2640 100%);
+  
+  /* Glass Effect - Dark */
+  --glass-bg: rgba(24, 24, 27, 0.85);
+  --glass-bg-dark: rgba(10, 10, 10, 0.9);
+  --glass-border: rgba(116, 105, 182, 0.2);
+  --glass-shadow: rgba(0, 0, 0, 0.4);
+
+  /* Gradients - Dark */
+  --gradient-primary: linear-gradient(135deg, #7469B6 0%, #AD88C6 50%, #E1AFD1 100%);
+  --gradient-secondary: linear-gradient(135deg, #E1AFD1 0%, #AD88C6 50%, #7469B6 100%);
+  --gradient-hero: linear-gradient(180deg, #0a0a0a 0%, #1a1625 50%, #2d2640 100%);
+  --gradient-glow: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(116, 105, 182, 0.4), transparent);
+  --gradient-card: linear-gradient(145deg, rgba(39,39,42,0.9) 0%, rgba(45,38,64,0.5) 100%);
+  --gradient-mesh: 
+    radial-gradient(at 40% 20%, rgba(116, 105, 182, 0.2) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(173, 136, 198, 0.15) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(116, 105, 182, 0.15) 0px, transparent 50%);
+
+  /* Shadows - Dark */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 24px 80px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 60px rgba(116, 105, 182, 0.3);
+  --shadow-glow-pink: 0 0 60px rgba(225, 175, 209, 0.25);
+  --shadow-float: 0 20px 50px -20px rgba(116, 105, 182, 0.4);
+  --shadow-purple: 0 10px 40px -10px rgba(116, 105, 182, 0.4);
+}
+
+/* Dark mode body styles */
+[data-theme="dark"] body {
+  background: var(--bg-primary);
+  color: var(--gray-800);
+}
+
+/* Dark mode headings */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: var(--gray-900);
+}
+
+/* Dark mode cards */
+[data-theme="dark"] .card,
+[data-theme="dark"] .modal-content {
+  background: var(--bg-secondary);
+  border-color: var(--glass-border);
+}
+
+/* Dark mode inputs */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background: var(--gray-100);
+  border-color: var(--gray-300);
+  color: var(--gray-800);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--gray-500);
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] textarea:focus {
+  border-color: var(--primary-400);
+  box-shadow: 0 0 0 3px rgba(116, 105, 182, 0.2);
+}
+
+/* Dark mode buttons */
+[data-theme="dark"] .btn-ghost {
+  color: var(--gray-700);
+}
+
+[data-theme="dark"] .btn-ghost:hover {
+  background: var(--gray-200);
+  color: var(--gray-900);
+}
+
+/* Dark mode scrollbar */
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: var(--gray-100);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--gray-400);
+  border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
+}

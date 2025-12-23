@@ -302,4 +302,59 @@ const applyDates = () => {
     justify-content: center;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .filter-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .filter-label {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .date-input {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .date-input:focus {
+  border-color: #f59e0b;
+}
+
+[data-theme="dark"] .date-separator {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+[data-theme="dark"] .metal-btn {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .metal-btn:hover {
+  border-color: #d97706;
+}
+
+[data-theme="dark"] .metal-icon.gold {
+  background: #422006;
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .metal-icon.silver {
+  background: #27272a;
+  color: #a1a1aa;
+}
 </style>

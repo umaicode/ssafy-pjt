@@ -512,4 +512,61 @@ onMounted(() => {
     min-height: 400px;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .kakao-map-page {
+  background: #0a0a0a;
+}
+
+[data-theme="dark"] .main-container {
+  background: #0a0a0a;
+}
+
+[data-theme="dark"] .search-card {
+  background: #18181b;
+  border-color: rgba(116, 105, 182, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .input-label {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .input-field,
+[data-theme="dark"] .select-field {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .input-field:focus,
+[data-theme="dark"] .select-field:focus {
+  border-color: #7469B6;
+  background: #27272a;
+}
+
+[data-theme="dark"] .input-field::placeholder {
+  color: #71717a;
+}
+
+[data-theme="dark"] .select-arrow {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .section-divider {
+  background: #27272a;
+}
+
+[data-theme="dark"] .info-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .info-text p {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .map-wrapper {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
 </style>

@@ -1705,4 +1705,190 @@ const formatDate = (dateString) => {
     gap: 12px;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .result-page {
+  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 50%, #0a0a0a 100%);
+}
+
+[data-theme="dark"] .loading-card,
+[data-theme="dark"] .error-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .loading-title,
+[data-theme="dark"] .error-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .loading-text,
+[data-theme="dark"] .error-text {
+  color: #71717a;
+}
+
+[data-theme="dark"] .loading-spinner {
+  border-color: #3f3f46;
+  border-top-color: #7469B6;
+}
+
+[data-theme="dark"] .error-icon {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+[data-theme="dark"] .summary-card {
+  background: rgba(116, 105, 182, 0.1);
+}
+
+[data-theme="dark"] .summary-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .summary-text {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .goal-card,
+[data-theme="dark"] .strategy-card,
+[data-theme="dark"] .products-section,
+[data-theme="dark"] .collapsible-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .section-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .goal-stat {
+  background: #27272a;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #71717a;
+}
+
+[data-theme="dark"] .stat-value {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .strategy-text {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .combination-card {
+  background: rgba(116, 105, 182, 0.1);
+}
+
+[data-theme="dark"] .combination-item {
+  background: #18181b;
+}
+
+[data-theme="dark"] .combination-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .combination-desc {
+  color: #71717a;
+}
+
+[data-theme="dark"] .strategy-product {
+  background: #27272a;
+}
+
+[data-theme="dark"] .sp-bank {
+  color: #71717a;
+}
+
+[data-theme="dark"] .sp-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .combo-stat {
+  background: #27272a;
+}
+
+[data-theme="dark"] .combo-label {
+  color: #71717a;
+}
+
+[data-theme="dark"] .combo-value {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .product-card {
+  background: #18181b;
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .product-card:hover {
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .product-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .product-bank {
+  color: #71717a;
+}
+
+[data-theme="dark"] .exchange-card {
+  background: rgba(37, 99, 235, 0.1);
+}
+
+[data-theme="dark"] .exchange-box {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+[data-theme="dark"] .destinations-card {
+  background: rgba(116, 105, 182, 0.1);
+}
+
+[data-theme="dark"] .destination-chip {
+  background: #18181b;
+}
+
+[data-theme="dark"] .news-item {
+  background: #27272a;
+}
+
+[data-theme="dark"] .news-item:hover {
+  background: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .news-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .news-date {
+  color: #71717a;
+}
+
+[data-theme="dark"] .video-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .video-channel {
+  color: #71717a;
+}
+
+[data-theme="dark"] .verdict-card {
+  background: rgba(245, 158, 11, 0.15);
+}
+
+[data-theme="dark"] .verdict-text {
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .back-btn {
+  background: #18181b;
+  border-color: #3f3f46;
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .back-btn:hover {
+  border-color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
+}
 </style>

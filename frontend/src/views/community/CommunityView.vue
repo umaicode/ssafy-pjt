@@ -451,4 +451,88 @@ const formatDate = (iso) => {
     flex-wrap: wrap;
   }
 }
+
+/* Dark Mode Styles */
+[data-theme="dark"] .community-page {
+  background: #0a0a0a;
+}
+
+[data-theme="dark"] .page-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .page-description {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .create-btn {
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+}
+
+[data-theme="dark"] .board-card {
+  background: #18181b;
+  border-color: rgba(116, 105, 182, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .board-header {
+  background: #27272a;
+  border-bottom-color: #3f3f46;
+}
+
+[data-theme="dark"] .board-header .col-title,
+[data-theme="dark"] .board-header .col-author,
+[data-theme="dark"] .board-header .col-date,
+[data-theme="dark"] .board-header .col-views {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .board-row {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .board-row:hover {
+  background: rgba(116, 105, 182, 0.08);
+}
+
+[data-theme="dark"] .article-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .col-author,
+[data-theme="dark"] .col-date,
+[data-theme="dark"] .col-views {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .comment-count {
+  color: #AD88C6;
+}
+
+[data-theme="dark"] .empty-state {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .empty-state p {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .page-btn,
+[data-theme="dark"] .page-num {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .page-btn:hover:not(:disabled),
+[data-theme="dark"] .page-num:hover {
+  border-color: #7469B6;
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .page-num.active {
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+  border-color: transparent;
+  color: white;
+}
 </style>

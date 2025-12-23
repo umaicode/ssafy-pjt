@@ -36,4 +36,9 @@ defineProps({
     grid-template-columns: 1fr;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .product-list {
+  background: transparent;
+}
 </style>

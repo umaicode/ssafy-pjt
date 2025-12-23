@@ -338,4 +338,64 @@ const uniqueTerms = computed(() => {
   height: 32px;
   object-fit: contain;
 }
+
+/* Dark Mode */
+[data-theme="dark"] .product-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .product-card:hover {
+  box-shadow: 0 12px 40px rgba(116, 105, 182, 0.25);
+}
+
+[data-theme="dark"] .product-card-header {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .product-type-badge {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .bank-name {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .product-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .rate-item {
+  background: #27272a;
+}
+
+[data-theme="dark"] .rate-item.rate-max {
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.2) 0%, rgba(225, 175, 209, 0.15) 100%);
+}
+
+[data-theme="dark"] .rate-label {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .rate-value {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .rate-max .rate-value {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .term-badge {
+  background: #27272a;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .product-card-footer {
+  border-top-color: #27272a;
+}
+
+[data-theme="dark"] .detail-link {
+  color: #E1AFD1;
+}
 </style>

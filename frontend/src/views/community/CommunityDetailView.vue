@@ -612,4 +612,122 @@ const onToggleCommentLike = (commentId) => {
     justify-content: center;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .detail-page {
+  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 50%, #0a0a0a 100%);
+}
+
+[data-theme="dark"] .back-link {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .back-link:hover {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .article-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .card-header {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .card-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .author-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .article-meta {
+  color: #71717a;
+}
+
+[data-theme="dark"] .edit-btn {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .edit-btn:hover {
+  border-color: #7469B6;
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .delete-btn {
+  background: #27272a;
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+[data-theme="dark"] .delete-btn:hover {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+[data-theme="dark"] .article-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .article-content p {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .like-section {
+  border-top-color: #27272a;
+}
+
+[data-theme="dark"] .like-btn {
+  background: #27272a;
+  color: #a1a1aa;
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .like-btn:hover {
+  border-color: #7469B6;
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .like-btn:not(.liked) .like-count {
+  background: #3f3f46;
+}
+
+[data-theme="dark"] .form-label {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-textarea {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .form-input:focus,
+[data-theme="dark"] .form-textarea:focus {
+  background: #18181b;
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .form-input::placeholder,
+[data-theme="dark"] .form-textarea::placeholder {
+  color: #71717a;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  border-color: #7469B6;
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .loading-state p {
+  color: #a1a1aa;
+}
 </style>

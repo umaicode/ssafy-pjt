@@ -124,4 +124,25 @@ const submit = () => {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Dark Mode */
+[data-theme="dark"] .comment-create {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .comment-input {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .comment-input:focus {
+  background: #18181b;
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .comment-input::placeholder {
+  color: #71717a;
+}
 </style>

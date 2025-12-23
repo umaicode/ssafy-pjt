@@ -430,4 +430,74 @@ const videoStore = useVideoStore()
     grid-template-columns: 1fr;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .section-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .section-count {
+  color: #71717a;
+}
+
+[data-theme="dark"] .clear-btn {
+  background: #27272a;
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+[data-theme="dark"] .clear-btn:hover:not(:disabled) {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+[data-theme="dark"] .empty-state {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .empty-icon {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+[data-theme="dark"] .empty-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .empty-text {
+  color: #71717a;
+}
+
+[data-theme="dark"] .video-card {
+  background: #18181b;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .video-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .thumb {
+  background: #27272a;
+}
+
+[data-theme="dark"] .video-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .video-channel {
+  color: #71717a;
+}
+
+[data-theme="dark"] .view-btn {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .delete-btn {
+  background: #27272a;
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+[data-theme="dark"] .delete-btn:hover {
+  background: rgba(220, 38, 38, 0.1);
+}
 </style>

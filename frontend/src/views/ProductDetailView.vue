@@ -392,12 +392,13 @@ onMounted(() => {
 }
 
 .bank-logo-large {
-  width: 48px;
+  width: 150px;
   height: 48px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 20px;
 }
 
 .bank-logo-large svg {
@@ -417,7 +418,8 @@ onMounted(() => {
   font-weight: 800;
   color: #18181b;
   line-height: 1.3;
-  margin-bottom: 24px;
+  margin-bottom: 50px;
+  margin-top: 50px;
 }
 
 /* Action Buttons */
@@ -657,10 +659,108 @@ onMounted(() => {
   }
 }
 
-.bank-logo-img-large {
-  width: 40px;
-  height: 40px;
+/* .bank-logo-img-large {
+  width: 80px;
+  height: 80px;
   object-fit: contain;
+} */
+
+/* Dark Mode */
+[data-theme="dark"] .product-detail-page {
+  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 50%, #0a0a0a 100%);
 }
 
+[data-theme="dark"] .back-link {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .back-link:hover {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .product-header-card,
+[data-theme="dark"] .options-card,
+[data-theme="dark"] .details-card {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .product-type-badge {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .badge-success {
+  background: rgba(5, 150, 105, 0.2);
+  color: #34d399;
+}
+
+[data-theme="dark"] .badge-warning {
+  background: rgba(217, 119, 6, 0.2);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .badge-info {
+  background: rgba(2, 132, 199, 0.2);
+  color: #38bdf8;
+}
+
+[data-theme="dark"] .product-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .like-btn {
+  background: #27272a;
+  border-color: rgba(116, 105, 182, 0.3);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .like-btn:hover {
+  background: #3f3f46;
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .like-btn.liked {
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+  color: white;
+}
+
+[data-theme="dark"] .like-btn:not(.liked) .like-count {
+  background: rgba(116, 105, 182, 0.2);
+}
+
+[data-theme="dark"] .card-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .options-table th {
+  background: #27272a;
+  color: #a1a1aa;
+  border-bottom-color: #3f3f46;
+}
+
+[data-theme="dark"] .options-table td {
+  color: #a1a1aa;
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .term-value {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .rate-max {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .detail-label {
+  color: #71717a;
+}
+
+[data-theme="dark"] .detail-value {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .loading-state p {
+  color: #a1a1aa;
+}
 </style>

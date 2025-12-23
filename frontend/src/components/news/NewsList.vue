@@ -206,4 +206,68 @@ const toggleBookmark = (id) => {
 .news-item.selected .chevron {
   color: #7469B6;
 }
+
+/* Dark Mode */
+[data-theme="dark"] .news-list-section {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .list-header {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .list-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .list-count {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .news-empty svg {
+  color: #3f3f46;
+}
+
+[data-theme="dark"] .news-empty p {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .news-empty span {
+  color: #71717a;
+}
+
+[data-theme="dark"] .news-item:hover {
+  background: #27272a;
+}
+
+[data-theme="dark"] .news-item.selected {
+  background: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .bookmark-btn svg {
+  color: #52525b;
+}
+
+[data-theme="dark"] .bookmark-btn:hover svg,
+[data-theme="dark"] .bookmark-btn.active svg {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .news-title {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .news-item.selected .news-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .chevron {
+  color: #52525b;
+}
+
+[data-theme="dark"] .news-item.selected .chevron {
+  color: #E1AFD1;
+}
 </style>

@@ -25,7 +25,7 @@
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
             </svg>
-            뉴스
+            금융뉴스
           </RouterLink>
           <RouterLink :to="{ name: 'YoutubeSearchView' }" class="navbar-link">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -71,6 +71,19 @@
           </div>
         </div>
 
+        <!-- Theme Toggle Button -->
+        <div class="navbar-settings">
+          <button class="settings-btn" @click="themeStore.toggleTheme" :title="themeStore.isDark ? '라이트 모드' : '다크 모드'">
+            <svg v-if="themeStore.isDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"/>
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+            </svg>
+            <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+            </svg>
+          </button>
+        </div>
+
         <!-- User Actions -->
         <div class="navbar-actions">
           <template v-if="!accountStore.isLogin">
@@ -110,11 +123,25 @@
         <div v-if="mobileMenuOpen" class="mobile-menu">
           <RouterLink :to="{ name: 'ProductView' }" class="mobile-link" @click="mobileMenuOpen = false">금융상품</RouterLink>
           <RouterLink :to="{ name: 'AnalysisView' }" class="mobile-link" @click="mobileMenuOpen = false">AI 분석</RouterLink>
-          <RouterLink :to="{ name: 'NewsView' }" class="mobile-link" @click="mobileMenuOpen = false">뉴스</RouterLink>
+          <RouterLink :to="{ name: 'NewsView' }" class="mobile-link" @click="mobileMenuOpen = false">금융뉴스</RouterLink>
           <RouterLink :to="{ name: 'YoutubeSearchView' }" class="mobile-link" @click="mobileMenuOpen = false">유튜브</RouterLink>
           <RouterLink :to="{ name: 'MetalView' }" class="mobile-link" @click="mobileMenuOpen = false">현물</RouterLink>
           <RouterLink :to="{ name: 'KakaoMapView' }" class="mobile-link" @click="mobileMenuOpen = false">은행찾기</RouterLink>
           <RouterLink :to="{ name: 'CommunityView' }" class="mobile-link" @click="mobileMenuOpen = false">커뮤니티</RouterLink>
+          <div class="mobile-divider"></div>
+          <!-- Mobile Theme Toggle -->
+          <div class="mobile-settings">
+            <button class="mobile-settings-btn" @click="themeStore.toggleTheme">
+              <svg v-if="themeStore.isDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"/>
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+              </svg>
+              <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+              </svg>
+              {{ themeStore.isDark ? '라이트 모드' : '다크 모드' }}
+            </button>
+          </div>
           <div class="mobile-divider"></div>
           <template v-if="!accountStore.isLogin">
             <RouterLink :to="{ name: 'LogInView' }" class="mobile-link" @click="mobileMenuOpen = false">로그인</RouterLink>
@@ -139,14 +166,14 @@
         <div class="footer-content">
           <div class="footer-brand">
             <span class="footer-logo">F!NK</span>
-            <p class="footer-tagline">당신의 금융을 더 스마트하게</p>
+            <p class="footer-tagline">AI 기반 스마트 자산관리 플랫폼</p>
           </div>
           <div class="footer-links">
             <a href="#">이용약관</a>
             <a href="#">개인정보처리방침</a>
             <a href="#">고객센터</a>
           </div>
-          <p class="footer-copyright">© 2024 F!NK. All rights reserved.</p>
+          <p class="footer-copyright">© 2025 F!NK. All rights reserved.</p>
         </div>
       </div>
     </footer>
@@ -157,9 +184,12 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAccountStore } from './stores/accounts'
 import { useExchangeStore } from './stores/exchange'
+import { useThemeStore } from './stores/theme'
 
 const accountStore = useAccountStore()
 const exchangeStore = useExchangeStore()
+const themeStore = useThemeStore()
+
 const mobileMenuOpen = ref(false)
 const currentRateIndex = ref(0)
 
@@ -377,6 +407,48 @@ onUnmounted(() => {
   margin-left: auto;
 }
 
+/* Settings Buttons */
+.navbar-settings {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 12px;
+}
+
+.settings-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(116, 105, 182, 0.06);
+  border: 1px solid rgba(116, 105, 182, 0.1);
+  color: #6e6e73;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.settings-btn:hover {
+  background: rgba(116, 105, 182, 0.12);
+  color: #7469B6;
+  transform: translateY(-1px);
+}
+
+.settings-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.settings-btn.lang-btn {
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.lang-text {
+  line-height: 1;
+}
+
 .navbar-actions {
   display: flex;
   align-items: center;
@@ -481,6 +553,40 @@ onUnmounted(() => {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(116, 105, 182, 0.15), transparent);
   margin: 12px 0;
+}
+
+/* Mobile Settings */
+.mobile-settings {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+}
+
+.mobile-settings-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #52525b;
+  background: rgba(116, 105, 182, 0.06);
+  border: 1px solid rgba(116, 105, 182, 0.12);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.mobile-settings-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.mobile-settings-btn:hover {
+  background: rgba(116, 105, 182, 0.12);
+  color: #7469B6;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -632,6 +738,10 @@ onUnmounted(() => {
     font-size: 1.5rem;
   }
 
+  .navbar-settings {
+    margin-right: 8px;
+  }
+
   .footer {
     padding: 48px 16px 32px;
   }
@@ -640,5 +750,97 @@ onUnmounted(() => {
     flex-wrap: wrap;
     gap: 20px;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Dark Mode Styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+[data-theme="dark"] .app {
+  background: #0a0a0a;
+}
+
+[data-theme="dark"] .navbar {
+  background: rgba(10, 10, 10, 0.85);
+  border-bottom-color: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .navbar-link {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .navbar-link:hover {
+  color: #E1AFD1;
+  background: rgba(116, 105, 182, 0.1);
+}
+
+[data-theme="dark"] .navbar-link.router-link-active {
+  color: #E1AFD1;
+  background: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .exchange-ticker {
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.15) 0%, rgba(173, 136, 198, 0.1) 100%);
+  border-color: rgba(116, 105, 182, 0.25);
+}
+
+[data-theme="dark"] .ticker-name {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .ticker-rate {
+  color: #AD88C6;
+}
+
+[data-theme="dark"] .settings-btn {
+  background: rgba(116, 105, 182, 0.1);
+  border-color: rgba(116, 105, 182, 0.2);
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .settings-btn:hover {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .user-menu {
+  background: rgba(116, 105, 182, 0.12);
+}
+
+[data-theme="dark"] .user-menu:hover {
+  background: rgba(116, 105, 182, 0.18);
+}
+
+[data-theme="dark"] .user-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .mobile-menu {
+  background: rgba(10, 10, 10, 0.98);
+  border-top-color: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .mobile-link {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .mobile-link:hover,
+[data-theme="dark"] .mobile-link.router-link-active {
+  background: rgba(116, 105, 182, 0.12);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .mobile-settings-btn {
+  background: rgba(116, 105, 182, 0.1);
+  border-color: rgba(116, 105, 182, 0.2);
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .mobile-settings-btn:hover {
+  background: rgba(116, 105, 182, 0.18);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .footer {
+  background: linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
 }
 </style>

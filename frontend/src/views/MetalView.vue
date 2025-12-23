@@ -170,4 +170,23 @@ onMounted(() => {
     border-radius: 16px;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .metal-page {
+  background: linear-gradient(180deg, #0a0a0a 0%, #18181b 50%, #0f0f0f 100%);
+}
+
+[data-theme="dark"] .loading-state {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .loading-spinner {
+  border-color: #3f3f46;
+  border-top-color: #AD88C6;
+}
+
+[data-theme="dark"] .chart-wrapper {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
 </style>

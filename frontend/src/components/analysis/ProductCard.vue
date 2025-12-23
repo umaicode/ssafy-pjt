@@ -768,4 +768,186 @@ const scoreClass = computed(() => {
   line-height: 1.5;
   margin: 0;
 }
+
+/* Dark Mode */
+[data-theme="dark"] .product-card {
+  background: #18181b;
+  border-color: #3f3f46;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .product-card:hover {
+  border-color: rgba(116, 105, 182, 0.4);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .product-card.selected {
+  border-color: #AD88C6;
+}
+
+[data-theme="dark"] .bank-badge {
+  background: #27272a;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .fit-badge {
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+}
+
+[data-theme="dark"] .product-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .rate-display {
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.15) 0%, rgba(173, 136, 198, 0.15) 100%);
+}
+
+[data-theme="dark"] .rate-number {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .rate-type {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .max-rate {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .quick-info {
+  border-top-color: #3f3f46;
+}
+
+[data-theme="dark"] .info-chip {
+  background: #27272a;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .info-chip.deposit {
+  background: rgba(37, 99, 235, 0.2);
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .info-chip.saving {
+  background: rgba(22, 163, 74, 0.2);
+  color: #4ade80;
+}
+
+[data-theme="dark"] .info-chip.mobile {
+  background: rgba(217, 119, 6, 0.2);
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .simulation-box {
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.15) 0%, rgba(22, 163, 74, 0.1) 100%);
+}
+
+[data-theme="dark"] .simulation-box.deposit {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(37, 99, 235, 0.1) 100%);
+}
+
+[data-theme="dark"] .sim-title {
+  background: #27272a;
+  color: #4ade80;
+}
+
+[data-theme="dark"] .simulation-box.deposit .sim-title {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .sim-label {
+  color: #71717a;
+}
+
+[data-theme="dark"] .sim-value {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .sim-item.highlight .sim-value {
+  color: #4ade80;
+}
+
+[data-theme="dark"] .simulation-box.deposit .sim-item.highlight .sim-value {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .sim-arrow {
+  color: #71717a;
+}
+
+[data-theme="dark"] .sim-interest {
+  background: #27272a;
+  color: #4ade80;
+}
+
+[data-theme="dark"] .simulation-box.deposit .sim-interest {
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .sim-tax-row {
+  border-top-color: #3f3f46;
+}
+
+[data-theme="dark"] .sim-tax-label {
+  color: #71717a;
+}
+
+[data-theme="dark"] .sim-tax-value {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .sim-tax-interest {
+  background: #27272a;
+  color: #71717a;
+}
+
+[data-theme="dark"] .reason-box {
+  background: rgba(120, 53, 15, 0.15);
+}
+
+[data-theme="dark"] .reason-text {
+  color: #fbbf24;
+}
+
+[data-theme="dark"] .action-btn.like {
+  background: #27272a;
+  color: #71717a;
+}
+
+[data-theme="dark"] .action-btn.like:hover {
+  background: rgba(236, 72, 153, 0.2);
+  color: #ec4899;
+}
+
+[data-theme="dark"] .action-btn.like.active {
+  background: rgba(236, 72, 153, 0.2);
+  color: #ec4899;
+}
+
+[data-theme="dark"] .action-btn.detail {
+  background: #27272a;
+  color: #71717a;
+}
+
+[data-theme="dark"] .action-btn.detail:hover {
+  background: #3f3f46;
+}
+
+[data-theme="dark"] .detail-panel {
+  border-top-color: #3f3f46;
+}
+
+[data-theme="dark"] .detail-title {
+  color: #71717a;
+}
+
+[data-theme="dark"] .detail-tag {
+  background: #27272a;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .detail-text {
+  color: #a1a1aa;
+}
 </style>

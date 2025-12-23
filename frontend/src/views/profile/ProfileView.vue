@@ -250,4 +250,62 @@ const onDeleteAccount = async () => {
     padding: 24px;
   }
 }
+
+/* Dark Mode */
+[data-theme="dark"] .profile-page {
+  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 50%, #0a0a0a 100%);
+}
+
+[data-theme="dark"] .profile-header {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .profile-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .profile-greeting {
+  color: #71717a;
+}
+
+[data-theme="dark"] .sidebar-menu {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .menu-label {
+  color: #71717a;
+}
+
+[data-theme="dark"] .menu-link {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .menu-link:hover {
+  color: #E1AFD1;
+  background: rgba(116, 105, 182, 0.1);
+}
+
+[data-theme="dark"] .menu-link.router-link-active {
+  color: #E1AFD1;
+  background: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .menu-link.danger {
+  color: #f87171;
+}
+
+[data-theme="dark"] .menu-link.danger:hover {
+  background: rgba(248, 113, 113, 0.1);
+}
+
+[data-theme="dark"] .menu-divider {
+  background: #27272a;
+}
+
+[data-theme="dark"] .content-area {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
 </style>

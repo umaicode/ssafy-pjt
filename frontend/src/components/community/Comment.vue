@@ -450,4 +450,105 @@ const onToggleCommentLike = (commentId) => {
   line-height: 1.6;
   margin: 0;
 }
+
+/* Dark Mode */
+[data-theme="dark"] .comments-section {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .comments-header {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .comments-header h3 {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .comments-header .count {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .comment-item {
+  background: #27272a;
+}
+
+[data-theme="dark"] .comment-item:hover {
+  background: #3f3f46;
+}
+
+[data-theme="dark"] .author {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .date {
+  color: #71717a;
+}
+
+[data-theme="dark"] .comment-content {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .like-btn {
+  background: #18181b;
+  border-color: #3f3f46;
+  color: #71717a;
+}
+
+[data-theme="dark"] .like-btn:hover {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+[data-theme="dark"] .like-btn.liked {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+[data-theme="dark"] .action-btn {
+  background: #18181b;
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .action-btn svg {
+  color: #71717a;
+}
+
+[data-theme="dark"] .action-btn.edit:hover {
+  background: rgba(22, 163, 74, 0.1);
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+[data-theme="dark"] .action-btn.delete:hover {
+  background: rgba(220, 38, 38, 0.1);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+[data-theme="dark"] .edit-input {
+  background: #18181b;
+  border-color: #3f3f46;
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .edit-input:focus {
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .btn-cancel {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .btn-cancel:hover {
+  background: #3f3f46;
+}
+
+[data-theme="dark"] .empty-state svg {
+  color: #52525b;
+}
+
+[data-theme="dark"] .empty-state p {
+  color: #71717a;
+}
 </style>
