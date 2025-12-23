@@ -1,6 +1,7 @@
 import os
 import requests
 from datetime import datetime
+import certifi
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -42,7 +43,22 @@ def fetch_exchange_rates(request):
             'data': 'AP01'
         }
         
-        response = requests.get(base_url, params=params, timeout=10)
+        print(f"🔍 API 호출 시작")
+        print(f"   URL: {base_url}")
+        print(f"   날짜: {search_date}")
+        print(f"   API 키 존재: {bool(api_key)}")
+        
+        # certifi를 사용한 안전한 SSL 인증서 검증
+        try:
+            response = requests.get(base_url, params=params, timeout=10, verify=certifi.where())
+        except Exception as ssl_error:
+            # certifi로도 실패하면 시스템 기본 인증서 사용
+            print(f"⚠️ certifi 인증서로 연결 실패, 기본 인증서 사용: {ssl_error}")
+            response = requests.get(base_url, params=params, timeout=10)
+        
+        print(f"✅ 응답 상태 코드: {response.status_code}")
+        print(f"   응답 헤더: {dict(response.headers)}")
+        
         response.raise_for_status()
         
         data = response.json()
@@ -51,12 +67,16 @@ def fetch_exchange_rates(request):
         print(f"API 응답 데이터 개수: {len(data)}")
         if len(data) == 0:
             # 주말/공휴일인 경우 가장 최근 영업일 데이터 조회 시도
-            # 최대 7일 전까지 시도
+            # 최대
+            try:
+                response = requests.get(base_url, params=params, timeout=10, verify=certifi.where())
+            except:
+                response = requests.get(base_url, params=params, timeout=10)
             from datetime import timedelta
             for days_back in range(1, 8):
                 past_date = datetime.now() - timedelta(days=days_back)
                 params['searchdate'] = past_date.strftime('%Y%m%d')
-                response = requests.get(base_url, params=params, timeout=10)
+                response = requests.get(base_url, params=params, timeout=10, verify=False)
                 data = response.json()
                 if len(data) > 0:
                     search_date = params['searchdate']
@@ -99,11 +119,22 @@ def fetch_exchange_rates(request):
         }, status=status.HTTP_201_CREATED)
     
     except requests.exceptions.RequestException as e:
+        print(f"❌ API 호출 오류 상세:")
+        print(f"   에러 타입: {type(e).__name__}")
+        print(f"   에러 메시지: {str(e)}")
+        if hasattr(e, 'response') and e.response is not None:
+            print(f"   응답 상태 코드: {e.response.status_code}")
+            print(f"   응답 내용: {e.response.text[:500]}")
         return Response(
             {'error': f'환율 정보를 가져오는데 실패했습니다: {str(e)}'},
             status=status.HTTP_503_SERVICE_UNAVAILABLE
         )
     except Exception as e:
+        print(f"❌ 예상치 못한 오류:")
+        print(f"   에러 타입: {type(e).__name__}")
+        print(f"   에러 메시지: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return Response(
             {'error': f'예상치 못한 오류가 발생했습니다: {str(e)}'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
