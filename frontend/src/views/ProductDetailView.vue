@@ -23,8 +23,22 @@
           </div>
           
           <div class="product-bank-info">
+            <!-- ✅ 은행 로고 -->
             <div class="bank-logo-large">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <img
+                v-if="bankLogoSrc"
+                :src="bankLogoSrc"
+                :alt="product.kor_co_nm"
+                class="bank-logo-img-large"
+                loading="lazy"
+              />
+              <svg
+                v-else
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <path d="M3 21h18"/>
                 <path d="M3 10h18"/>
                 <path d="M5 6l7-3 7 3"/>
@@ -35,8 +49,8 @@
                 <path d="M16 14v3"/>
               </svg>
             </div>
-            <span class="bank-name-large">{{ product.kor_co_nm }}</span>
           </div>
+
           
           <h1 class="product-title">{{ product.fin_prdt_nm }}</h1>
 
@@ -167,6 +181,69 @@ import { useProductStore } from '@/stores/products'
 import { useLikeStore } from '@/stores/like'
 import { useAccountStore } from '@/stores/accounts'
 import ProductBankMap from '@/components/products/ProductBankMap.vue'
+
+
+/* ✅ banks 폴더 png 전체 import */
+const bankLogos = import.meta.glob('@/assets/banks/*.png', {
+  eager: true,
+  import: 'default',
+})
+
+/* ✅ 은행명 → 파일명 매핑 */
+const BANK_FILE_MAP = {
+  국민은행: "국민은행.png",
+  신한은행: "신한은행.png",
+  우리은행: "우리은행.png",
+  농협은행주식회사: "농협은행.jpg",
+  중소기업은행: "기업은행.png",
+  한국산업은행: "산업은행.png",
+  '주식회사 하나은행': "하나은행.png",
+  씨티뱅크: "씨티뱅크.png",
+  한국씨티은행: "citi.png",
+
+  // 인터넷은행
+  '주식회사 카카오뱅크': "카카오뱅크.png",
+  '주식회사 케이뱅크': "케이뱅크.png",
+  '토스뱅크 주식회사': "토스뱅크.png",
+
+  // 지방은행
+  부산은행: "부산은행.png",
+  경남은행: "경남은행.png",
+  아이엠뱅크: "아이엠뱅크.png",
+  광주은행: "광주은행.png",
+  제주은행: "제주은행.png",
+  전북은행: "전북은행.png",
+  수협은행: "수협은행.png",
+  한국스탠다드차타드은행: "sc제일은행.jpg",
+}
+
+/* ✅ 상세페이지용 은행 로고 src */
+const bankLogoSrc = computed(() => {
+  if (!product.value?.kor_co_nm) return null
+
+  const name = product.value.kor_co_nm.trim()
+
+  let fileName = BANK_FILE_MAP[name]
+
+  if (!fileName) {
+    const normalized = name
+      .replace(/^BNK/, '')
+      .replace(/^IBK/, '')
+      .replace(/^KEB/, '')
+      .replace(/^NH/, '')
+      .trim()
+    fileName = BANK_FILE_MAP[normalized]
+  }
+
+  if (!fileName) return null
+
+  return (
+    bankLogos[`/src/assets/banks/${fileName}`] ||
+    bankLogos[`@/assets/banks/${fileName}`] ||
+    null
+  )
+})
+
 
 const store = useProductStore()
 const likeStore = useLikeStore()
@@ -317,7 +394,6 @@ onMounted(() => {
 .bank-logo-large {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -580,4 +656,11 @@ onMounted(() => {
     justify-content: center;
   }
 }
+
+.bank-logo-img-large {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
 </style>
