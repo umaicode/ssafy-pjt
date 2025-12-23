@@ -29,7 +29,7 @@
           </svg>
         </div>
 
-        <span class="bank-name">{{ product.kor_co_nm }}</span>
+        <!-- <span class="bank-name">{{ product.kor_co_nm }}</span> -->
       </div>
     </div>
 
@@ -98,18 +98,12 @@ const props = defineProps({
 const BANK_FILE_MAP = {
   // 시중은행
   국민은행: "국민은행.png",
-
   신한은행: "신한은행.png",
   우리은행: "우리은행.png",
-
-  농협은행주식회사: "농협은행.png",
-
+  농협은행주식회사: "농협은행.jpg",
   중소기업은행: "기업은행.png",
-
   한국산업은행: "산업은행.png",
-
   '주식회사 하나은행': "하나은행.png",
-
   씨티뱅크: "씨티뱅크.png",
   한국씨티은행: "citi.png",
 
@@ -120,16 +114,13 @@ const BANK_FILE_MAP = {
 
   // 지방은행
   부산은행: "부산은행.png",
-
   경남은행: "경남은행.png",
-
   아이엠뱅크: "아이엠뱅크.png",
-
   광주은행: "광주은행.png",
   제주은행: "제주은행.png",
   전북은행: "전북은행.png",
-
   수협은행: "수협은행.png",
+  한국스탠다드차타드은행: "sc제일은행.jpg",
 }
 
 /**
