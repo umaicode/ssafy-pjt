@@ -1,140 +1,325 @@
 <template>
-  <div class="product-card">
+  <div class="product-card" :class="{ selected: isSelected }">
     <!-- Card Header -->
     <div class="card-header">
-      <div class="bank-info">
-        <div class="bank-logo">{{ d.bank?.charAt(0) || 'B' }}</div>
-        <div class="bank-text">
-          <span class="bank-name">{{ d.bank }}</span>
-          <h4 class="product-name">{{ d.name }}</h4>
-        </div>
+      <div class="bank-badge">
+        <span class="bank-initial">{{ d.bank?.charAt(0) || 'B' }}</span>
       </div>
-      <div class="fit-score" :class="scoreClass">
-        {{ (item.fit_score * 100).toFixed(0) }}%
+      <div class="header-content">
+        <span class="bank-name">{{ d.bank }}</span>
+        <h4 class="product-name">{{ d.name }}</h4>
       </div>
-    </div>
-
-    <!-- Rate Info -->
-    <div class="rate-section">
-      <div class="rate-item">
-        <span class="rate-label">기본금리</span>
-        <span class="rate-value">{{ d.intr_rate }}%</span>
-      </div>
-      <div class="rate-divider"></div>
-      <div class="rate-item">
-        <span class="rate-label">최고금리</span>
-        <span class="rate-value highlight">{{ d.intr_rate2 }}%</span>
+      <div class="fit-badge" :class="scoreClass">
+        <span class="fit-label">적합도</span>
+        <span class="fit-value">{{ (item.fit_score * 100).toFixed(0) }}%</span>
       </div>
     </div>
 
-    <!-- Product Details -->
-    <div class="details-section">
-      <div class="detail-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="4" width="18" height="18" rx="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-        </svg>
-        <span>기간: {{ d.save_trm }}개월</span>
+    <!-- Rate Display -->
+    <div class="rate-display">
+      <div class="rate-main">
+        <span class="rate-number">{{ d.intr_rate2 }}</span>
+        <span class="rate-unit">%</span>
       </div>
-      <div v-if="d.max_limit" class="detail-row">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="12" y1="1" x2="12" y2="23"/>
-          <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-        </svg>
-        <span>한도: {{ d.max_limit.toLocaleString() }}원</span>
+      <div class="rate-info">
+        <span class="rate-type">최고금리 (연)</span>
+        <span class="rate-base">기본 {{ d.intr_rate }}%</span>
       </div>
     </div>
 
-    <!-- Join Way Tags -->
-    <div v-if="joinWayTags.length" class="tags-section">
-      <span class="tag" v-for="tag in joinWayTags" :key="tag">
-        {{ tag }}
-      </span>
-    </div>
-
-    <!-- Plan Box -->
-    <div v-if="plan" class="plan-box">
-      <!-- 적금: 월납 -->
-      <template v-if="plan.type === 'monthly'">
-        <div class="plan-header">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10"/>
-            <polyline points="12 6 12 12 16 14"/>
-          </svg>
-          <span class="plan-title">{{ plan.term_months }}개월 기준 목표 달성 계획</span>
-        </div>
-        <div class="plan-content">
-          <p class="plan-item">
-            목표 달성 월납입액: <strong>{{ plan.required_monthly_amount?.toLocaleString() }}원</strong>
-          </p>
-          <p v-if="plan.extra_needed_per_month > 0" class="plan-item warning">
-            현재보다 추가로: <strong>+{{ plan.extra_needed_per_month.toLocaleString() }}원/월</strong>
-          </p>
-          <p class="plan-note">
-            현재 계획 유지 시 {{ plan.term_months }}개월 후 
-            {{ plan.planned_total_amount.toLocaleString() }}원 → 
-            부족 {{ plan.shortfall_amount.toLocaleString() }}원
-          </p>
-        </div>
-      </template>
-
-      <!-- 예금: 일시납 -->
-      <template v-else-if="plan.type === 'lump_sum'">
-        <div class="plan-header">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="12" y1="1" x2="12" y2="23"/>
-            <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-          </svg>
-          <span class="plan-title">예금(일시납) 안내</span>
-        </div>
-        <div class="plan-content">
-          <p class="plan-item">
-            목표 달성 필요 금액: <strong>{{ plan.required_lump_sum?.toLocaleString() }}원</strong>
-          </p>
-          <p class="plan-note">{{ plan.message }}</p>
-        </div>
-      </template>
-    </div>
-
-    <!-- Special Conditions -->
-    <details class="conditions-section">
-      <summary class="conditions-summary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-        우대 조건 보기
-      </summary>
-      <p class="conditions-text">{{ d.spcl_cnd || '우대 조건 정보가 없습니다.' }}</p>
-    </details>
-
-    <!-- AI Reason -->
-    <div class="reason-section">
-      <div class="reason-header">
+    <!-- Quick Info -->
+    <div class="quick-info">
+      <div class="info-chip">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
-          <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
-          <line x1="12" y1="17" x2="12.01" y2="17"/>
+          <polyline points="12 6 12 12 16 14"/>
         </svg>
-        <span>AI 추천 이유</span>
+        {{ d.save_trm }}개월
       </div>
-      <p class="reason-text">{{ item.reason }}</p>
+      <div class="info-chip" :class="item.kind">
+        {{ item.kind === 'deposit' ? '예금' : '적금' }}
+      </div>
+      <div v-if="joinWayTags.includes('스마트폰')" class="info-chip mobile">
+        모바일
+      </div>
+    </div>
+
+    <!-- Simulation (적금) - 사용자 월납입액 기준 만기 시 이자 -->
+    <div v-if="item.kind === 'saving' && interestSimulation" class="simulation-box">
+      <div class="sim-header">
+        <span class="sim-title">월 {{ formatCompact(interestSimulation.monthlyDeposit) }} × {{ interestSimulation.months }}개월</span>
+      </div>
+      <div class="sim-row">
+        <div class="sim-item">
+          <span class="sim-label">총 납입액</span>
+          <span class="sim-value">{{ formatCompact(interestSimulation.principal) }}</span>
+        </div>
+        <div class="sim-arrow">→</div>
+        <div class="sim-item highlight">
+          <span class="sim-label">만기수령(세전)</span>
+          <span class="sim-value">{{ formatCompact(interestSimulation.total) }}</span>
+        </div>
+        <div class="sim-interest">+{{ formatCompact(interestSimulation.interest) }}</div>
+      </div>
+      <div class="sim-tax-row">
+        <span class="sim-tax-label">세후(15.4%↓)</span>
+        <span class="sim-tax-value">{{ formatCompact(interestSimulation.totalAfterTax) }}</span>
+        <span class="sim-tax-interest">+{{ formatCompact(interestSimulation.interestAfterTax) }}</span>
+      </div>
+    </div>
+
+    <!-- Simulation (예금) - 보유금 기준 만기 시 이자 -->
+    <div v-if="item.kind === 'deposit' && depositSimulation" class="simulation-box deposit">
+      <div class="sim-header">
+        <span class="sim-title">{{ depositSimulation.months }}개월 예치</span>
+      </div>
+      <div class="sim-row">
+        <div class="sim-item">
+          <span class="sim-label">예치금</span>
+          <span class="sim-value">{{ formatCompact(depositSimulation.principal) }}</span>
+        </div>
+        <div class="sim-arrow">→</div>
+        <div class="sim-item highlight">
+          <span class="sim-label">만기수령(세전)</span>
+          <span class="sim-value">{{ formatCompact(depositSimulation.total) }}</span>
+        </div>
+        <div class="sim-interest">+{{ formatCompact(depositSimulation.interest) }}</div>
+      </div>
+      <div class="sim-tax-row">
+        <span class="sim-tax-label">세후(15.4%↓)</span>
+        <span class="sim-tax-value">{{ formatCompact(depositSimulation.totalAfterTax) }}</span>
+        <span class="sim-tax-interest">+{{ formatCompact(depositSimulation.interestAfterTax) }}</span>
+      </div>
+    </div>
+
+    <!-- AI Reason -->
+    <div class="reason-box">
+      <p class="reason-text">"{{ item.reason }}"</p>
+    </div>
+
+    <!-- Actions -->
+    <div class="card-actions">
+      <button class="action-btn like" :class="{ active: isLiked }" @click.stop="handleLike">
+        <svg viewBox="0 0 24 24" :fill="isLiked ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+      </button>
+      <button class="action-btn select" :class="{ active: isSelected }" @click.stop="handleSelect">
+        <svg v-if="!isSelected" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5v14M5 12h14"/>
+        </svg>
+        <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        {{ isSelected ? '선택됨' : '선택' }}
+      </button>
+      <button class="action-btn detail" @click.stop="toggleDetail">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="1"/>
+          <circle cx="19" cy="12" r="1"/>
+          <circle cx="5" cy="12" r="1"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Expandable Details -->
+    <div v-if="showDetail" class="detail-panel">
+      <div class="detail-section">
+        <h5 class="detail-title">가입 방법</h5>
+        <div class="detail-tags">
+          <span v-for="tag in joinWayTags" :key="tag" class="detail-tag">{{ tag }}</span>
+        </div>
+      </div>
+      <div class="detail-section">
+        <h5 class="detail-title">우대 조건</h5>
+        <p class="detail-text">{{ d.spcl_cnd || '우대 조건 정보가 없습니다.' }}</p>
+      </div>
+      <div v-if="d.max_limit" class="detail-section">
+        <h5 class="detail-title">가입 한도</h5>
+        <p class="detail-text">{{ d.max_limit.toLocaleString() }}원</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
+import { useLikeStore } from '@/stores/like'
+import { useAccountStore } from '@/stores/accounts'
+import { useAnalysisStore } from '@/stores/analysis'
 
 const props = defineProps({
   item: {
     type: Object,
     required: true,
   },
+  monthlyAmount: {
+    type: Number,
+    default: 0,
+  },
 })
+
+const emit = defineEmits(['product-selected'])
 
 const d = props.item.detail
 const plan = props.item.plan
+
+const likeStore = useLikeStore()
+const accountStore = useAccountStore()
+const analysisStore = useAnalysisStore()
+
+const isLiked = ref(false)
+const isSelected = ref(false)
+const showDetail = ref(false)
+
+// 상품 타입 결정 (deposit/saving)
+const productType = computed(() => {
+  return props.item.kind === 'deposit' ? 'deposit' : 'saving'
+})
+
+// 이자 시뮬레이션 계산 (적금용) - 사용자 월납입액 기준으로 만기 시 이자 계산
+const interestSimulation = computed(() => {
+  if (props.item.kind !== 'saving' || !d?.intr_rate2 || !d?.save_trm) {
+    return null
+  }
+  
+  // ★ 사용자가 입력한 월납입액 사용 (analysisStore에서 가져옴)
+  let monthlyDeposit = props.monthlyAmount
+  if (!monthlyDeposit) {
+    // store에서 월납입액 가져오기
+    monthlyDeposit = analysisStore.result?.goal_math?.monthly_amount || 0
+  }
+  if (!monthlyDeposit) {
+    monthlyDeposit = 500000 // 기본값 50만원
+  }
+  
+  // ★ 상품의 만기 기간 사용 (사용자 목표기간이 아님)
+  const months = parseInt(d.save_trm)
+  const rate = parseFloat(d.intr_rate2) / 100
+  
+  // ★ 만기까지 납입 시 원금과 이자 (세전)
+  const principal = monthlyDeposit * months
+  const interest = Math.round(monthlyDeposit * (months * (months + 1) / 2) * (rate / 12))
+  const total = principal + interest
+  
+  // ★ 세후 이자 (15.4% 공제)
+  const TAX_RATE = 0.154
+  const interestAfterTax = Math.round(interest * (1 - TAX_RATE))
+  const totalAfterTax = principal + interestAfterTax
+  
+  return { monthlyDeposit, months, rate: d.intr_rate2, principal, interest, total, interestAfterTax, totalAfterTax }
+})
+
+// 이자 시뮬레이션 계산 (예금용) - 사용자 보유금 기준으로 만기 시 이자 계산
+const depositSimulation = computed(() => {
+  if (props.item.kind !== 'deposit' || !d?.intr_rate2 || !d?.save_trm) {
+    return null
+  }
+  
+  // ★ 사용자의 현재 보유금 사용 (analysisStore에서 가져옴)
+  let principal = analysisStore.result?.goal_math?.current_savings || 0
+  if (!principal) {
+    principal = 5000000 // 기본값 500만원
+  }
+  
+  const months = parseInt(d.save_trm)
+  const rate = parseFloat(d.intr_rate2) / 100
+  
+  // 예금 이자 (단리, 세전)
+  const interest = Math.round(principal * rate * (months / 12))
+  const total = principal + interest
+  
+  // ★ 세후 이자 (15.4% 공제)
+  const TAX_RATE = 0.154
+  const interestAfterTax = Math.round(interest * (1 - TAX_RATE))
+  const totalAfterTax = principal + interestAfterTax
+  
+  return { principal, months, rate: d.intr_rate2, interest, total, interestAfterTax, totalAfterTax }
+})
+
+onMounted(() => {
+  checkLikeStatus()
+  checkSelectedStatus()
+})
+
+const checkLikeStatus = () => {
+  if (accountStore.token && d?.fin_prdt_cd) {
+    const found = likeStore.likes.find(
+      (like) => like.fin_prdt_cd === d.fin_prdt_cd && like.product_type === productType.value
+    )
+    isLiked.value = !!found
+  }
+}
+
+const checkSelectedStatus = () => {
+  if (d?.fin_prdt_cd) {
+    isSelected.value = analysisStore.isProductSelected(d.fin_prdt_cd, productType.value)
+  }
+}
+
+const handleLike = async () => {
+  if (!accountStore.token) {
+    alert('로그인이 필요합니다.')
+    return
+  }
+  
+  try {
+    await likeStore.toggleLike({
+      fin_prdt_cd: d.fin_prdt_cd,
+      product_type: productType.value,
+    })
+    isLiked.value = !isLiked.value
+  } catch (err) {
+    console.error('좋아요 토글 실패:', err)
+  }
+}
+
+const handleSelect = () => {
+  if (!accountStore.token) {
+    alert('로그인이 필요합니다.')
+    return
+  }
+  
+  const productData = {
+    fin_prdt_cd: d.fin_prdt_cd,
+    product_type: productType.value,
+    name: d.name,
+    bank: d.bank,
+    intr_rate: d.intr_rate,
+    intr_rate2: d.intr_rate2,
+    save_trm: d.save_trm,
+    simulation: interestSimulation.value,
+    selected_at: new Date().toISOString(),
+  }
+  
+  if (isSelected.value) {
+    analysisStore.removeSelectedProduct(d.fin_prdt_cd, productType.value)
+  } else {
+    analysisStore.addSelectedProduct(productData)
+  }
+  
+  isSelected.value = !isSelected.value
+  emit('product-selected', { product: productData, selected: isSelected.value })
+}
+
+const toggleDetail = () => {
+  showDetail.value = !showDetail.value
+}
+
+const formatCurrency = (value) => {
+  if (!value) return '0원'
+  return value.toLocaleString() + '원'
+}
+
+const formatCompact = (value) => {
+  if (!value) return '0'
+  if (value >= 100000000) {
+    return (value / 100000000).toFixed(1) + '억'
+  } else if (value >= 10000) {
+    return (value / 10000).toFixed(0) + '만원'
+  }
+  return value.toLocaleString() + '원'
+}
 
 const joinWayTags = computed(() =>
   d?.join_way?.split(',').map(v => v.trim()) || []
@@ -151,285 +336,436 @@ const scoreClass = computed(() => {
 <style scoped>
 .product-card {
   background: white;
-  border-radius: 20px;
-  padding: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
 }
 
-/* Card Header */
+.product-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.product-card.selected {
+  border-color: #9333ea;
+  background: linear-gradient(to bottom, #faf5ff, white);
+}
+
+/* Header */
 .card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.bank-info {
-  display: flex;
+  align-items: center;
   gap: 12px;
-  align-items: flex-start;
+  margin-bottom: 16px;
 }
 
-.bank-logo {
-  width: 44px;
-  height: 44px;
+.bank-badge {
+  width: 40px;
+  height: 40px;
   background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
-  border-radius: 12px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: white;
   flex-shrink: 0;
 }
 
-.bank-text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.bank-initial {
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.header-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .bank-name {
   font-size: 0.75rem;
-  font-weight: 600;
   color: #71717a;
+  font-weight: 500;
 }
 
 .product-name {
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 700;
   color: #18181b;
-  margin: 0;
-  line-height: 1.3;
+  margin: 2px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.fit-score {
-  padding: 6px 12px;
-  font-size: 0.875rem;
+.fit-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.fit-badge.excellent {
+  background: #dcfce7;
+}
+
+.fit-badge.good {
+  background: #fef3c7;
+}
+
+.fit-badge.normal {
+  background: #f4f4f5;
+}
+
+.fit-label {
+  font-size: 0.625rem;
+  color: #71717a;
+}
+
+.fit-badge.excellent .fit-value {
+  color: #16a34a;
+}
+
+.fit-badge.good .fit-value {
+  color: #d97706;
+}
+
+.fit-badge.normal .fit-value {
+  color: #71717a;
+}
+
+.fit-value {
+  font-size: 0.9375rem;
+  font-weight: 800;
+}
+
+/* Rate Display */
+.rate-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.rate-main {
+  display: flex;
+  align-items: baseline;
+}
+
+.rate-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #9333ea;
+  line-height: 1;
+}
+
+.rate-unit {
+  font-size: 1rem;
   font-weight: 700;
-  border-radius: 20px;
+  color: #9333ea;
+  margin-left: 2px;
 }
 
-.fit-score.excellent {
+.rate-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rate-type {
+  font-size: 0.75rem;
+  color: #7c3aed;
+  font-weight: 600;
+}
+
+.rate-base {
+  font-size: 0.75rem;
+  color: #a1a1aa;
+}
+
+/* Quick Info */
+.quick-info {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.info-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  background: #f4f4f5;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #52525b;
+}
+
+.info-chip svg {
+  width: 12px;
+  height: 12px;
+}
+
+.info-chip.deposit {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.info-chip.saving {
   background: #dcfce7;
   color: #16a34a;
 }
 
-.fit-score.good {
+.info-chip.mobile {
   background: #fef3c7;
   color: #d97706;
 }
 
-.fit-score.normal {
+/* Simulation Box */
+.simulation-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.simulation-box.deposit {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.sim-header {
+  display: flex;
+  justify-content: center;
+}
+
+.sim-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #16a34a;
+  background: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.simulation-box.deposit .sim-title {
+  color: #2563eb;
+}
+
+.sim-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sim-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.sim-label {
+  font-size: 0.625rem;
+  color: #71717a;
+}
+
+.sim-value {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #18181b;
+}
+
+.sim-item.highlight .sim-value {
+  color: #16a34a;
+}
+
+.simulation-box.deposit .sim-item.highlight .sim-value {
+  color: #2563eb;
+}
+
+.sim-arrow {
+  color: #a1a1aa;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.sim-interest {
+  padding: 4px 8px;
+  background: white;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #16a34a;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.simulation-box.deposit .sim-interest {
+  color: #2563eb;
+}
+
+/* 세후 이자 표시 */
+.sim-tax-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed #d4d4d8;
+  margin-top: 6px;
+}
+
+.sim-tax-label {
+  font-size: 0.625rem;
+  color: #71717a;
+}
+
+.sim-tax-value {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #52525b;
+}
+
+.sim-tax-interest {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #71717a;
+  background: #f4f4f5;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Reason Box */
+.reason-box {
+  padding: 12px;
+  background: #fffbeb;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.reason-text {
+  font-size: 0.8125rem;
+  color: #78350f;
+  line-height: 1.5;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Actions */
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+}
+
+.action-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.action-btn.like {
+  width: 40px;
   background: #f4f4f5;
   color: #71717a;
 }
 
-/* Rate Section */
-.rate-section {
-  display: flex;
-  align-items: center;
-  padding: 16px;
-  background: #faf5ff;
-  border-radius: 14px;
+.action-btn.like:hover {
+  background: #fce7f3;
+  color: #ec4899;
 }
 
-.rate-item {
+.action-btn.like.active {
+  background: #fce7f3;
+  color: #ec4899;
+}
+
+.action-btn.select {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  color: white;
 }
 
-.rate-label {
-  font-size: 0.75rem;
+.action-btn.select:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+}
+
+.action-btn.select.active {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+}
+
+.action-btn.detail {
+  width: 40px;
+  background: #f4f4f5;
   color: #71717a;
 }
 
-.rate-value {
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #18181b;
-}
-
-.rate-value.highlight {
-  color: #9333ea;
-}
-
-.rate-divider {
-  width: 1px;
-  height: 36px;
+.action-btn.detail:hover {
   background: #e4e4e7;
 }
 
-/* Details Section */
-.details-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+/* Detail Panel */
+.detail-panel {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e4e4e7;
 }
 
-.detail-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.875rem;
-  color: #52525b;
+.detail-section {
+  margin-bottom: 12px;
 }
 
-.detail-row svg {
-  width: 16px;
-  height: 16px;
-  color: #a1a1aa;
+.detail-section:last-child {
+  margin-bottom: 0;
 }
 
-/* Tags Section */
-.tags-section {
+.detail-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #71717a;
+  margin: 0 0 6px;
+}
+
+.detail-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
 }
 
-.tag {
-  padding: 6px 10px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #3b82f6;
-  background: #dbeafe;
-  border-radius: 6px;
-}
-
-/* Plan Box */
-.plan-box {
-  padding: 16px;
-  background: #f0fdf4;
-  border-left: 4px solid #16a34a;
-  border-radius: 12px;
-}
-
-.plan-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.plan-header svg {
-  width: 18px;
-  height: 18px;
-  color: #16a34a;
-}
-
-.plan-title {
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: #166534;
-}
-
-.plan-content {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.plan-item {
-  font-size: 0.875rem;
-  color: #166534;
-  margin: 0;
-}
-
-.plan-item strong {
-  font-weight: 700;
-}
-
-.plan-item.warning {
-  color: #dc2626;
-}
-
-.plan-note {
+.detail-tag {
+  padding: 4px 8px;
+  background: #f4f4f5;
+  border-radius: 4px;
   font-size: 0.75rem;
   color: #52525b;
-  margin: 4px 0 0;
 }
 
-/* Conditions Section */
-.conditions-section {
-  border: 1px solid #e4e4e7;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.conditions-summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #52525b;
-  background: #fafafa;
-  cursor: pointer;
-  list-style: none;
-}
-
-.conditions-summary::-webkit-details-marker {
-  display: none;
-}
-
-.conditions-summary svg {
-  width: 16px;
-  height: 16px;
-  transition: transform 0.2s;
-}
-
-.conditions-section[open] .conditions-summary svg {
-  transform: rotate(90deg);
-}
-
-.conditions-text {
-  padding: 16px;
-  font-size: 0.875rem;
-  color: #52525b;
-  line-height: 1.6;
-  margin: 0;
-  border-top: 1px solid #e4e4e7;
-}
-
-/* Reason Section */
-.reason-section {
-  padding: 16px;
-  background: #fef3c7;
-  border-radius: 12px;
-}
-
-.reason-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.reason-header svg {
-  width: 18px;
-  height: 18px;
-  color: #d97706;
-}
-
-.reason-header span {
+.detail-text {
   font-size: 0.8125rem;
-  font-weight: 700;
-  color: #92400e;
-}
-
-.reason-text {
-  font-size: 0.875rem;
-  color: #78350f;
-  line-height: 1.6;
+  color: #52525b;
+  line-height: 1.5;
   margin: 0;
-  font-style: italic;
 }
 </style>
