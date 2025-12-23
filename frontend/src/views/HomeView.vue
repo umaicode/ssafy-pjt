@@ -82,36 +82,6 @@
       </div>
     </section>
 
-    <!-- Exchange Rate Banner (로그인 시) -->
-    <section v-if="accountStore.isLogin && currentRate" class="exchange-section">
-      <div class="exchange-card">
-        <div class="exchange-header">
-          <span class="exchange-badge">실시간</span>
-          <span class="exchange-title">오늘의 환율</span>
-        </div>
-        <div class="exchange-body">
-          <div class="exchange-icon">{{ getCurrencyEmoji(currentRate.cur_unit) }}</div>
-          <div class="exchange-info">
-            <span class="exchange-currency">{{ currentRate.cur_nm }}</span>
-            <span class="exchange-rate">
-              <span class="rate-value">{{ formatRate(currentRate.deal_bas_r) }}</span>
-              <span class="rate-unit">원</span>
-            </span>
-          </div>
-          <div class="exchange-indicator">
-            <div class="indicator-dots">
-              <span 
-                v-for="(_, i) in exchangeStore.rates.slice(0, 5)" 
-                :key="i" 
-                class="dot"
-                :class="{ active: i === currentIndex % 5 }"
-              ></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Features Section -->
     <section class="features-section">
       <div class="section-header">
@@ -251,85 +221,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useExchangeStore } from '@/stores/exchange'
 import { useAccountStore } from '@/stores/accounts'
 
-const exchangeStore = useExchangeStore()
 const accountStore = useAccountStore()
-
-const currentIndex = ref(0)
-let intervalId = null
-
-// 현재 표시할 환율 정보
-const currentRate = computed(() => {
-  if (!exchangeStore.rates || exchangeStore.rates.length === 0) {
-    return null
-  }
-  return exchangeStore.rates[currentIndex.value]
-})
-
-// 환율 포맷팅
-const formatRate = (rate) => {
-  if (!rate) return '-'
-  const numRate = parseFloat(rate.replace(/,/g, ''))
-  return numRate.toLocaleString('ko-KR', { 
-    minimumFractionDigits: 2, 
-    maximumFractionDigits: 2 
-  })
-}
-
-// 통화별 이모지
-const getCurrencyEmoji = (unit) => {
-  const emojis = {
-    'USD': '🇺🇸',
-    'EUR': '🇪🇺',
-    'JPY(100)': '🇯🇵',
-    'CNH': '🇨🇳',
-    'GBP': '🇬🇧',
-  }
-  return emojis[unit] || '💱'
-}
-
-// 3초마다 통화 변경
-const startRotation = () => {
-  if (exchangeStore.rates.length === 0) return
-  intervalId = setInterval(() => {
-    currentIndex.value = (currentIndex.value + 1) % exchangeStore.rates.length
-  }, 3000)
-}
-
-const stopRotation = () => {
-  if (intervalId) {
-    clearInterval(intervalId)
-    intervalId = null
-  }
-}
-
-watch(() => exchangeStore.rates.length, (newLen) => {
-  if (newLen > 0 && accountStore.isLogin) {
-    stopRotation()
-    startRotation()
-  }
-})
-
-onMounted(async () => {
-  if (accountStore.isLogin && exchangeStore.rates.length === 0) {
-    try {
-      await exchangeStore.getExchangeRates()
-    } catch (err) {
-      console.error('환율 조회 실패:', err)
-    }
-  }
-  if (accountStore.isLogin && exchangeStore.rates.length > 0) {
-    startRotation()
-  }
-})
-
-onUnmounted(() => {
-  stopRotation()
-})
 </script>
 
 <style scoped>
@@ -539,96 +435,6 @@ onUnmounted(() => {
   font-size: 1.125rem;
   font-weight: 700;
   color: #18181b;
-}
-
-/* Exchange Section */
-.exchange-section {
-  margin-bottom: 80px;
-}
-
-.exchange-card {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 50%, #6366f1 100%);
-  border-radius: 24px;
-  padding: 32px;
-  color: white;
-  box-shadow: 0 20px 40px -10px rgba(147, 51, 234, 0.4);
-}
-
-.exchange-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.exchange-badge {
-  padding: 4px 12px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.exchange-title {
-  font-size: 0.9375rem;
-  font-weight: 500;
-  opacity: 0.9;
-}
-
-.exchange-body {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.exchange-icon {
-  font-size: 3rem;
-}
-
-.exchange-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.exchange-currency {
-  font-size: 0.9375rem;
-  opacity: 0.9;
-}
-
-.exchange-rate {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.rate-value {
-  font-size: 2.5rem;
-  font-weight: 700;
-}
-
-.rate-unit {
-  font-size: 1.25rem;
-  opacity: 0.9;
-}
-
-.indicator-dots {
-  display: flex;
-  gap: 8px;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  transition: all 0.3s ease;
-}
-
-.dot.active {
-  background: white;
-  transform: scale(1.2);
 }
 
 /* Features Section */

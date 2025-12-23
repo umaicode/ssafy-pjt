@@ -26,8 +26,8 @@ def fetch_exchange_rates(request):
     # 오늘 날짜 (YYYYMMDD 형식)
     search_date = datetime.now().strftime('%Y%m%d')
     
-    # 주요 통화 리스트
-    currencies = ['USD', 'EUR', 'JPY(100)', 'CNH', 'GBP']
+    # 주요 통화 리스트 (API에서 실제 제공하는 통화)
+    currencies = ['USD', 'EUR', 'JPY(100)', 'CNH', 'GBP', 'THB', 'SGD', 'HKD']
     
     base_url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON'
     

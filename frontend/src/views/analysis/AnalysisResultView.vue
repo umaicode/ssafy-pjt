@@ -255,7 +255,23 @@
             </svg>
             💱 환율 환산 정보
           </h3>
-          <div class="exchange-grid">
+          
+          <!-- 환율 데이터가 없는 경우 -->
+          <div v-if="analysisStore.result.exchange_rate_info.error_message" class="exchange-error">
+            <div class="exchange-error-icon">⚠️</div>
+            <p class="exchange-error-message">{{ analysisStore.result.exchange_rate_info.error_message }}</p>
+            <div class="exchange-box">
+              <h4 class="exchange-box-title">예상 총 적립금 (원화)</h4>
+              <div class="exchange-stat big">
+                <span class="exchange-label">만기 시 예상 금액</span>
+                <span class="exchange-value primary">{{ formatCurrency(analysisStore.result.exchange_rate_info.total_with_interest_krw) }}</span>
+              </div>
+              <p class="exchange-note">※ 환율 데이터가 없어 원화로 표시됩니다</p>
+            </div>
+          </div>
+          
+          <!-- 환율 데이터가 있는 경우 -->
+          <div v-else class="exchange-grid">
             <!-- 기본 환율 정보 -->
             <div class="exchange-box">
               <h4 class="exchange-box-title">현재 환율</h4>
@@ -1415,6 +1431,33 @@ const formatDate = (dateString) => {
   font-size: 0.75rem;
   color: #64748b;
   margin: 8px 0 0;
+}
+
+/* Exchange Error Message */
+.exchange-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.exchange-error-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.exchange-error-message {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #dc2626;
+  margin: 0 0 20px;
+}
+
+.exchange-error .exchange-box {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 8px;
 }
 
 /* Destinations Card */

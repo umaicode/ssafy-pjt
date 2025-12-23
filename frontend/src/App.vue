@@ -7,7 +7,6 @@
         <RouterLink :to="{ name: 'home' }" class="navbar-brand">
           F!NK
         </RouterLink>
-
         <!-- Main Navigation -->
         <nav class="navbar-menu">
           <RouterLink :to="{ name: 'ProductView' }" class="navbar-link">
@@ -56,6 +55,21 @@
             커뮤니티
           </RouterLink>
         </nav>
+
+                <!-- Exchange Rate Ticker -->
+        <div v-if="accountStore.isLogin && exchangeStore.rates.length > 0" class="exchange-ticker">
+          <div class="ticker-wrapper">
+            <div 
+              v-for="(rate, index) in exchangeStore.rates" 
+              :key="rate.cur_unit"
+              class="ticker-item"
+              :class="{ active: index === currentRateIndex }"
+            >
+              <span class="ticker-name">{{ rate.cur_unit }}</span>
+              <span class="ticker-rate">{{ formatRate(rate.deal_bas_r) }}</span>
+            </div>
+          </div>
+        </div>
 
         <!-- User Actions -->
         <div class="navbar-actions">
@@ -140,11 +154,56 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAccountStore } from './stores/accounts'
+import { useExchangeStore } from './stores/exchange'
 
 const accountStore = useAccountStore()
+const exchangeStore = useExchangeStore()
 const mobileMenuOpen = ref(false)
+const currentRateIndex = ref(0)
+
+let tickerInterval = null
+
+// 환율 포맷팅
+const formatRate = (rate) => {
+  if (!rate) return '-'
+  const numRate = parseFloat(rate.replace(/,/g, ''))
+  return numRate.toLocaleString('ko-KR', { maximumFractionDigits: 2 })
+}
+
+// 통화별 이모지
+const getCurrencyEmoji = (unit) => {
+  const emojis = {
+    'USD': '🇺🇸',
+    'EUR': '🇪🇺',
+    'JPY(100)': '🇯🇵',
+    'CNH': '🇨🇳',
+    'GBP': '🇬🇧',
+    'THB': '🇹🇭',
+    'SGD': '🇸🇬',
+    'HKD': '🇭🇰',
+  }
+  return emojis[unit] || '💱'
+}
+
+// 3초마다 환율 자동 전환
+const startTicker = () => {
+  if (exchangeStore.rates.length === 0) return
+  tickerInterval = setInterval(() => {
+    currentRateIndex.value = (currentRateIndex.value + 1) % exchangeStore.rates.length
+  }, 3000)
+}
+
+onMounted(() => {
+  if (accountStore.isLogin) {
+    startTicker()
+  }
+})
+
+onUnmounted(() => {
+  if (tickerInterval) clearInterval(tickerInterval)
+})
 </script>
 
 <style scoped>
@@ -220,6 +279,61 @@ const mobileMenuOpen = ref(false)
   width: 18px;
   height: 18px;
   flex-shrink: 0;
+}
+
+/* Exchange Rate Ticker */
+.exchange-ticker {
+  position: relative;
+  min-width: 140px;
+  height: 32px;
+  margin: 0 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+  border-radius: 16px;
+  padding: 0 12px;
+  border: 1px solid rgba(147, 51, 234, 0.2);
+}
+
+.ticker-wrapper {
+  position: relative;
+  height: 100%;
+}
+
+.ticker-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.5s ease;
+}
+
+.ticker-item.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ticker-flag {
+  font-size: 1rem;
+}
+
+.ticker-name {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #9333ea;
+  min-width: 35px;
+}
+
+.ticker-rate {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6366f1;
+  margin-left: auto;
 }
 
 .navbar-actions {

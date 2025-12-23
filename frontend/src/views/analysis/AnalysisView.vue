@@ -529,16 +529,16 @@ const savingsDetails = [
   { value: '기타', label: '기타', emoji: '📦' },
 ]
 
-// 여행 국가 목록 (나라 선택 시 통화 자동 설정)
+// 여행 국가 목록 (나라 선택 시 통화 자동 설정) - exchange/views.py의 currencies와 동기화
+// 실제 환율 API에서 제공하는 통화만 포함 (VND, TWD 제외)
 const travelCountries = [
   { code: 'JPY', name: '일본', flag: '🇯🇵', currencyName: '엔 (JPY)', placeholder: '예: 도쿄, 오사카, 후쿠오카' },
   { code: 'USD', name: '미국', flag: '🇺🇸', currencyName: '달러 (USD)', placeholder: '예: 뉴욕, LA, 하와이' },
   { code: 'EUR', name: '유럽', flag: '🇪🇺', currencyName: '유로 (EUR)', placeholder: '예: 파리, 로마, 바르셀로나' },
-  { code: 'CNY', name: '중국', flag: '🇨🇳', currencyName: '위안 (CNY)', placeholder: '예: 상하이, 베이징, 홍콩' },
+  { code: 'CNH', name: '중국', flag: '🇨🇳', currencyName: '위안 (CNH)', placeholder: '예: 상하이, 베이징' },
   { code: 'THB', name: '태국', flag: '🇹🇭', currencyName: '바트 (THB)', placeholder: '예: 방콕, 치앙마이, 푸켓' },
-  { code: 'VND', name: '베트남', flag: '🇻🇳', currencyName: '동 (VND)', placeholder: '예: 다낭, 호치민, 하노이' },
   { code: 'SGD', name: '싱가포르', flag: '🇸🇬', currencyName: '싱가포르 달러 (SGD)', placeholder: '예: 마리나베이, 센토사' },
-  { code: 'TWD', name: '대만', flag: '🇹🇼', currencyName: '대만 달러 (TWD)', placeholder: '예: 타이페이, 가오슝' },
+  { code: 'GBP', name: '영국', flag: '🇬🇧', currencyName: '파운드 (GBP)', placeholder: '예: 런던, 에든버러, 맨체스터' },
   { code: 'HKD', name: '홍콩', flag: '🇭🇰', currencyName: '홍콩 달러 (HKD)', placeholder: '예: 빅토리아 피크, 란타우' },
 ]
 
