@@ -2,28 +2,40 @@
   <article class="product-card">
     <div class="product-card-header">
       <div class="product-type-badge">
-        {{ type === 'deposit' ? '예금' : '적금' }}
+        {{ type === "deposit" ? "예금" : "적금" }}
       </div>
+
       <div class="product-bank">
-        <div class="bank-logo">
+        <!-- ✅ 로고 있으면 은행 CI (로컬 assets/banks/*.png) -->
+        <img
+          v-if="bankLogoSrc"
+          :src="bankLogoSrc"
+          :alt="product.kor_co_nm"
+          class="bank-logo-img"
+          loading="lazy"
+        />
+
+        <!-- ✅ 없으면 기본 아이콘 -->
+        <div v-else class="bank-logo" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 21h18"/>
-            <path d="M3 10h18"/>
-            <path d="M5 6l7-3 7 3"/>
-            <path d="M4 10v11"/>
-            <path d="M20 10v11"/>
-            <path d="M8 14v3"/>
-            <path d="M12 14v3"/>
-            <path d="M16 14v3"/>
+            <path d="M3 21h18" />
+            <path d="M3 10h18" />
+            <path d="M5 6l7-3 7 3" />
+            <path d="M4 10v11" />
+            <path d="M20 10v11" />
+            <path d="M8 14v3" />
+            <path d="M12 14v3" />
+            <path d="M16 14v3" />
           </svg>
         </div>
+
         <span class="bank-name">{{ product.kor_co_nm }}</span>
       </div>
     </div>
-    
+
     <div class="product-card-body">
       <h3 class="product-name">{{ product.fin_prdt_nm }}</h3>
-      
+
       <div v-if="product.options && product.options.length > 0" class="product-rates">
         <div class="rate-item">
           <span class="rate-label">기본금리</span>
@@ -34,7 +46,7 @@
           <span class="rate-value">{{ getMaxPreferRate }}%</span>
         </div>
       </div>
-      
+
       <div class="product-terms">
         <span v-for="term in uniqueTerms.slice(0, 4)" :key="term" class="term-badge">
           {{ term }}개월
@@ -44,16 +56,16 @@
         </span>
       </div>
     </div>
-    
+
     <div class="product-card-footer">
-      <RouterLink 
-        :to="{ name: 'ProductDetailView', params: { type, fin_prdt_cd: product.fin_prdt_cd } }" 
+      <RouterLink
+        :to="{ name: 'ProductDetailView', params: { type, fin_prdt_cd: product.fin_prdt_cd } }"
         class="detail-link"
       >
         상세정보
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M5 12h14"/>
-          <path d="M12 5l7 7-7 7"/>
+          <path d="M5 12h14" />
+          <path d="M12 5l7 7-7 7" />
         </svg>
       </RouterLink>
     </div>
@@ -61,28 +73,113 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from "vue"
+
+/**
+ * ✅ 폴더 전체를 "한 번에 import" 하는 Vite 방식
+ * - src/assets/banks/ 폴더에 있는 png들을 자동으로 가져옴
+ * - key는 "/src/assets/banks/파일명.png" 형태로 만들어짐
+ */
+const bankLogos = import.meta.glob("@/assets/banks/*.png", {
+  eager: true,
+  import: "default",
+})
 
 const props = defineProps({
   product: Object,
   type: String,
 })
 
+/**
+ * ✅ 은행명(kor_co_nm) -> 로고 파일명 매핑
+ * - 여기 파일명은 src/assets/banks/ 안의 실제 파일명과 동일해야 함
+ * - 예: src/assets/banks/kb.png
+ */
+const BANK_FILE_MAP = {
+  // 시중은행
+  국민은행: "국민은행.png",
+
+  신한은행: "신한은행.png",
+  우리은행: "우리은행.png",
+
+  농협은행주식회사: "농협은행.png",
+
+  중소기업은행: "기업은행.png",
+
+  한국산업은행: "산업은행.png",
+
+  '주식회사 하나은행': "하나은행.png",
+
+  씨티뱅크: "씨티뱅크.png",
+  한국씨티은행: "citi.png",
+
+  // 인터넷은행
+  '주식회사 카카오뱅크': "카카오뱅크.png",
+  '주식회사 케이뱅크': "케이뱅크.png",
+  '토스뱅크 주식회사': "토스뱅크.png",
+
+  // 지방은행
+  부산은행: "부산은행.png",
+
+  경남은행: "경남은행.png",
+
+  아이엠뱅크: "아이엠뱅크.png",
+
+  광주은행: "광주은행.png",
+  제주은행: "제주은행.png",
+  전북은행: "전북은행.png",
+
+  수협은행: "수협은행.png",
+}
+
+/**
+ * ✅ 현재 상품 은행명으로 로고 src 찾기
+ * - 로고 없으면 null -> 기본 아이콘 노출
+ */
+const bankLogoSrc = computed(() => {
+  const name = (props.product?.kor_co_nm || "").trim()
+  if (!name) return null
+
+  // 1) 정확 매칭
+  let fileName = BANK_FILE_MAP[name]
+
+  // 2) 접두어 제거 후 재시도 (BNK/IBK/KEB/NH)
+  if (!fileName) {
+    const normalized = name
+      .replace(/^BNK/, "")
+      .replace(/^IBK/, "")
+      .replace(/^KEB/, "")
+      .replace(/^NH/, "")
+      .trim()
+    fileName = BANK_FILE_MAP[normalized]
+  }
+
+  if (!fileName) return null
+
+  // Vite glob 키는 보통 "/src/assets/..." 형태가 됨
+  // 어떤 환경에선 "@/assets/..."가 아닐 수 있어 아래처럼 둘 다 시도
+  return (
+    bankLogos[`/src/assets/banks/${fileName}`] ||
+    bankLogos[`@/assets/banks/${fileName}`] ||
+    null
+  )
+})
+
 const getMaxBasicRate = computed(() => {
-  if (!props.product.options || props.product.options.length === 0) return '-'
-  const rates = props.product.options.map(opt => Number(opt.intr_rate) || 0)
+  if (!props.product.options || props.product.options.length === 0) return "-"
+  const rates = props.product.options.map((opt) => Number(opt.intr_rate) || 0)
   return Math.max(...rates).toFixed(2)
 })
 
 const getMaxPreferRate = computed(() => {
-  if (!props.product.options || props.product.options.length === 0) return '-'
-  const rates = props.product.options.map(opt => Number(opt.intr_rate2) || 0)
+  if (!props.product.options || props.product.options.length === 0) return "-"
+  const rates = props.product.options.map((opt) => Number(opt.intr_rate2) || 0)
   return Math.max(...rates).toFixed(2)
 })
 
 const uniqueTerms = computed(() => {
   if (!props.product.options) return []
-  const terms = props.product.options.map(opt => Number(opt.save_trm)).filter(t => !isNaN(t))
+  const terms = props.product.options.map((opt) => Number(opt.save_trm)).filter((t) => !isNaN(t))
   return [...new Set(terms)].sort((a, b) => a - b)
 })
 </script>
@@ -243,5 +340,11 @@ const uniqueTerms = computed(() => {
 .detail-link svg {
   width: 16px;
   height: 16px;
+}
+
+.bank-logo-img {
+  width: 80px;
+  height: 32px;
+  object-fit: contain;
 }
 </style>
