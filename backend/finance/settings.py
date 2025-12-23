@@ -48,6 +48,9 @@ NAVER_CLIENT_SECRET = env("NAVER_CLIENT_SECRET")
 # Youtube API
 YOUTUBE_API_KEY = env("YOUTUBE_API_KEY")
 
+# Exchange API
+EXCHANGE_API_KEY = env("EXCHANGE_API_KEY")
+
 # Application definition
 
 INSTALLED_APPS = [

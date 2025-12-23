@@ -1351,14 +1351,12 @@ def build_travel_analysis_data(user_input: dict) -> dict:
     """
     여행 목적 분석 데이터
     - 나라를 기반으로 여행 뉴스/유튜브 검색 키워드 생성
-    - exchange/views.py의 currencies와 동기화된 통화만 지원
     """
     destination = user_input.get("travel_destination", "")
     country_code = user_input.get("travel_country_code", "")
     target_amount = int(user_input.get("target_amount") or 0)
 
-    # 주요 여행지별 통화/정보 (실제 환율 API에서 제공하는 통화만 포함)
-    # VND, TWD는 API에서 제공하지 않아 제외
+    # 주요 여행지별 통화/정보
     destination_info = {
         "JPY": {
             "country": "일본",
@@ -1381,16 +1379,9 @@ def build_travel_analysis_data(user_input: dict) -> dict:
             "avg_daily_cost": 200000,
             "popular_cities": ["파리", "로마", "바르셀로나", "런던", "암스테르담"],
         },
-        "CNH": {
+        "CNY": {
             "country": "중국",
-            "currency": "CNH",
-            "currency_name": "위안",
-            "avg_daily_cost": 100000,
-            "popular_cities": ["상하이", "베이징", "광저우", "청두", "시안"],
-        },
-        "CNY": {  # CNY도 CNH로 매핑
-            "country": "중국",
-            "currency": "CNH",
+            "currency": "CNY",
             "currency_name": "위안",
             "avg_daily_cost": 100000,
             "popular_cities": ["상하이", "베이징", "광저우", "청두", "시안"],
@@ -1402,19 +1393,19 @@ def build_travel_analysis_data(user_input: dict) -> dict:
             "avg_daily_cost": 80000,
             "popular_cities": ["방콕", "치앙마이", "푸켓", "파타야", "끄라비"],
         },
-        "SGD": {
-            "country": "싱가포르",
-            "currency": "SGD",
-            "currency_name": "싱가포르 달러",
-            "avg_daily_cost": 200000,
-            "popular_cities": ["마리나베이", "센토사", "차이나타운", "오차드로드"],
+        "VND": {
+            "country": "베트남",
+            "currency": "VND",
+            "currency_name": "동",
+            "avg_daily_cost": 70000,
+            "popular_cities": ["다낭", "호치민", "하노이", "나트랑", "푸꾸옥"],
         },
-        "GBP": {
-            "country": "영국",
-            "currency": "GBP",
-            "currency_name": "파운드",
-            "avg_daily_cost": 220000,
-            "popular_cities": ["런던", "에든버러", "맨체스터", "옥스포드", "캠브리지"],
+        "TWD": {
+            "country": "대만",
+            "currency": "TWD",
+            "currency_name": "대만 달러",
+            "avg_daily_cost": 100000,
+            "popular_cities": ["타이페이", "가오슝", "타이중", "화롄", "지우펀"],
         },
         "HKD": {
             "country": "홍콩",
@@ -1422,6 +1413,13 @@ def build_travel_analysis_data(user_input: dict) -> dict:
             "currency_name": "홍콩 달러",
             "avg_daily_cost": 180000,
             "popular_cities": ["빅토리아 피크", "란타우", "침사추이", "몽콕"],
+        },
+        "SGD": {
+            "country": "싱가포르",
+            "currency": "SGD",
+            "currency_name": "싱가포르 달러",
+            "avg_daily_cost": 200000,
+            "popular_cities": ["마리나베이", "센토사", "차이나타운", "오차드로드"],
         },
     }
 
