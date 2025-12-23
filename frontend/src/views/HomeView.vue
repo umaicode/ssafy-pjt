@@ -1,219 +1,381 @@
 <template>
   <div class="home">
-    <!-- Hero Section -->
-    <section class="hero">
+    <!-- Hero Section - 제주은행 스타일 풀스크린 히어로 -->
+    <section class="hero-section">
+      <!-- Animated Background -->
       <div class="hero-bg">
-        <div class="hero-gradient"></div>
-        <div class="hero-orb hero-orb-1"></div>
-        <div class="hero-orb hero-orb-2"></div>
-        <div class="hero-orb hero-orb-3"></div>
-      </div>
-      
-      <div class="hero-content">
-        <div class="hero-badge">
-          <span class="badge-icon">✨</span>
-          AI 기반 금융 플랫폼
-        </div>
-        
-        <h1 class="hero-title">
-          당신의 금융을<br>
-          <span class="text-gradient">더 스마트하게</span>
-        </h1>
-        
-        <p class="hero-description">
-          F!NK와 함께 예금, 적금 상품을 비교하고 AI 추천을 받아보세요.<br>
-          실시간 뉴스와 커뮤니티로 금융 정보를 한눈에 확인하세요.
-        </p>
-        
-        <div class="hero-actions">
-          <RouterLink :to="{ name: 'AnalysisView' }" class="btn btn-primary btn-lg">
-            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
-            AI 분석 시작하기
-          </RouterLink>
-          <RouterLink :to="{ name: 'ProductView' }" class="btn btn-glass btn-lg">
-            상품 둘러보기
-          </RouterLink>
-        </div>
-        
-        <!-- Stats -->
-        <div class="hero-stats">
-          <div class="stat">
-            <span class="stat-value">500+</span>
-            <span class="stat-label">금융 상품</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <span class="stat-value">24개</span>
-            <span class="stat-label">제휴 은행</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <span class="stat-value">실시간</span>
-            <span class="stat-label">AI 분석</span>
-          </div>
+        <div class="hero-gradient-mesh"></div>
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+        <div class="particles">
+          <span v-for="n in 20" :key="n" class="particle"></span>
         </div>
       </div>
       
-      <!-- Hero Visual -->
-      <div class="hero-visual">
-        <div class="hero-card hero-card-1">
-          <div class="mini-card-icon">💰</div>
-          <div class="mini-card-content">
-            <span class="mini-card-title">예금 추천</span>
-            <span class="mini-card-value">연 4.5%</span>
+      <div class="hero-container">
+        <div class="hero-content">
+          <!-- AI Badge -->
+          <div class="ai-chip">
+            <span class="ai-chip-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="ai-chip-text">AI 기반 자산관리 플랫폼</span>
+            <span class="ai-chip-dot"></span>
+          </div>
+          
+          <!-- Main Title -->
+          <h1 class="hero-title">
+            <span class="title-line">
+              <span class="title-word">당신의</span>
+              <span class="title-word">금융을</span>
+            </span>
+            <span class="title-line title-highlight">
+              <span class="title-gradient">더 스마트하게</span>
+            </span>
+          </h1>
+          
+          <!-- Description -->
+          <p class="hero-description">
+            F!NK의 AI가 당신의 재정 상황을 분석하고<br>
+            <strong>최적의 금융 상품</strong>을 추천해 드립니다.
+          </p>
+          
+          <!-- CTA Buttons -->
+          <div class="hero-cta">
+            <RouterLink :to="{ name: 'AnalysisView' }" class="btn-hero-primary">
+              <span class="btn-content">
+                <svg class="btn-icon" viewBox="0 0 24 24" fill="none">
+                  <path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                AI 분석 시작하기
+              </span>
+              <span class="btn-shine"></span>
+            </RouterLink>
+            <RouterLink :to="{ name: 'ProductView' }" class="btn-hero-secondary">
+              상품 둘러보기
+              <svg class="btn-arrow" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </RouterLink>
+          </div>
+
+          <!-- Stats -->
+          <div class="hero-stats">
+            <div class="stat-item">
+              <span class="stat-number">500<span class="stat-plus">+</span></span>
+              <span class="stat-label">금융 상품</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-number">24<span class="stat-unit">개</span></span>
+              <span class="stat-label">제휴 은행</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-number">실시간</span>
+              <span class="stat-label">AI 분석</span>
+            </div>
           </div>
         </div>
-        <div class="hero-card hero-card-2">
-          <div class="mini-card-icon">📈</div>
-          <div class="mini-card-content">
-            <span class="mini-card-title">적금 상품</span>
-            <span class="mini-card-value">연 5.2%</span>
+        
+        <!-- Hero Visual - Floating Cards -->
+        <div class="hero-visual">
+          <div class="visual-container">
+            <!-- Main Card -->
+            <div class="floating-card main-card">
+              <div class="card-header">
+                <div class="card-icon ai">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="currentColor" stroke-width="1.5"/>
+                  </svg>
+                </div>
+                <span class="card-badge">AI 분석 완료</span>
+              </div>
+              <div class="card-body">
+                <p class="card-title">맞춤 추천 상품</p>
+                <p class="card-value">3<span class="card-unit">건</span></p>
+              </div>
+              <div class="card-footer">
+                <div class="card-progress">
+                  <div class="progress-bar"></div>
+                </div>
+                <span class="card-status">분석 정확도 98%</span>
+              </div>
+            </div>
+            
+            <!-- Deposit Card -->
+            <div class="floating-card deposit-card">
+              <div class="card-mini-icon">💰</div>
+              <div class="card-mini-content">
+                <span class="mini-label">예금 추천</span>
+                <span class="mini-value">연 4.5%</span>
+              </div>
+            </div>
+            
+            <!-- Savings Card -->
+            <div class="floating-card savings-card">
+              <div class="card-mini-icon">📈</div>
+              <div class="card-mini-content">
+                <span class="mini-label">적금 상품</span>
+                <span class="mini-value">연 5.2%</span>
+              </div>
+            </div>
+
+            <!-- Notification Card -->
+            <div class="floating-card notification-card">
+              <div class="notif-dot"></div>
+              <span class="notif-text">새로운 상품이 추천되었습니다</span>
+            </div>
           </div>
         </div>
-        <div class="hero-card hero-card-3">
-          <div class="mini-card-icon">🤖</div>
-          <div class="mini-card-content">
-            <span class="mini-card-title">AI 분석 완료</span>
-            <span class="mini-card-value">맞춤 추천</span>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator">
+        <span class="scroll-text">스크롤하여 더 알아보기</span>
+        <div class="scroll-mouse">
+          <div class="scroll-wheel"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI Feature Section -->
+    <section class="ai-section">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-badge">핵심 기능</span>
+          <h2 class="section-title">
+            <span class="title-gradient-reverse">AI</span>가 당신의 금융을<br>분석합니다
+          </h2>
+          <p class="section-subtitle">
+            복잡한 금융 상품 비교, 이제 AI에게 맡기세요
+          </p>
+        </div>
+
+        <div class="ai-features">
+          <div class="ai-feature-card main-feature">
+            <div class="feature-visual">
+              <div class="ai-brain">
+                <svg viewBox="0 0 80 80" fill="none">
+                  <circle cx="40" cy="40" r="35" stroke="url(#gradient1)" stroke-width="2" opacity="0.3"/>
+                  <circle cx="40" cy="40" r="25" stroke="url(#gradient1)" stroke-width="2" opacity="0.5"/>
+                  <circle cx="40" cy="40" r="15" stroke="url(#gradient1)" stroke-width="2"/>
+                  <circle cx="40" cy="40" r="5" fill="url(#gradient1)"/>
+                  <defs>
+                    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" style="stop-color:#FFE6E6"/>
+                      <stop offset="50%" style="stop-color:#AD88C6"/>
+                      <stop offset="100%" style="stop-color:#7469B6"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring delay-1"></div>
+                <div class="pulse-ring delay-2"></div>
+              </div>
+            </div>
+            <div class="feature-content">
+              <h3 class="feature-title">
+                <span class="highlight">맞춤형</span> AI 자산 분석
+              </h3>
+              <p class="feature-description">
+                당신의 재정 상황, 목표, 위험 성향을 종합 분석하여<br>
+                가장 적합한 금융 상품을 추천해 드립니다.
+              </p>
+              <RouterLink :to="{ name: 'AnalysisView' }" class="feature-link">
+                지금 분석 시작하기
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </RouterLink>
+            </div>
+          </div>
+
+          <div class="ai-feature-grid">
+            <div class="ai-mini-feature">
+              <div class="mini-feature-icon">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+              <h4>실시간 분석</h4>
+              <p>최신 금융 데이터를 실시간으로 분석</p>
+            </div>
+            <div class="ai-mini-feature">
+              <div class="mini-feature-icon">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+              <h4>안전한 데이터</h4>
+              <p>개인정보 암호화 및 보안 처리</p>
+            </div>
+            <div class="ai-mini-feature">
+              <div class="mini-feature-icon">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+              <h4>최적화 추천</h4>
+              <p>수익률 극대화를 위한 맞춤 제안</p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features-section">
-      <div class="section-header">
-        <h2 class="section-title">F!NK와 함께하는 금융 생활</h2>
-        <p class="section-subtitle">복잡한 금융, 이제 쉽고 스마트하게 관리하세요</p>
+    <!-- Services Section -->
+    <section class="services-section">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-badge">서비스</span>
+          <h2 class="section-title">F!NK와 함께하는<br>스마트 금융 생활</h2>
+          <p class="section-subtitle">
+            모든 금융 서비스를 한 곳에서 관리하세요
+          </p>
+        </div>
+
+        <div class="services-grid">
+          <RouterLink :to="{ name: 'ProductView' }" class="service-card">
+            <div class="service-icon purple">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="service-content">
+              <h3>금융상품 비교</h3>
+              <p>500개 이상의 예금·적금 상품을 한눈에 비교하세요</p>
+            </div>
+            <span class="service-arrow">→</span>
+          </RouterLink>
+
+          <RouterLink :to="{ name: 'AnalysisView' }" class="service-card featured">
+            <div class="service-badge">AI 추천</div>
+            <div class="service-icon pink">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="service-content">
+              <h3>AI 맞춤 추천</h3>
+              <p>AI가 분석하는 나만의 최적 금융 솔루션</p>
+            </div>
+            <span class="service-arrow">→</span>
+          </RouterLink>
+
+          <RouterLink :to="{ name: 'NewsView' }" class="service-card">
+            <div class="service-icon blue">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="service-content">
+              <h3>실시간 뉴스</h3>
+              <p>금융 시장 최신 뉴스와 트렌드를 확인하세요</p>
+            </div>
+            <span class="service-arrow">→</span>
+          </RouterLink>
+
+          <RouterLink :to="{ name: 'MetalView' }" class="service-card">
+            <div class="service-icon gold">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="service-content">
+              <h3>현물 시세</h3>
+              <p>금, 은 등 현물 상품의 실시간 시세를 확인하세요</p>
+            </div>
+            <span class="service-arrow">→</span>
+          </RouterLink>
+
+          <RouterLink :to="{ name: 'KakaoMapView' }" class="service-card">
+            <div class="service-icon teal">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" stroke="currentColor" stroke-width="2"/>
+                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="service-content">
+              <h3>주변 은행 찾기</h3>
+              <p>가까운 은행과 ATM을 지도에서 찾아보세요</p>
+            </div>
+            <span class="service-arrow">→</span>
+          </RouterLink>
+
+          <RouterLink :to="{ name: 'CommunityView' }" class="service-card">
+            <div class="service-icon orange">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </div>
+            <div class="service-content">
+              <h3>커뮤니티</h3>
+              <p>다른 사용자들과 금융 정보를 공유하세요</p>
+            </div>
+            <span class="service-arrow">→</span>
+          </RouterLink>
+        </div>
       </div>
-      
-      <div class="features-grid">
-        <RouterLink :to="{ name: 'ProductView' }" class="feature-card">
-          <div class="feature-icon feature-icon-purple">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">금융상품 비교</h3>
-          <p class="feature-description">
-            500개 이상의 예금·적금 상품을 한눈에 비교하고 나에게 맞는 상품을 찾아보세요.
-          </p>
-          <span class="feature-link">
-            상품 보기 <span class="arrow">→</span>
-          </span>
-        </RouterLink>
+    </section>
 
-        <RouterLink :to="{ name: 'AnalysisView' }" class="feature-card">
-          <div class="feature-icon feature-icon-pink">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">AI 맞춤 추천</h3>
-          <p class="feature-description">
-            AI가 나의 재정 상황과 목표를 분석해 최적의 금융 상품을 추천해드려요.
-          </p>
-          <span class="feature-link">
-            분석 시작 <span class="arrow">→</span>
-          </span>
-        </RouterLink>
+    <!-- Partner Banks Section -->
+    <section class="partners-section">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-badge">제휴 은행</span>
+          <h2 class="section-title">24개 금융기관과<br>함께합니다</h2>
+        </div>
 
-        <RouterLink :to="{ name: 'NewsView' }" class="feature-card">
-          <div class="feature-icon feature-icon-blue">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
-            </svg>
+        <div class="partners-marquee">
+          <div class="marquee-track">
+            <div class="partner-logo" v-for="bank in banks" :key="bank">
+              <img :src="getBankLogo(bank)" :alt="bank" class="bank-img" />
+            </div>
+            <div class="partner-logo" v-for="bank in banks" :key="bank + '-dup'">
+              <img :src="getBankLogo(bank)" :alt="bank" class="bank-img" />
+            </div>
           </div>
-          <h3 class="feature-title">실시간 뉴스</h3>
-          <p class="feature-description">
-            금융 시장의 최신 뉴스를 실시간으로 확인하고 중요한 정보를 북마크하세요.
-          </p>
-          <span class="feature-link">
-            뉴스 보기 <span class="arrow">→</span>
-          </span>
-        </RouterLink>
-
-        <RouterLink :to="{ name: 'MetalView' }" class="feature-card">
-          <div class="feature-icon feature-icon-gold">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 6v6l4 2"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">현물 시세</h3>
-          <p class="feature-description">
-            금, 은 등 현물 상품의 실시간 시세를 차트로 확인하고 투자 타이밍을 잡으세요.
-          </p>
-          <span class="feature-link">
-            시세 확인 <span class="arrow">→</span>
-          </span>
-        </RouterLink>
-
-        <RouterLink :to="{ name: 'KakaoMapView' }" class="feature-card">
-          <div class="feature-icon feature-icon-teal">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-              <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">주변 은행 찾기</h3>
-          <p class="feature-description">
-            현재 위치에서 가장 가까운 은행과 ATM을 지도에서 바로 찾아보세요.
-          </p>
-          <span class="feature-link">
-            은행 찾기 <span class="arrow">→</span>
-          </span>
-        </RouterLink>
-
-        <RouterLink :to="{ name: 'CommunityView' }" class="feature-card">
-          <div class="feature-icon feature-icon-orange">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">커뮤니티</h3>
-          <p class="feature-description">
-            다른 사용자들과 금융 정보를 공유하고 투자 전략을 함께 이야기해보세요.
-          </p>
-          <span class="feature-link">
-            참여하기 <span class="arrow">→</span>
-          </span>
-        </RouterLink>
+        </div>
       </div>
     </section>
 
     <!-- CTA Section -->
     <section class="cta-section">
-      <div class="cta-card">
+      <div class="cta-container">
+        <div class="cta-bg">
+          <div class="cta-orb cta-orb-1"></div>
+          <div class="cta-orb cta-orb-2"></div>
+        </div>
         <div class="cta-content">
           <h2 class="cta-title">
-            지금 바로 시작하세요
+            지금 바로<br>
+            <span class="cta-gradient">AI 분석</span>을 시작하세요
           </h2>
           <p class="cta-description">
-            회원가입하고 AI가 분석하는 나만의 맞춤 금융 상품을 추천받으세요.
+            회원가입하고 나만의 맞춤 금융 상품을 추천받으세요
           </p>
-          <div class="cta-actions">
+          <div class="cta-buttons">
             <RouterLink 
               v-if="!accountStore.isLogin" 
               :to="{ name: 'SignUpView' }" 
-              class="btn btn-primary btn-lg"
+              class="btn-cta-primary"
             >
               무료로 시작하기
             </RouterLink>
             <RouterLink 
               v-else 
               :to="{ name: 'AnalysisView' }" 
-              class="btn btn-primary btn-lg"
+              class="btn-cta-primary"
             >
               AI 분석 받기
             </RouterLink>
           </div>
-        </div>
-        <div class="cta-decoration">
-          <div class="cta-circle cta-circle-1"></div>
-          <div class="cta-circle cta-circle-2"></div>
         </div>
       </div>
     </section>
@@ -226,453 +388,1172 @@ import { RouterLink } from 'vue-router'
 import { useAccountStore } from '@/stores/accounts'
 
 const accountStore = useAccountStore()
+
+// 은행 목록
+const banks = [
+  '국민은행', '신한은행', '하나은행', '우리은행', '농협은행',
+  '기업은행', '카카오뱅크', '토스뱅크', '케이뱅크', '부산은행',
+  '경남은행', '광주은행', '전북은행', '제주은행', '아이엠뱅크'
+]
+
+// 은행 로고 가져오기
+const getBankLogo = (bankName) => {
+  const logoMap = {
+    '국민은행': '국민은행.png',
+    '신한은행': '신한은행.png',
+    '하나은행': '하나은행.png',
+    '우리은행': '우리은행.png',
+    '농협은행': '농협은행.jpg',
+    '기업은행': '기업은행.png',
+    '카카오뱅크': '카카오뱅크.png',
+    '토스뱅크': '토스뱅크.png',
+    '케이뱅크': '케이뱅크.png',
+    '부산은행': '부산은행.png',
+    '경남은행': '경남은행.png',
+    '광주은행': '광주은행.png',
+    '전북은행': '전북은행.png',
+    '제주은행': '제주은행.png',
+    '아이엠뱅크': '아이엠뱅크.png'
+  }
+  return new URL(`../assets/banks/${logoMap[bankName]}`, import.meta.url).href
+}
 </script>
 
 <style scoped>
-/* Hero Section */
-.hero {
+/* ═══════════════════════════════════════════════════════════════════════════
+   Hero Section - 풀스크린 모션 UI
+   ═══════════════════════════════════════════════════════════════════════════ */
+.hero-section {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  min-height: 100vh;
+  display: flex;
   align-items: center;
-  padding: 80px 0;
   overflow: hidden;
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 100%);
 }
 
+/* Animated Background */
 .hero-bg {
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
+  overflow: hidden;
 }
 
-.hero-gradient {
+.hero-gradient-mesh {
   position: absolute;
-  top: -50%;
-  left: -20%;
-  width: 80%;
-  height: 150%;
-  background: radial-gradient(circle, rgba(147, 51, 234, 0.08) 0%, transparent 70%);
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 60% 40% at 10% 20%, rgba(225, 175, 209, 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 50% at 90% 10%, rgba(173, 136, 198, 0.2) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 60% at 80% 80%, rgba(116, 105, 182, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 20% 90%, rgba(255, 230, 230, 0.3) 0%, transparent 50%);
 }
 
-.hero-orb {
+.orb {
   position: absolute;
   border-radius: 50%;
   filter: blur(60px);
   opacity: 0.6;
+  animation: orbFloat 20s ease-in-out infinite;
 }
 
-.hero-orb-1 {
+.orb-1 {
   top: 10%;
-  right: 20%;
+  left: 15%;
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, rgba(255, 230, 230, 0.6), rgba(225, 175, 209, 0.4));
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  top: 50%;
+  right: 10%;
   width: 300px;
   height: 300px;
-  background: rgba(147, 51, 234, 0.15);
-  animation: float 8s ease-in-out infinite;
+  background: linear-gradient(135deg, rgba(173, 136, 198, 0.5), rgba(116, 105, 182, 0.3));
+  animation-delay: -5s;
 }
 
-.hero-orb-2 {
-  bottom: 20%;
-  left: 10%;
+.orb-3 {
+  bottom: 10%;
+  left: 30%;
+  width: 250px;
+  height: 250px;
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.4), rgba(173, 136, 198, 0.3));
+  animation-delay: -10s;
+}
+
+.orb-4 {
+  top: 30%;
+  right: 30%;
   width: 200px;
   height: 200px;
-  background: rgba(236, 72, 153, 0.12);
-  animation: float 6s ease-in-out infinite reverse;
+  background: linear-gradient(135deg, rgba(225, 175, 209, 0.5), rgba(255, 230, 230, 0.4));
+  animation-delay: -15s;
 }
 
-.hero-orb-3 {
-  top: 40%;
-  right: 30%;
-  width: 150px;
-  height: 150px;
-  background: rgba(59, 130, 246, 0.1);
-  animation: float 10s ease-in-out infinite;
+@keyframes orbFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -40px) scale(1.05); }
+  50% { transform: translate(-20px, -60px) scale(0.95); }
+  75% { transform: translate(-40px, -20px) scale(1.02); }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(5deg); }
+/* Particles */
+.particles {
+  position: absolute;
+  inset: 0;
 }
 
-.hero-content {
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: linear-gradient(135deg, #E1AFD1, #7469B6);
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: particleFloat 15s ease-in-out infinite;
+}
+
+.particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+.particle:nth-child(2) { top: 30%; left: 20%; animation-delay: -1s; }
+.particle:nth-child(3) { top: 40%; left: 30%; animation-delay: -2s; }
+.particle:nth-child(4) { top: 50%; left: 40%; animation-delay: -3s; }
+.particle:nth-child(5) { top: 60%; left: 50%; animation-delay: -4s; }
+.particle:nth-child(6) { top: 70%; left: 60%; animation-delay: -5s; }
+.particle:nth-child(7) { top: 80%; left: 70%; animation-delay: -6s; }
+.particle:nth-child(8) { top: 15%; left: 80%; animation-delay: -7s; }
+.particle:nth-child(9) { top: 25%; left: 90%; animation-delay: -8s; }
+.particle:nth-child(10) { top: 35%; left: 5%; animation-delay: -9s; }
+.particle:nth-child(11) { top: 45%; left: 15%; animation-delay: -10s; }
+.particle:nth-child(12) { top: 55%; left: 25%; animation-delay: -11s; }
+.particle:nth-child(13) { top: 65%; left: 35%; animation-delay: -12s; }
+.particle:nth-child(14) { top: 75%; left: 45%; animation-delay: -13s; }
+.particle:nth-child(15) { top: 85%; left: 55%; animation-delay: -14s; }
+.particle:nth-child(16) { top: 10%; left: 65%; animation-delay: -15s; }
+.particle:nth-child(17) { top: 20%; left: 75%; animation-delay: -16s; }
+.particle:nth-child(18) { top: 30%; left: 85%; animation-delay: -17s; }
+.particle:nth-child(19) { top: 40%; left: 95%; animation-delay: -18s; }
+.particle:nth-child(20) { top: 90%; left: 85%; animation-delay: -19s; }
+
+@keyframes particleFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+  50% { transform: translateY(-100px) rotate(180deg); opacity: 0.8; }
+}
+
+/* Hero Container */
+.hero-container {
   position: relative;
   z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 24px 80px;
 }
 
-.hero-badge {
+/* Hero Content */
+.hero-content {
+  animation: fadeInUp 1s ease forwards;
+}
+
+.ai-chip {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: rgba(147, 51, 234, 0.1);
-  border: 1px solid rgba(147, 51, 234, 0.2);
+  gap: 10px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(116, 105, 182, 0.15);
   border-radius: 50px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #9333ea;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
 }
 
-.badge-icon {
-  font-size: 1rem;
+.ai-chip-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: linear-gradient(135deg, #E1AFD1, #7469B6);
+  border-radius: 8px;
+  color: white;
+}
+
+.ai-chip-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.ai-chip-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #7469B6;
+  letter-spacing: -0.01em;
+}
+
+.ai-chip-dot {
+  width: 8px;
+  height: 8px;
+  background: #34c759;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
 }
 
 .hero-title {
-  font-size: 3.5rem;
-  font-weight: 800;
-  line-height: 1.1;
-  color: #18181b;
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: #1d1d1f;
   margin-bottom: 24px;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, #9333ea 0%, #c084fc 50%, #ec4899 100%);
+.title-line {
+  display: block;
+}
+
+.title-word {
+  display: inline-block;
+  margin-right: 12px;
+}
+
+.title-gradient {
+  background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 30%, #AD88C6 60%, #7469B6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .hero-description {
-  font-size: 1.125rem;
-  line-height: 1.7;
-  color: #52525b;
-  margin-bottom: 32px;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: #6e6e73;
+  margin-bottom: 36px;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.4s;
+  opacity: 0;
 }
 
-.hero-actions {
+.hero-description strong {
+  color: #1d1d1f;
+  font-weight: 600;
+}
+
+/* CTA Buttons */
+.hero-cta {
   display: flex;
   gap: 16px;
   margin-bottom: 48px;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+}
+
+.btn-hero-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 36px;
+  background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 35%, #AD88C6 70%, #7469B6 100%);
+  color: white;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  border-radius: 50px;
+  text-decoration: none;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  box-shadow: 0 20px 50px -15px rgba(116, 105, 182, 0.4);
+}
+
+.btn-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .btn-icon {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
 }
 
+.btn-shine {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-hero-primary:hover {
+  transform: scale(1.03) translateY(-3px);
+  box-shadow: 0 30px 60px -15px rgba(116, 105, 182, 0.5);
+}
+
+.btn-hero-primary:hover .btn-shine {
+  left: 100%;
+}
+
+.btn-hero-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 32px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(116, 105, 182, 0.2);
+  color: #7469B6;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.4s ease;
+}
+
+.btn-hero-secondary:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: #AD88C6;
+  transform: translateY(-3px);
+}
+
+.btn-arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.btn-hero-secondary:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+/* Stats */
 .hero-stats {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 36px;
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
 }
 
-.stat {
+.stat-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.stat-value {
-  font-size: 1.5rem;
+.stat-number {
+  font-size: 2rem;
   font-weight: 700;
-  color: #18181b;
+  color: #1d1d1f;
+  letter-spacing: -0.03em;
+}
+
+.stat-plus, .stat-unit {
+  font-size: 1.25rem;
+  color: #7469B6;
 }
 
 .stat-label {
   font-size: 0.875rem;
-  color: #71717a;
+  color: #86868b;
 }
 
 .stat-divider {
   width: 1px;
-  height: 40px;
-  background: #e4e4e7;
+  height: 48px;
+  background: linear-gradient(180deg, transparent, #d2d2d7, transparent);
 }
 
-/* Hero Visual */
+/* Hero Visual - Floating Cards */
 .hero-visual {
   position: relative;
-  height: 400px;
+  height: 500px;
+  animation: fadeIn 1s ease forwards;
+  animation-delay: 0.4s;
+  opacity: 0;
 }
 
-.hero-card {
+.visual-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.floating-card {
   position: absolute;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 20px 24px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 24px;
+  box-shadow: 0 20px 60px -20px rgba(116, 105, 182, 0.2);
   animation: float 6s ease-in-out infinite;
 }
 
-.hero-card-1 {
-  top: 10%;
-  left: 10%;
+.main-card {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  padding: 28px;
   animation-delay: 0s;
 }
 
-.hero-card-2 {
-  top: 40%;
-  right: 5%;
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+}
+
+.card-icon.ai {
+  background: linear-gradient(135deg, #FFE6E6, #E1AFD1);
+  color: #7469B6;
+}
+
+.card-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.card-badge {
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #E1AFD1, #7469B6);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 20px;
+}
+
+.card-body {
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 0.875rem;
+  color: #86868b;
+  margin-bottom: 8px;
+}
+
+.card-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.03em;
+}
+
+.card-unit {
+  font-size: 1.5rem;
+  color: #86868b;
+  margin-left: 4px;
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-progress {
+  height: 6px;
+  background: #f0f0f3;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  width: 98%;
+  height: 100%;
+  background: linear-gradient(90deg, #E1AFD1, #7469B6);
+  border-radius: 3px;
+  animation: progressGrow 2s ease forwards;
+  animation-delay: 1s;
+}
+
+@keyframes progressGrow {
+  from { width: 0; }
+  to { width: 98%; }
+}
+
+.card-status {
+  font-size: 0.8125rem;
+  color: #34c759;
+  font-weight: 500;
+}
+
+/* Mini Cards */
+.deposit-card {
+  top: 15%;
+  left: 5%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
   animation-delay: -2s;
 }
 
-.hero-card-3 {
-  bottom: 10%;
-  left: 20%;
+.savings-card {
+  top: 25%;
+  right: 0%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
   animation-delay: -4s;
 }
 
-.mini-card-icon {
-  font-size: 2rem;
+.notification-card {
+  bottom: 15%;
+  left: 10%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  animation-delay: -1s;
 }
 
-.mini-card-content {
+.card-mini-icon {
+  font-size: 1.75rem;
+}
+
+.card-mini-content {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
-.mini-card-title {
-  font-size: 0.8125rem;
-  color: #71717a;
+.mini-label {
+  font-size: 0.75rem;
+  color: #86868b;
 }
 
-.mini-card-value {
+.mini-value {
   font-size: 1.125rem;
   font-weight: 700;
-  color: #18181b;
+  color: #1d1d1f;
 }
 
-/* Features Section */
-.features-section {
-  margin-bottom: 80px;
+.notif-dot {
+  width: 8px;
+  height: 8px;
+  background: #ff3b30;
+  border-radius: 50%;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.notif-text {
+  font-size: 0.8125rem;
+  color: #1d1d1f;
+  font-weight: 500;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+  50% { transform: translate(-50%, -50%) translateY(-20px); }
+}
+
+.deposit-card, .savings-card, .notification-card {
+  animation-name: floatSmall;
+}
+
+@keyframes floatSmall {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 1s ease forwards;
+  animation-delay: 1.5s;
+  opacity: 0;
+}
+
+.scroll-text {
+  font-size: 0.75rem;
+  color: #86868b;
+  letter-spacing: 0.05em;
+}
+
+.scroll-mouse {
+  width: 24px;
+  height: 40px;
+  border: 2px solid #d2d2d7;
+  border-radius: 12px;
+  position: relative;
+}
+
+.scroll-wheel {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  background: #AD88C6;
+  border-radius: 2px;
+  animation: scrollWheel 2s ease-in-out infinite;
+}
+
+@keyframes scrollWheel {
+  0%, 100% { top: 8px; opacity: 1; }
+  50% { top: 20px; opacity: 0.3; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AI Section
+   ═══════════════════════════════════════════════════════════════════════════ */
+.ai-section {
+  padding: 120px 0;
+  background: white;
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 64px;
+}
+
+.section-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, rgba(225, 175, 209, 0.2), rgba(116, 105, 182, 0.2));
+  color: #7469B6;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border-radius: 20px;
+  margin-bottom: 20px;
 }
 
 .section-title {
-  font-size: 2rem;
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
-  color: #18181b;
-  margin-bottom: 12px;
+  color: #1d1d1f;
+  line-height: 1.15;
+  margin-bottom: 16px;
+  letter-spacing: -0.03em;
+}
+
+.title-gradient-reverse {
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 50%, #E1AFD1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .section-subtitle {
-  font-size: 1.0625rem;
-  color: #71717a;
+  font-size: 1.125rem;
+  color: #86868b;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.features-grid {
+.ai-features {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.ai-feature-card.main-feature {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  padding: 60px;
+  background: linear-gradient(135deg, #FFF5F8 0%, #FDFBFD 100%);
+  border-radius: 32px;
+  border: 1px solid rgba(225, 175, 209, 0.2);
 }
 
-.feature-card {
-  position: relative;
-  padding: 32px;
-  background: white;
-  border-radius: 24px;
-  border: 1px solid #f4f4f5;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.feature-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 2px;
-  background: linear-gradient(135deg, transparent 50%, rgba(147, 51, 234, 0.1) 100%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -15px rgba(147, 51, 234, 0.15);
-  border-color: rgba(147, 51, 234, 0.2);
-}
-
-.feature-card:hover::before {
-  opacity: 1;
-}
-
-.feature-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+.feature-visual {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
 }
 
-.feature-icon svg {
-  width: 28px;
-  height: 28px;
+.ai-brain {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.feature-icon-purple {
-  background: rgba(147, 51, 234, 0.1);
-  color: #9333ea;
+.ai-brain svg {
+  width: 100%;
+  height: 100%;
+  animation: rotate 20s linear infinite;
 }
 
-.feature-icon-pink {
-  background: rgba(236, 72, 153, 0.1);
-  color: #ec4899;
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.feature-icon-blue {
-  background: rgba(59, 130, 246, 0.1);
-  color: #3b82f6;
+.pulse-ring {
+  position: absolute;
+  inset: 0;
+  border: 2px solid rgba(116, 105, 182, 0.3);
+  border-radius: 50%;
+  animation: pulseRing 3s ease-out infinite;
 }
 
-.feature-icon-gold {
-  background: rgba(234, 179, 8, 0.1);
-  color: #eab308;
+.pulse-ring.delay-1 { animation-delay: 1s; }
+.pulse-ring.delay-2 { animation-delay: 2s; }
+
+@keyframes pulseRing {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
 }
 
-.feature-icon-teal {
-  background: rgba(20, 184, 166, 0.1);
-  color: #14b8a6;
-}
-
-.feature-icon-orange {
-  background: rgba(249, 115, 22, 0.1);
-  color: #f97316;
+.feature-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .feature-title {
-  font-size: 1.25rem;
+  font-size: 2rem;
   font-weight: 700;
-  color: #18181b;
-  margin-bottom: 12px;
+  color: #1d1d1f;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.feature-title .highlight {
+  color: #7469B6;
 }
 
 .feature-description {
-  font-size: 0.9375rem;
+  font-size: 1.125rem;
+  color: #6e6e73;
   line-height: 1.6;
-  color: #71717a;
-  margin-bottom: 20px;
 }
 
 .feature-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.9375rem;
+  gap: 8px;
+  color: #7469B6;
+  font-size: 1rem;
   font-weight: 600;
-  color: #9333ea;
+  text-decoration: none;
+  transition: gap 0.3s ease;
 }
 
-.feature-link .arrow {
-  transition: transform 0.2s ease;
+.feature-link:hover {
+  gap: 14px;
 }
 
-.feature-card:hover .feature-link .arrow {
-  transform: translateX(4px);
+.feature-link svg {
+  width: 18px;
+  height: 18px;
 }
 
-/* CTA Section */
-.cta-section {
-  margin-bottom: 40px;
+/* Mini Features Grid */
+.ai-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
 }
 
-.cta-card {
+.ai-mini-feature {
+  padding: 32px;
+  background: white;
+  border-radius: 24px;
+  border: 1px solid #f0f0f3;
+  text-align: center;
+  transition: all 0.4s ease;
+}
+
+.ai-mini-feature:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px -20px rgba(116, 105, 182, 0.2);
+  border-color: rgba(225, 175, 209, 0.3);
+}
+
+.mini-feature-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(255, 230, 230, 0.5), rgba(225, 175, 209, 0.3));
+  border-radius: 16px;
+  color: #7469B6;
+}
+
+.mini-feature-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.ai-mini-feature h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 8px;
+}
+
+.ai-mini-feature p {
+  font-size: 0.9375rem;
+  color: #86868b;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Services Section
+   ═══════════════════════════════════════════════════════════════════════════ */
+.services-section {
+  padding: 120px 0;
+  background: #f5f5f7;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.service-card {
   position: relative;
-  padding: 64px;
-  background: linear-gradient(135deg, #1a1625 0%, #2d1f47 50%, #1a1625 100%);
-  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+  background: white;
+  border-radius: 24px;
+  text-decoration: none;
+  transition: all 0.4s ease;
   overflow: hidden;
+}
+
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px -20px rgba(116, 105, 182, 0.2);
+}
+
+.service-card.featured {
+  background: linear-gradient(135deg, #FFF5F8 0%, white 100%);
+  border: 1px solid rgba(225, 175, 209, 0.3);
+}
+
+.service-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #E1AFD1, #7469B6);
+  color: white;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+.service-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.service-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.service-icon.purple {
+  background: rgba(116, 105, 182, 0.1);
+  color: #7469B6;
+}
+
+.service-icon.pink {
+  background: rgba(225, 175, 209, 0.2);
+  color: #AD88C6;
+}
+
+.service-icon.blue {
+  background: rgba(0, 122, 255, 0.1);
+  color: #007aff;
+}
+
+.service-icon.gold {
+  background: rgba(255, 159, 10, 0.1);
+  color: #ff9f0a;
+}
+
+.service-icon.teal {
+  background: rgba(48, 209, 88, 0.1);
+  color: #30d158;
+}
+
+.service-icon.orange {
+  background: rgba(255, 149, 0, 0.1);
+  color: #ff9500;
+}
+
+.service-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 8px;
+}
+
+.service-content p {
+  font-size: 0.9375rem;
+  color: #86868b;
+  line-height: 1.5;
+}
+
+.service-arrow {
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 1.25rem;
+  color: #AD88C6;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-arrow {
+  transform: translateX(8px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Partners Section
+   ═══════════════════════════════════════════════════════════════════════════ */
+.partners-section {
+  padding: 100px 0;
+  background: white;
+  overflow: hidden;
+}
+
+.partners-marquee {
+  margin-top: 48px;
+  overflow: hidden;
+}
+
+.marquee-track {
+  display: flex;
+  gap: 40px;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.partner-logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bank-img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  padding: 12px;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #f0f0f3;
+  transition: all 0.3s ease;
+}
+
+.bank-img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 10px 30px -10px rgba(116, 105, 182, 0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CTA Section
+   ═══════════════════════════════════════════════════════════════════════════ */
+.cta-section {
+  padding: 60px 24px 100px;
+}
+
+.cta-container {
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 80px 60px;
+  background: linear-gradient(135deg, #1d1d1f 0%, #2D2660 100%);
+  border-radius: 40px;
+  overflow: hidden;
+}
+
+.cta-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.cta-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+.cta-orb-1 {
+  top: -100px;
+  right: -50px;
+  width: 300px;
+  height: 300px;
+  background: rgba(173, 136, 198, 0.4);
+  animation: orbFloat 15s ease-in-out infinite;
+}
+
+.cta-orb-2 {
+  bottom: -100px;
+  left: -50px;
+  width: 250px;
+  height: 250px;
+  background: rgba(225, 175, 209, 0.3);
+  animation: orbFloat 20s ease-in-out infinite reverse;
 }
 
 .cta-content {
   position: relative;
   z-index: 1;
   text-align: center;
-  max-width: 600px;
-  margin: 0 auto;
 }
 
 .cta-title {
-  font-size: 2.25rem;
+  font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 700;
   color: white;
-  margin-bottom: 16px;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  letter-spacing: -0.03em;
+}
+
+.cta-gradient {
+  background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 50%, #AD88C6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .cta-description {
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
 
-.cta-actions {
+.cta-buttons {
   display: flex;
   justify-content: center;
 }
 
-.cta-decoration {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+.btn-cta-primary {
+  padding: 18px 40px;
+  background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 35%, #AD88C6 70%, #7469B6 100%);
+  color: white;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  box-shadow: 0 20px 50px -15px rgba(116, 105, 182, 0.5);
 }
 
-.cta-circle {
-  position: absolute;
-  border-radius: 50%;
+.btn-cta-primary:hover {
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 0 30px 60px -15px rgba(116, 105, 182, 0.6);
 }
 
-.cta-circle-1 {
-  top: -100px;
-  right: -100px;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(147, 51, 234, 0.3) 0%, transparent 70%);
-}
-
-.cta-circle-2 {
-  bottom: -150px;
-  left: -50px;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%);
-}
-
-/* Responsive */
+/* ═══════════════════════════════════════════════════════════════════════════
+   Responsive Design
+   ═══════════════════════════════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
-  .hero {
+  .hero-container {
     grid-template-columns: 1fr;
-    gap: 40px;
-    padding: 40px 0;
+    gap: 60px;
+    padding-top: 100px;
   }
 
   .hero-visual {
-    display: none;
+    height: 400px;
+  }
+
+  .main-card {
+    width: 260px;
+  }
+
+  .ai-feature-card.main-feature {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 40px;
+  }
+
+  .ai-feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: auto;
+    padding-bottom: 60px;
+  }
+
+  .hero-container {
+    padding: 80px 20px 40px;
   }
 
   .hero-title {
     font-size: 2.5rem;
   }
 
-  .features-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2rem;
-  }
-
   .hero-description {
-    font-size: 1rem;
+    font-size: 1.0625rem;
   }
 
-  .hero-actions {
+  .hero-cta {
     flex-direction: column;
   }
 
@@ -685,24 +1566,53 @@ const accountStore = useAccountStore()
     display: none;
   }
 
-  .features-grid {
+  .hero-visual {
+    display: none;
+  }
+
+  .scroll-indicator {
+    display: none;
+  }
+
+  .ai-section,
+  .services-section,
+  .partners-section {
+    padding: 80px 0;
+  }
+
+  .ai-feature-grid,
+  .services-grid {
     grid-template-columns: 1fr;
   }
 
-  .cta-card {
-    padding: 40px 24px;
+  .cta-container {
+    padding: 48px 28px;
+    border-radius: 28px;
   }
 
   .cta-title {
     font-size: 1.75rem;
   }
+}
 
-  .exchange-body {
-    flex-wrap: wrap;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-  .rate-value {
-    font-size: 2rem;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
 }
 </style>
