@@ -36,12 +36,17 @@ API_KEY = env("API_KEY")
 # AI
 OPENAI_API_KEY = env("OPENAI_API_KEY")
 # GMS 사용하는 경우
-OPENAI_BASE_URL = env("OPENAI_BASE_URL", default="https://gms.ssafy.io/gmsapi/api.openai.com/v1")
+OPENAI_BASE_URL = env(
+    "OPENAI_BASE_URL", default="https://gms.ssafy.io/gmsapi/api.openai.com/v1"
+)
 OPENAI_MODEL = env("OPENAI_MODEL", default="gpt-4.1-mini")
 
 # Naver API
-NAVER_CLIENT_ID=env("NAVER_CLIENT_ID")
-NAVER_CLIENT_SECRET=env("NAVER_CLIENT_SECRET")
+NAVER_CLIENT_ID = env("NAVER_CLIENT_ID")
+NAVER_CLIENT_SECRET = env("NAVER_CLIENT_SECRET")
+
+# Youtube API
+YOUTUBE_API_KEY = env("YOUTUBE_API_KEY")
 
 # Application definition
 
@@ -49,24 +54,22 @@ INSTALLED_APPS = [
     # installed apps
     "accounts",
     "products",
-    'recommendations',
-    'news',
-    'metals',
-    'articles',
-    'exchange',
-
+    "recommendations",
+    "news",
+    "metals",
+    "articles",
+    "exchange",
     # third party
     "rest_framework",
     "rest_framework.authtoken",
-    'dj_rest_auth',
-    'corsheaders',
+    "dj_rest_auth",
+    "corsheaders",
     "drf_spectacular",
     "django.contrib.sites",
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'dj_rest_auth.registration',
-
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth.registration",
     # basic
     "django.contrib.admin",
     "django.contrib.auth",
@@ -80,30 +83,30 @@ SITE_ID = 1
 
 REST_FRAMEWORK = {
     # Authentication
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
     ],
     # permission
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
     ],
 }
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'allauth.account.middleware.AccountMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:5173',
-    'http://localhost:5173',
+    "http://127.0.0.1:5174",
+    "http://localhost:5174",
 ]
 
 ROOT_URLCONF = "finance.urls"
@@ -178,11 +181,11 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = "accounts.User"
 
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 REST_AUTH = {
-    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
-    'USER_DETAILS_SERIALIZER': 'accounts.serializers.CustomUserDetailsSerializer',
+    "REGISTER_SERIALIZER": "accounts.serializers.CustomRegisterSerializer",
+    "USER_DETAILS_SERIALIZER": "accounts.serializers.CustomUserDetailsSerializer",
 }
