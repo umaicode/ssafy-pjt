@@ -303,7 +303,7 @@ const logIn = () => {
   pointer-events: none;
 }
 
-.input-with-icon {
+.input.input-with-icon {
   padding-left: 48px;
 }
 
