@@ -214,6 +214,7 @@ onMounted(() => {
   font-weight: 800;
   color: white;
   margin: 0 0 4px;
+  text-align: left;
 }
 
 .header-text p {

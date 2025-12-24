@@ -136,6 +136,7 @@ const onSearch = () => {
   font-weight: 800;
   color: white;
   margin: 0;
+  text-align: left;
 }
 
 .page-subtitle {

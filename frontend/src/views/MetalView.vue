@@ -10,7 +10,7 @@
           </svg>
         </div>
         <div class="header-text">
-          <h1 class="page-title">금 · 은 가격 추이</h1>
+          <h1 class="page-title">금 · 은 가격 추이 차트</h1>
           <p class="page-subtitle">귀금속 시세를 한눈에 확인하세요</p>
         </div>
       </div>
@@ -100,6 +100,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  text-align: left;
 }
 
 .page-title {
@@ -107,6 +108,7 @@ onMounted(() => {
   font-weight: 800;
   color: white;
   margin: 0;
+  
 }
 
 .page-subtitle {
