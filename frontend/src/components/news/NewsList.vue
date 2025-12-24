@@ -1,20 +1,45 @@
 <template>
-  <section class="news-list">
-    <p v-if="!newsStore.newsList.length" class="news-empty">
-      아직 저장된 기사가 없습니다.
-    </p>
+  <section class="news-list-section">
+    <div class="list-header">
+      <h3 class="list-title">기사 목록</h3>
+      <span class="list-count">{{ newsStore.newsList.length }}개</span>
+    </div>
 
-    <div
-      v-for="n in newsStore.newsList"
-      :key="n.id"
-      class="news-item"
-      :class="{ selected: newsStore.newsDetail && newsStore.newsDetail.id === n.id }"
-      @click="openDetail(n.id)"
-    >
-      <button class="star"
-        @click.stop="toggleBookmark(n.id)"
-        type="button">{{ n.is_bookmarked ? '★' : '☆' }}</button>
-      <span class="text">{{ n.title }}</span>
+    <div class="news-list">
+      <div v-if="!newsStore.newsList.length" class="news-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+          <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+        </svg>
+        <p>아직 저장된 기사가 없습니다.</p>
+        <span>검색을 통해 뉴스를 찾아보세요</span>
+      </div>
+
+      <article
+        v-for="n in newsStore.newsList"
+        :key="n.id"
+        class="news-item"
+        :class="{ selected: newsStore.newsDetail && newsStore.newsDetail.id === n.id }"
+        @click="openDetail(n.id)"
+      >
+        <button 
+          class="bookmark-btn"
+          :class="{ active: n.is_bookmarked }"
+          @click.stop="toggleBookmark(n.id)"
+          type="button"
+        >
+          <svg v-if="n.is_bookmarked" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+          </svg>
+          <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+          </svg>
+        </button>
+        <span class="news-title">{{ n.title }}</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </article>
     </div>
   </section>
 </template>
@@ -30,7 +55,6 @@ const openDetail = (id) => {
   newsStore.getNewsDetail(id)
 }
 
-// 북마크버튼기능, 로그인체크
 const toggleBookmark = (id) => {
   if (!accountStore.isLogin) {
     alert('로그인이 필요합니다.')
@@ -41,27 +65,209 @@ const toggleBookmark = (id) => {
 </script>
 
 <style scoped>
-.news-list {
-  border: 1px solid #eee;
-  border-radius: 12px;
-  padding: 12px;
-
-  height: 100%;
-  overflow-y: auto;
-}
-.news-item {
-  cursor: pointer;
-  padding: 10px 10px;
-  border-radius: 10px;
+.news-list-section {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  height: 100%;
+}
+
+.list-header {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #f4f4f5;
 }
-.news-item:hover { background: #fafafa; }
-.news-item.selected { background: #fff3ee; }
-.star { width: 30px; 
-        color: rgb(191, 194, 33);
-        padding: 2px;
+
+.list-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #18181b;
+  margin: 0;
 }
-.news-empty { color: #777; padding: 12px; }
+
+.list-count {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #7469B6;
+  background: rgba(116, 105, 182, 0.1);
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.news-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.news-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.news-empty svg {
+  width: 48px;
+  height: 48px;
+  color: #d4d4d8;
+  margin-bottom: 16px;
+}
+
+.news-empty p {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #52525b;
+  margin: 0 0 4px;
+}
+
+.news-empty span {
+  font-size: 0.8125rem;
+  color: #a1a1aa;
+}
+
+.news-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.news-item:hover {
+  background: #fafafa;
+}
+
+.news-item.selected {
+  background: rgba(116, 105, 182, 0.1);
+}
+
+.bookmark-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bookmark-btn svg {
+  width: 18px;
+  height: 18px;
+  color: #d4d4d8;
+  transition: color 0.2s;
+}
+
+.bookmark-btn:hover svg {
+  color: #7469B6;
+}
+
+.bookmark-btn.active svg {
+  color: #7469B6;
+}
+
+.news-title {
+  flex: 1;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #3f3f46;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.news-item.selected .news-title {
+  color: #18181b;
+  font-weight: 600;
+}
+
+.chevron {
+  width: 16px;
+  height: 16px;
+  color: #d4d4d8;
+  flex-shrink: 0;
+}
+
+.news-item.selected .chevron {
+  color: #7469B6;
+}
+
+/* Dark Mode */
+[data-theme="dark"] .news-list-section {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .list-header {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .list-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .list-count {
+  background: rgba(116, 105, 182, 0.2);
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .news-empty svg {
+  color: #3f3f46;
+}
+
+[data-theme="dark"] .news-empty p {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .news-empty span {
+  color: #71717a;
+}
+
+[data-theme="dark"] .news-item:hover {
+  background: #27272a;
+}
+
+[data-theme="dark"] .news-item.selected {
+  background: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .bookmark-btn svg {
+  color: #52525b;
+}
+
+[data-theme="dark"] .bookmark-btn:hover svg,
+[data-theme="dark"] .bookmark-btn.active svg {
+  color: #E1AFD1;
+}
+
+[data-theme="dark"] .news-title {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .news-item.selected .news-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .chevron {
+  color: #52525b;
+}
+
+[data-theme="dark"] .news-item.selected .chevron {
+  color: #E1AFD1;
+}
 </style>

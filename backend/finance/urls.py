@@ -14,22 +14,34 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
-from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/products/', include('products.urls')),
+    path("admin/", admin.site.urls),
+    path("api/products/", include("products.urls")),
     path("api/v1/", include("recommendations.urls")),
-    path('api/v1/', include('articles.urls')), 
-    path('api/news/', include("news.urls")),
-    path('api/metals/', include('metals.urls')),
-    path('api/exchange/', include('exchange.urls')),
-    path('schema/', SpectacularAPIView.as_view(), name="schema"),
-    path('schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    path('schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-    path('accounts/', include('dj_rest_auth.urls')),
-    path('accounts/', include('accounts.urls')),
-    path('accounts/signup/', include('dj_rest_auth.registration.urls')),
+    path("api/v1/", include("articles.urls")),
+    path("api/news/", include("news.urls")),
+    path("api/metals/", include("metals.urls")),
+    path("api/exchange/", include("exchange.urls")),
+    path("api/chatbot/", include("chatbot.urls")),
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
+    path(
+        "schema/swagger-ui/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"
+    ),
+    path("accounts/", include("dj_rest_auth.urls")),
+    path("accounts/", include("accounts.urls")),
+    path("accounts/signup/", include("dj_rest_auth.registration.urls")),
 ]

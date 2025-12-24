@@ -1,8 +1,8 @@
 <template>
-  <div class="page">
+  <div class="news-page">
     <NewsHeader />
-    <main class="container">
-      <div class="layout">
+    <main class="news-container">
+      <div class="news-layout">
         <NewsList />
         <NewsDetail />
       </div>
@@ -45,15 +45,33 @@ watch(
 </script>
 
 <style scoped>
-.page { min-height: 100vh; background: #fff; }
-.container { padding: 16px; }
-.layout {
-  display: grid;
-  grid-template-columns: 360px 1fr;
-  gap: 14px;
-
-  /* ⭐ 핵심 */
-  height: calc(100vh - 72px); /* 헤더 높이만큼 빼기 */
+.news-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
 }
 
+.news-container {
+  padding: 24px;
+}
+
+.news-layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 24px;
+  height: calc(100vh - 160px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .news-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
+
+/* Dark Mode */
+[data-theme="dark"] .news-page {
+  background: linear-gradient(180deg, #0a0a0a 0%, #18181b 50%, #0f0f0f 100%);
+}
 </style>
