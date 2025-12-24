@@ -26,10 +26,10 @@ const getColors = () => {
   const dark = isDarkMode()
   
   return {
-    primary: isGold ? '#FFB800' : '#AD88C6',
-    secondary: isGold ? '#FFA500' : '#7469B6',
-    gradient1: isGold ? 'rgba(255, 184, 0, 0.4)' : 'rgba(173, 136, 198, 0.4)',
-    gradient2: isGold ? 'rgba(255, 184, 0, 0.05)' : 'rgba(116, 105, 182, 0.05)',
+    primary: isGold ? '#FFB800' : (dark ? '#a1a1aa' : '#71717a'),
+    secondary: isGold ? '#FFA500' : (dark ? '#71717a' : '#52525b'),
+    gradient1: isGold ? 'rgba(255, 184, 0, 0.4)' : (dark ? 'rgba(161, 161, 170, 0.4)' : 'rgba(113, 113, 122, 0.4)'),
+    gradient2: isGold ? 'rgba(255, 184, 0, 0.05)' : (dark ? 'rgba(161, 161, 170, 0.05)' : 'rgba(113, 113, 122, 0.05)'),
     gridColor: dark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
     textColor: dark ? '#e4e4e7' : '#52525b',
     tooltipBg: dark ? '#27272a' : '#ffffff',

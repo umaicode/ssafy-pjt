@@ -357,9 +357,17 @@ onMounted(() => {
   padding: 6px 14px;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #7469B6;
-  background: rgba(116, 105, 182, 0.1);
   border-radius: 20px;
+}
+
+.product-type-badge.deposit {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.product-type-badge.saving {
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.1);
 }
 
 .product-join-badge {
@@ -685,9 +693,14 @@ onMounted(() => {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] .product-type-badge {
-  background: rgba(116, 105, 182, 0.2);
-  color: #E1AFD1;
+[data-theme="dark"] .product-type-badge.deposit {
+  background: rgba(37, 99, 235, 0.2);
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .product-type-badge.saving {
+  background: rgba(22, 163, 74, 0.2);
+  color: #4ade80;
 }
 
 [data-theme="dark"] .badge-success {

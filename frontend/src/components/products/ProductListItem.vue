@@ -203,9 +203,17 @@ const uniqueTerms = computed(() => {
   padding: 6px 12px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #7469B6;
-  background: rgba(116, 105, 182, 0.1);
   border-radius: 20px;
+}
+
+.product-type-badge.deposit {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.product-type-badge.saving {
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.1);
 }
 
 .product-bank {
@@ -334,8 +342,8 @@ const uniqueTerms = computed(() => {
 }
 
 .bank-logo-img {
-  width: 80px;
-  height: 32px;
+  width: 100px;
+  height: 40px;
   object-fit: contain;
 }
 
@@ -353,9 +361,14 @@ const uniqueTerms = computed(() => {
   border-bottom-color: #27272a;
 }
 
-[data-theme="dark"] .product-type-badge {
-  background: rgba(116, 105, 182, 0.2);
-  color: #E1AFD1;
+[data-theme="dark"] .product-type-badge.deposit {
+  background: rgba(37, 99, 235, 0.2);
+  color: #60a5fa;
+}
+
+[data-theme="dark"] .product-type-badge.saving {
+  background: rgba(22, 163, 74, 0.2);
+  color: #4ade80;
 }
 
 [data-theme="dark"] .bank-name {

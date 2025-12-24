@@ -149,7 +149,7 @@
         <div class="section-header">
           <span class="section-badge">핵심 기능</span>
           <h2 class="section-title">
-            <span class="title-gradient-reverse">AI</span>가 당신의 금융을<br>분석합니다
+            <span class="title-gradient-reverse">AI</span>가 당신의 자산을<br>분석합니다
           </h2>
           <p class="section-subtitle">
             복잡한 금융 상품 비교, 이제 AI에게 맡기세요
@@ -248,7 +248,7 @@
             </div>
             <div class="service-content">
               <h3>금융상품 비교</h3>
-              <p>500개 이상의 예금·적금 상품을 한눈에 비교하세요</p>
+              <p>50개 이상의 예금·적금 상품을 한눈에 비교하세요</p>
             </div>
             <span class="service-arrow">→</span>
           </RouterLink>

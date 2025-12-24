@@ -17,7 +17,7 @@
           <div class="branding-features">
             <div class="feature-item">
               <div class="feature-check">✓</div>
-              <span>500+ 금융 상품 비교</span>
+              <span>50+ 금융 상품 비교</span>
             </div>
             <div class="feature-item">
               <div class="feature-check">✓</div>
@@ -290,6 +290,7 @@ const logIn = () => {
 
 .input-wrapper {
   position: relative;
+  
 }
 
 .input-icon {
@@ -301,10 +302,12 @@ const logIn = () => {
   height: 20px;
   color: #a1a1aa;
   pointer-events: none;
+  
 }
 
 .input.input-with-icon {
   padding-left: 48px;
+
 }
 
 .input {
