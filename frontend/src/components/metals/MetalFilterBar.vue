@@ -183,8 +183,8 @@ const applyDates = () => {
 
 .btn-primary {
   color: white;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  border: none;
+  background: linear-gradient(135deg, #c9b9d1 0%, #cda9d4 100%);
+  border: 2px solid #d7aee6;
 }
 
 .btn-primary:hover {
