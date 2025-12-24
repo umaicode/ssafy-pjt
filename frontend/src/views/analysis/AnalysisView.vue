@@ -184,7 +184,7 @@
                   :class="{ selected: form.travel_country_code === country.code }"
                   @click="selectCountry(country)"
                 >
-                  <span class="country-flag">{{ country.flag }}</span>
+                  <img :src="country.flag" :alt="country.name" class="country-flag-img" />
                   <span class="country-name">{{ country.name }}</span>
                   <span class="country-currency">{{ country.currencyName }}</span>
                 </div>
@@ -532,14 +532,14 @@ const savingsDetails = [
 // 여행 국가 목록 (나라 선택 시 통화 자동 설정) - exchange/views.py의 currencies와 동기화
 // 실제 환율 API에서 제공하는 통화만 포함 (VND, TWD 제외)
 const travelCountries = [
-  { code: 'JPY', name: '일본', flag: '🇯🇵', currencyName: '엔 (JPY)', placeholder: '예: 도쿄, 오사카, 후쿠오카' },
-  { code: 'USD', name: '미국', flag: '🇺🇸', currencyName: '달러 (USD)', placeholder: '예: 뉴욕, LA, 하와이' },
-  { code: 'EUR', name: '유럽', flag: '🇪🇺', currencyName: '유로 (EUR)', placeholder: '예: 파리, 로마, 바르셀로나' },
-  { code: 'CNH', name: '중국', flag: '🇨🇳', currencyName: '위안 (CNH)', placeholder: '예: 상하이, 베이징' },
-  { code: 'THB', name: '태국', flag: '🇹🇭', currencyName: '바트 (THB)', placeholder: '예: 방콕, 치앙마이, 푸켓' },
-  { code: 'SGD', name: '싱가포르', flag: '🇸🇬', currencyName: '싱가포르 달러 (SGD)', placeholder: '예: 마리나베이, 센토사' },
-  { code: 'GBP', name: '영국', flag: '🇬🇧', currencyName: '파운드 (GBP)', placeholder: '예: 런던, 에든버러, 맨체스터' },
-  { code: 'HKD', name: '홍콩', flag: '🇭🇰', currencyName: '홍콩 달러 (HKD)', placeholder: '예: 빅토리아 피크, 란타우' },
+  { code: 'JPY', name: '일본', flag: 'https://flagcdn.com/w40/jp.png', currencyName: '엔 (JPY)', placeholder: '예: 도쿄, 오사카, 후쿠오카' },
+  { code: 'USD', name: '미국', flag: 'https://flagcdn.com/w40/us.png', currencyName: '달러 (USD)', placeholder: '예: 뉴욕, LA, 하와이' },
+  { code: 'EUR', name: '유럽', flag: 'https://flagcdn.com/w40/eu.png', currencyName: '유로 (EUR)', placeholder: '예: 파리, 로마, 바르셀로나' },
+  { code: 'CNH', name: '중국', flag: 'https://flagcdn.com/w40/cn.png', currencyName: '위안 (CNH)', placeholder: '예: 상하이, 베이징' },
+  { code: 'THB', name: '태국', flag: 'https://flagcdn.com/w40/th.png', currencyName: '바트 (THB)', placeholder: '예: 방콕, 치앙마이, 푸켓' },
+  { code: 'SGD', name: '싱가포르', flag: 'https://flagcdn.com/w40/sg.png', currencyName: '싱가포르 달러 (SGD)', placeholder: '예: 마리나베이, 센토사' },
+  { code: 'GBP', name: '영국', flag: 'https://flagcdn.com/w40/gb.png', currencyName: '파운드 (GBP)', placeholder: '예: 런던, 에든버러, 맨체스터' },
+  { code: 'HKD', name: '홍콩', flag: 'https://flagcdn.com/w40/hk.png', currencyName: '홍콩 달러 (HKD)', placeholder: '예: 빅토리아 피크, 란타우' },
 ]
 
 const periodOptions = [
@@ -1178,8 +1178,12 @@ const submit = () => {
   background: linear-gradient(135deg, #FFE6E6 0%, rgba(116, 105, 182, 0.1) 100%);
 }
 
-.country-flag {
-  font-size: 2rem;
+.country-flag-img {
+  width: 40px;
+  height: 30px;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .country-name {

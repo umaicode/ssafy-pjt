@@ -683,7 +683,7 @@ onMounted(() => {
 }
 
 [data-theme="dark"] .back-link:hover {
-  color: #E1AFD1;
+  color: #c9b8c6;
 }
 
 [data-theme="dark"] .product-header-card,
@@ -695,12 +695,12 @@ onMounted(() => {
 
 [data-theme="dark"] .product-type-badge.deposit {
   background: rgba(37, 99, 235, 0.2);
-  color: #60a5fa;
+  color: #93c5fd;
 }
 
 [data-theme="dark"] .product-type-badge.saving {
   background: rgba(22, 163, 74, 0.2);
-  color: #4ade80;
+  color: #86efac;
 }
 
 [data-theme="dark"] .badge-success {
@@ -725,7 +725,7 @@ onMounted(() => {
 [data-theme="dark"] .like-btn {
   background: #27272a;
   border-color: rgba(116, 105, 182, 0.3);
-  color: #E1AFD1;
+  color: #c9b8c6;
 }
 
 [data-theme="dark"] .like-btn:hover {
@@ -762,7 +762,7 @@ onMounted(() => {
 }
 
 [data-theme="dark"] .rate-max {
-  color: #E1AFD1;
+  color: #d4b8d0;
 }
 
 [data-theme="dark"] .detail-label {

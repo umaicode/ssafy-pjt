@@ -826,34 +826,34 @@ const scoreClass = computed(() => {
 
 [data-theme="dark"] .info-chip.deposit {
   background: rgba(37, 99, 235, 0.2);
-  color: #60a5fa;
+  color: #93c5fd;
 }
 
 [data-theme="dark"] .info-chip.saving {
   background: rgba(22, 163, 74, 0.2);
-  color: #4ade80;
+  color: #86efac;
 }
 
 [data-theme="dark"] .info-chip.mobile {
   background: rgba(217, 119, 6, 0.2);
-  color: #fbbf24;
+  color: #fcd34d;
 }
 
 [data-theme="dark"] .simulation-box {
-  background: linear-gradient(135deg, rgba(22, 163, 74, 0.15) 0%, rgba(22, 163, 74, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.12) 0%, rgba(22, 163, 74, 0.08) 100%);
 }
 
 [data-theme="dark"] .simulation-box.deposit {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(37, 99, 235, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(37, 99, 235, 0.08) 100%);
 }
 
 [data-theme="dark"] .sim-title {
   background: #27272a;
-  color: #4ade80;
+  color: #86efac;
 }
 
 [data-theme="dark"] .simulation-box.deposit .sim-title {
-  color: #60a5fa;
+  color: #93c5fd;
 }
 
 [data-theme="dark"] .sim-label {
@@ -865,11 +865,11 @@ const scoreClass = computed(() => {
 }
 
 [data-theme="dark"] .sim-item.highlight .sim-value {
-  color: #4ade80;
+  color: #86efac;
 }
 
 [data-theme="dark"] .simulation-box.deposit .sim-item.highlight .sim-value {
-  color: #60a5fa;
+  color: #93c5fd;
 }
 
 [data-theme="dark"] .sim-arrow {
@@ -878,11 +878,11 @@ const scoreClass = computed(() => {
 
 [data-theme="dark"] .sim-interest {
   background: #27272a;
-  color: #4ade80;
+  color: #86efac;
 }
 
 [data-theme="dark"] .simulation-box.deposit .sim-interest {
-  color: #60a5fa;
+  color: #93c5fd;
 }
 
 [data-theme="dark"] .sim-tax-row {
@@ -903,11 +903,11 @@ const scoreClass = computed(() => {
 }
 
 [data-theme="dark"] .reason-box {
-  background: rgba(120, 53, 15, 0.15);
+  background: rgba(120, 53, 15, 0.12);
 }
 
 [data-theme="dark"] .reason-text {
-  color: #fbbf24;
+  color: #fcd34d;
 }
 
 [data-theme="dark"] .action-btn.like {
@@ -916,13 +916,13 @@ const scoreClass = computed(() => {
 }
 
 [data-theme="dark"] .action-btn.like:hover {
-  background: rgba(236, 72, 153, 0.2);
-  color: #ec4899;
+  background: rgba(236, 72, 153, 0.15);
+  color: #f472b6;
 }
 
 [data-theme="dark"] .action-btn.like.active {
-  background: rgba(236, 72, 153, 0.2);
-  color: #ec4899;
+  background: rgba(236, 72, 153, 0.15);
+  color: #f472b6;
 }
 
 [data-theme="dark"] .action-btn.detail {

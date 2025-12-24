@@ -840,12 +840,22 @@ const formatCurrency = (value) => {
 }
 
 [data-theme="dark"] .product-mini-card:hover {
-  border-color: #AD88C6;
+  border-color: #9b8fb8;
 }
 
 [data-theme="dark"] .product-mini-card.active {
   background: rgba(116, 105, 182, 0.1);
   border-color: #7469B6;
+}
+
+[data-theme="dark"] .product-type-badge.deposit {
+  background: rgba(37, 99, 235, 0.2);
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .product-type-badge.saving {
+  background: rgba(22, 163, 74, 0.2);
+  color: #86efac;
 }
 
 [data-theme="dark"] .mini-card-name {
@@ -861,7 +871,7 @@ const formatCurrency = (value) => {
 }
 
 [data-theme="dark"] .rate-value {
-  color: #E1AFD1;
+  color: #d4b8d0;
 }
 
 [data-theme="dark"] .simulation-section {
@@ -904,7 +914,7 @@ const formatCurrency = (value) => {
 }
 
 [data-theme="dark"] .summary-item.total .summary-value {
-  color: #E1AFD1;
+  color: #d4b8d0;
 }
 
 [data-theme="dark"] .chart-container {
@@ -920,7 +930,7 @@ const formatCurrency = (value) => {
 }
 
 [data-theme="dark"] .deposit-notice p {
-  color: #fbbf24;
+  color: #fcd34d;
 }
 
 [data-theme="dark"] .clear-all-btn {

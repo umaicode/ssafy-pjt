@@ -561,6 +561,115 @@ const getBankLogo = (bankName) => {
   animation: fadeInUp 1s ease forwards;
 }
 
+/* 애니메이션 클래스 - 제주은행 스타일 */
+.animate-fade-in {
+  animation: fadeInUp 0.8s ease forwards;
+  opacity: 0;
+}
+
+.animate-slide-left {
+  animation: slideInLeft 0.8s ease forwards;
+  opacity: 0;
+}
+
+.animate-slide-right {
+  animation: slideInRight 0.8s ease forwards;
+  opacity: 0;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease forwards;
+  opacity: 0;
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  opacity: 0;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-10px) rotate(-1deg);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(116, 105, 182, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(116, 105, 182, 0.6), 0 0 60px rgba(225, 175, 209, 0.3);
+  }
+}
+
 .ai-chip {
   display: inline-flex;
   align-items: center;
@@ -571,9 +680,23 @@ const getBankLogo = (bankName) => {
   border: 1px solid rgba(116, 105, 182, 0.15);
   border-radius: 50px;
   margin-bottom: 28px;
-  animation: fadeInUp 0.8s ease forwards;
+  animation: fadeInUp 0.8s ease forwards, glow-pulse 3s ease-in-out infinite;
   animation-delay: 0.2s;
   opacity: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-chip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
 }
 
 .ai-chip-icon {
@@ -621,18 +744,53 @@ const getBankLogo = (bankName) => {
 
 .title-line {
   display: block;
+  overflow: hidden;
 }
 
 .title-word {
   display: inline-block;
   margin-right: 12px;
+  animation: slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+.title-word:nth-child(1) {
+  animation-delay: 0.4s;
+}
+
+.title-word:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .title-gradient {
   background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 30%, #AD88C6 60%, #7469B6 100%);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: gradientShift 4s ease infinite, slideInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.6s;
+  opacity: 0;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .hero-description {
@@ -667,6 +825,7 @@ const getBankLogo = (bankName) => {
   justify-content: center;
   padding: 18px 36px;
   background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 35%, #AD88C6 70%, #7469B6 100%);
+  background-size: 200% 200%;
   color: white;
   font-size: 1.0625rem;
   font-weight: 600;
@@ -675,6 +834,12 @@ const getBankLogo = (bankName) => {
   overflow: hidden;
   transition: all 0.4s ease;
   box-shadow: 0 20px 50px -15px rgba(116, 105, 182, 0.4);
+  animation: gradientShift 3s ease infinite, glow-pulse 2s ease-in-out infinite;
+}
+
+.btn-hero-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 25px 60px -15px rgba(116, 105, 182, 0.5);
 }
 
 .btn-content {
@@ -802,7 +967,19 @@ const getBankLogo = (bankName) => {
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 24px;
   box-shadow: 0 20px 60px -20px rgba(116, 105, 182, 0.2);
-  animation: float 6s ease-in-out infinite;
+  animation: float 6s ease-in-out infinite, fadeInScale 0.8s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .main-card {
@@ -811,7 +988,13 @@ const getBankLogo = (bankName) => {
   transform: translate(-50%, -50%);
   width: 280px;
   padding: 28px;
-  animation-delay: 0s;
+  animation-delay: 0.8s;
+  transition: all 0.4s ease;
+}
+
+.main-card:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 30px 80px -20px rgba(116, 105, 182, 0.35);
 }
 
 .card-header {
@@ -847,6 +1030,20 @@ const getBankLogo = (bankName) => {
   font-size: 0.75rem;
   font-weight: 600;
   border-radius: 20px;
+  animation: pulse 2s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-badge::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
 }
 
 .card-body {
@@ -883,26 +1080,42 @@ const getBankLogo = (bankName) => {
   background: #f0f0f3;
   border-radius: 3px;
   overflow: hidden;
+  position: relative;
 }
 
 .progress-bar {
-  width: 98%;
+  width: 0;
   height: 100%;
-  background: linear-gradient(90deg, #E1AFD1, #7469B6);
+  background: linear-gradient(90deg, #FFE6E6, #E1AFD1, #AD88C6, #7469B6);
+  background-size: 200% 100%;
   border-radius: 3px;
-  animation: progressGrow 2s ease forwards;
-  animation-delay: 1s;
+  animation: progressGrow 1.5s ease forwards 1.5s, progressShimmer 2s linear infinite;
 }
 
 @keyframes progressGrow {
-  from { width: 0; }
-  to { width: 98%; }
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 80%;
+  }
+}
+
+@keyframes progressShimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 .card-status {
   font-size: 0.8125rem;
   color: #34c759;
   font-weight: 500;
+  animation: fadeIn 0.5s ease forwards 2s;
+  opacity: 0;
 }
 
 /* Mini Cards */
@@ -913,7 +1126,14 @@ const getBankLogo = (bankName) => {
   align-items: center;
   gap: 14px;
   padding: 18px 24px;
-  animation-delay: -2s;
+  animation: floatSmall 6s ease-in-out infinite, miniCardFadeIn 0.6s ease forwards 1s;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.deposit-card:hover {
+  transform: translateY(-20px) scale(1.05);
+  box-shadow: 0 25px 50px -15px rgba(116, 105, 182, 0.3);
 }
 
 .savings-card {
@@ -923,7 +1143,14 @@ const getBankLogo = (bankName) => {
   align-items: center;
   gap: 14px;
   padding: 18px 24px;
-  animation-delay: -4s;
+  animation: floatSmall 6s ease-in-out infinite 1s, miniCardFadeIn 0.6s ease forwards 1.2s;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.savings-card:hover {
+  transform: translateY(-20px) scale(1.05);
+  box-shadow: 0 25px 50px -15px rgba(116, 105, 182, 0.3);
 }
 
 .notification-card {
@@ -933,7 +1160,24 @@ const getBankLogo = (bankName) => {
   align-items: center;
   gap: 10px;
   padding: 14px 20px;
-  animation-delay: -1s;
+  animation: floatSmall 6s ease-in-out infinite 2s, miniCardFadeIn 0.6s ease forwards 1.4s;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.notification-card:hover {
+  transform: translateY(-20px) scale(1.05);
+}
+
+@keyframes miniCardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .card-mini-icon {
@@ -976,13 +1220,11 @@ const getBankLogo = (bankName) => {
   50% { transform: translate(-50%, -50%) translateY(-20px); }
 }
 
-.deposit-card, .savings-card, .notification-card {
-  animation-name: floatSmall;
-}
-
 @keyframes floatSmall {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(0.5deg); }
+  50% { transform: translateY(-15px) rotate(0deg); }
+  75% { transform: translateY(-8px) rotate(-0.5deg); }
 }
 
 /* Scroll Indicator */
@@ -1620,161 +1862,191 @@ const getBankLogo = (bankName) => {
    Dark Mode Styles
    ═══════════════════════════════════════════════════════════════════════════ */
 [data-theme="dark"] .home {
-  background: #0a0a0a;
+  background: #121215;
 }
 
 [data-theme="dark"] .hero-gradient-mesh {
   background: 
-    radial-gradient(at 40% 20%, rgba(116, 105, 182, 0.25) 0px, transparent 50%),
-    radial-gradient(at 80% 0%, rgba(173, 136, 198, 0.2) 0px, transparent 50%),
-    radial-gradient(at 0% 50%, rgba(116, 105, 182, 0.2) 0px, transparent 50%);
+    radial-gradient(at 40% 20%, rgba(116, 105, 182, 0.35) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, rgba(173, 136, 198, 0.3) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, rgba(116, 105, 182, 0.25) 0px, transparent 50%);
 }
 
 [data-theme="dark"] .ai-chip {
-  background: rgba(24, 24, 27, 0.9);
-  border-color: rgba(116, 105, 182, 0.3);
-}
-
-[data-theme="dark"] .ai-chip-text {
-  color: #E1AFD1;
-}
-
-[data-theme="dark"] .hero-title .title-word {
-  color: #e4e4e7;
-}
-
-[data-theme="dark"] .hero-description {
-  color: #a1a1aa;
-}
-
-[data-theme="dark"] .hero-description strong {
-  color: #E1AFD1;
-}
-
-[data-theme="dark"] .stat-number {
-  color: #e4e4e7;
-}
-
-[data-theme="dark"] .stat-label {
-  color: #a1a1aa;
-}
-
-[data-theme="dark"] .stat-divider {
-  background: rgba(116, 105, 182, 0.3);
-}
-
-[data-theme="dark"] .floating-card {
-  background: rgba(24, 24, 27, 0.95);
-  border-color: rgba(116, 105, 182, 0.2);
-}
-
-[data-theme="dark"] .card-title,
-[data-theme="dark"] .card-value {
-  color: #e4e4e7;
-}
-
-[data-theme="dark"] .mini-label {
-  color: #a1a1aa;
-}
-
-[data-theme="dark"] .mini-value {
-  color: #e4e4e7;
-}
-
-[data-theme="dark"] .notif-text {
-  color: #e4e4e7;
-}
-
-[data-theme="dark"] .ai-section {
-  background: linear-gradient(180deg, #0a0a0a 0%, #18181b 100%);
-}
-
-[data-theme="dark"] .section-title {
-  color: #e4e4e7;
-}
-
-[data-theme="dark"] .section-subtitle {
-  color: #a1a1aa;
-}
-
-[data-theme="dark"] .ai-feature-card.main-feature {
-  background: linear-gradient(145deg, rgba(39, 39, 42, 0.9), rgba(24, 24, 27, 0.95));
-  border-color: rgba(116, 105, 182, 0.2);
-}
-
-[data-theme="dark"] .feature-title {
-  color: #e4e4e7;
-}
-
-[data-theme="dark"] .feature-description {
-  color: #a1a1aa;
-}
-
-[data-theme="dark"] .feature-link {
-  color: #E1AFD1;
-}
-
-[data-theme="dark"] .ai-mini-feature {
-  background: #18181b;
-  border-color: rgba(116, 105, 182, 0.15);
-}
-
-[data-theme="dark"] .ai-mini-feature:hover {
+  background: rgba(39, 39, 42, 0.95);
   border-color: rgba(116, 105, 182, 0.4);
 }
 
-[data-theme="dark"] .mini-feature-title {
-  color: #e4e4e7;
+[data-theme="dark"] .ai-chip-text {
+  color: #f0d4eb;
 }
 
-[data-theme="dark"] .mini-feature-desc {
-  color: #a1a1aa;
+[data-theme="dark"] .hero-title .title-word {
+  color: #f4f4f5;
 }
 
-[data-theme="dark"] .services-section {
-  background: #0a0a0a;
+[data-theme="dark"] .hero-description {
+  color: #d4d4d8;
 }
 
-[data-theme="dark"] .service-card {
-  background: #18181b;
-  border-color: rgba(116, 105, 182, 0.1);
+[data-theme="dark"] .hero-description strong {
+  color: #f0d4eb;
 }
 
-[data-theme="dark"] .service-card:hover {
+[data-theme="dark"] .stat-number {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .stat-divider {
+  background: rgba(116, 105, 182, 0.5);
+}
+
+[data-theme="dark"] .floating-card {
+  background: rgba(39, 39, 42, 0.98);
+  border-color: rgba(116, 105, 182, 0.3);
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .card-title {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .card-value {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .mini-label {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .mini-value {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .notif-text {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .ai-section {
+  background: linear-gradient(180deg, #121215 0%, #1e1e22 100%);
+}
+
+[data-theme="dark"] .section-title {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .section-subtitle {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .ai-feature-card.main-feature {
+  background: linear-gradient(145deg, rgba(50, 50, 55, 0.95), rgba(39, 39, 42, 0.98));
   border-color: rgba(116, 105, 182, 0.3);
 }
 
-[data-theme="dark"] .service-title {
-  color: #e4e4e7;
+[data-theme="dark"] .feature-title {
+  color: #f4f4f5;
 }
 
-[data-theme="dark"] .service-description {
-  color: #a1a1aa;
+[data-theme="dark"] .feature-description {
+  color: #d4d4d8;
 }
 
-[data-theme="dark"] .partners-section {
-  background: linear-gradient(180deg, #0a0a0a 0%, #18181b 100%);
+[data-theme="dark"] .feature-link {
+  color: #f0d4eb;
 }
 
-[data-theme="dark"] .partners-grid {
-  background: #18181b;
-  border-color: rgba(116, 105, 182, 0.1);
-}
-
-[data-theme="dark"] .cta-section {
-  background: #0a0a0a;
-}
-
-[data-theme="dark"] .cta-container {
-  background: linear-gradient(145deg, rgba(39, 39, 42, 0.9), rgba(24, 24, 27, 0.95));
+[data-theme="dark"] .ai-mini-feature {
+  background: #1e1e22;
   border-color: rgba(116, 105, 182, 0.2);
 }
 
+[data-theme="dark"] .ai-mini-feature:hover {
+  border-color: rgba(116, 105, 182, 0.5);
+  background: #252528;
+}
+
+[data-theme="dark"] .ai-mini-feature h4 {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .ai-mini-feature p {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .mini-feature-title {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .mini-feature-desc {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .services-section {
+  background: #121215;
+}
+
+[data-theme="dark"] .service-card {
+  background: #1e1e22;
+  border-color: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .service-card:hover {
+  border-color: rgba(116, 105, 182, 0.4);
+  background: #252528;
+}
+
+[data-theme="dark"] .service-card h3 {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .service-card p {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .service-title {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .service-description {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .partners-section {
+  background: linear-gradient(180deg, #121215 0%, #1e1e22 100%);
+}
+
+[data-theme="dark"] .partners-grid {
+  background: #1e1e22;
+  border-color: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .cta-section {
+  background: #121215;
+}
+
+[data-theme="dark"] .cta-container {
+  background: linear-gradient(145deg, rgba(50, 50, 55, 0.95), rgba(39, 39, 42, 0.98));
+  border-color: rgba(116, 105, 182, 0.3);
+}
+
 [data-theme="dark"] .cta-title {
-  color: #e4e4e7;
+  color: #f4f4f5;
 }
 
 [data-theme="dark"] .cta-description {
-  color: #a1a1aa;
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .scroll-text {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .scroll-mouse {
+  border-color: #71717a;
 }
 </style>
