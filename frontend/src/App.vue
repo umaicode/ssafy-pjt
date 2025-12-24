@@ -177,6 +177,9 @@
         </div>
       </div>
     </footer>
+
+    <!-- AI 챗봇 -->
+    <ChatBot />
   </div>
 </template>
 
@@ -185,6 +188,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useAccountStore } from './stores/accounts'
 import { useExchangeStore } from './stores/exchange'
 import { useThemeStore } from './stores/theme'
+import ChatBot from './components/ChatBot.vue'
 
 const accountStore = useAccountStore()
 const exchangeStore = useExchangeStore()

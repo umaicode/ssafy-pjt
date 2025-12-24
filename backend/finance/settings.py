@@ -48,6 +48,9 @@ NAVER_CLIENT_SECRET = env("NAVER_CLIENT_SECRET")
 # Youtube API
 YOUTUBE_API_KEY = env("YOUTUBE_API_KEY")
 
+# Kakao API (은행 지점 검색용)
+KAKAO_REST_API_KEY = env("KAKAO_REST_API_KEY")
+
 # Exchange API
 EXCHANGE_API_KEY = env("EXCHANGE_API_KEY")
 
@@ -62,6 +65,7 @@ INSTALLED_APPS = [
     "metals",
     "articles",
     "exchange",
+    "chatbot",
     # third party
     "rest_framework",
     "rest_framework.authtoken",
