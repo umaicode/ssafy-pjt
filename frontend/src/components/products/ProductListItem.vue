@@ -1,7 +1,7 @@
 <template>
   <article class="product-card">
     <div class="product-card-header">
-      <div class="product-type-badge">
+      <div class="product-type-badge" :class="type">
         {{ type === "deposit" ? "예금" : "적금" }}
       </div>
 
@@ -14,22 +14,6 @@
           class="bank-logo-img"
           loading="lazy"
         />
-
-        <!-- ✅ 없으면 기본 아이콘 -->
-        <div v-else class="bank-logo" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M3 21h18" />
-            <path d="M3 10h18" />
-            <path d="M5 6l7-3 7 3" />
-            <path d="M4 10v11" />
-            <path d="M20 10v11" />
-            <path d="M8 14v3" />
-            <path d="M12 14v3" />
-            <path d="M16 14v3" />
-          </svg>
-        </div>
-
-        <!-- <span class="bank-name">{{ product.kor_co_nm }}</span> -->
       </div>
     </div>
 
@@ -203,9 +187,17 @@ const uniqueTerms = computed(() => {
   padding: 6px 12px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #7469B6;
-  background: rgba(116, 105, 182, 0.1);
   border-radius: 20px;
+}
+
+.product-type-badge.deposit {
+  background: #dbeafe;
+  color: #2563eb;
+}
+
+.product-type-badge.saving {
+  background: #dcfce7;
+  color: #16a34a;
 }
 
 .product-bank {
@@ -353,9 +345,14 @@ const uniqueTerms = computed(() => {
   border-bottom-color: #27272a;
 }
 
-[data-theme="dark"] .product-type-badge {
-  background: rgba(116, 105, 182, 0.2);
-  color: #E1AFD1;
+[data-theme="dark"] .product-type-badge.deposit {
+  background: rgba(37, 99, 235, 0.2);
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .product-type-badge.saving {
+  background: rgba(22, 163, 74, 0.2);
+  color: #86efac;
 }
 
 [data-theme="dark"] .bank-name {
@@ -371,7 +368,7 @@ const uniqueTerms = computed(() => {
 }
 
 [data-theme="dark"] .rate-item.rate-max {
-  background: linear-gradient(135deg, rgba(116, 105, 182, 0.2) 0%, rgba(225, 175, 209, 0.15) 100%);
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.15) 0%, rgba(200, 160, 190, 0.1) 100%);
 }
 
 [data-theme="dark"] .rate-label {
@@ -383,7 +380,7 @@ const uniqueTerms = computed(() => {
 }
 
 [data-theme="dark"] .rate-max .rate-value {
-  color: #E1AFD1;
+  color: #d4b8d0;
 }
 
 [data-theme="dark"] .term-badge {
@@ -396,6 +393,6 @@ const uniqueTerms = computed(() => {
 }
 
 [data-theme="dark"] .detail-link {
-  color: #E1AFD1;
+  color: #c9b8c6;
 }
 </style>

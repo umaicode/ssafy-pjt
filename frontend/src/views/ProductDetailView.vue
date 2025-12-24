@@ -357,9 +357,17 @@ onMounted(() => {
   padding: 6px 14px;
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #7469B6;
-  background: rgba(116, 105, 182, 0.1);
   border-radius: 20px;
+}
+
+.product-type-badge.deposit {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.product-type-badge.saving {
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.1);
 }
 
 .product-join-badge {
@@ -675,7 +683,7 @@ onMounted(() => {
 }
 
 [data-theme="dark"] .back-link:hover {
-  color: #E1AFD1;
+  color: #c9b8c6;
 }
 
 [data-theme="dark"] .product-header-card,
@@ -685,9 +693,14 @@ onMounted(() => {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-[data-theme="dark"] .product-type-badge {
-  background: rgba(116, 105, 182, 0.2);
-  color: #E1AFD1;
+[data-theme="dark"] .product-type-badge.deposit {
+  background: rgba(37, 99, 235, 0.2);
+  color: #93c5fd;
+}
+
+[data-theme="dark"] .product-type-badge.saving {
+  background: rgba(22, 163, 74, 0.2);
+  color: #86efac;
 }
 
 [data-theme="dark"] .badge-success {
@@ -712,7 +725,7 @@ onMounted(() => {
 [data-theme="dark"] .like-btn {
   background: #27272a;
   border-color: rgba(116, 105, 182, 0.3);
-  color: #E1AFD1;
+  color: #c9b8c6;
 }
 
 [data-theme="dark"] .like-btn:hover {
@@ -749,7 +762,7 @@ onMounted(() => {
 }
 
 [data-theme="dark"] .rate-max {
-  color: #E1AFD1;
+  color: #d4b8d0;
 }
 
 [data-theme="dark"] .detail-label {

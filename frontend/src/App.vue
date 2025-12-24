@@ -602,12 +602,12 @@ onUnmounted(() => {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   Footer - Modern Style
+   Footer - Modern Style (70% 축소)
    ═══════════════════════════════════════════════════════════════════════════ */
 .footer {
   background: linear-gradient(180deg, #1d1d1f 0%, #0d0d0e 100%);
   color: white;
-  padding: 64px 24px 40px;
+  padding: 20px 24px 28px;
   margin-top: auto;
   position: relative;
   overflow: hidden;
@@ -632,11 +632,11 @@ onUnmounted(() => {
 }
 
 .footer-brand {
-  margin-bottom: 28px;
+  margin-bottom: 16px;
 }
 
 .footer-logo {
-  font-size: 1.75rem;
+  font-size: 1.4rem;
   font-weight: 800;
   background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 35%, #AD88C6 70%, #7469B6 100%);
   -webkit-background-clip: text;
@@ -647,24 +647,24 @@ onUnmounted(() => {
 
 .footer-tagline {
   color: #86868b;
-  font-size: 0.9375rem;
-  margin-top: 10px;
+  font-size: 0.8125rem;
+  margin-top: 6px;
   letter-spacing: -0.01em;
 }
 
 .footer-links {
   display: flex;
   justify-content: center;
-  gap: 32px;
-  margin-bottom: 28px;
+  gap: 24px;
+  margin-bottom: 16px;
 }
 
 .footer-links a {
   color: #a1a1aa;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   text-decoration: none;
   transition: all 0.3s ease;
-  padding: 4px 0;
+  padding: 3px 0;
   position: relative;
 }
 
@@ -689,7 +689,7 @@ onUnmounted(() => {
 
 .footer-copyright {
   color: #52525b;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   letter-spacing: -0.01em;
 }
 
@@ -716,7 +716,9 @@ onUnmounted(() => {
   }
 
   .exchange-ticker {
-    display: none;
+    display: flex;
+    max-width: 120px;
+    overflow: hidden;
   }
 
   .navbar-actions {
@@ -845,6 +847,18 @@ onUnmounted(() => {
 }
 
 [data-theme="dark"] .footer {
-  background: linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
+  background: linear-gradient(180deg, #18181b 0%, #09090b 100%);
+}
+
+[data-theme="dark"] .footer-tagline {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .footer-links a {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .footer-copyright {
+  color: #71717a;
 }
 </style>

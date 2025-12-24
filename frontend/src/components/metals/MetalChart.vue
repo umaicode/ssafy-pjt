@@ -26,14 +26,14 @@ const getColors = () => {
   const dark = isDarkMode()
   
   return {
-    primary: isGold ? '#FFB800' : '#AD88C6',
-    secondary: isGold ? '#FFA500' : '#7469B6',
-    gradient1: isGold ? 'rgba(255, 184, 0, 0.4)' : 'rgba(173, 136, 198, 0.4)',
-    gradient2: isGold ? 'rgba(255, 184, 0, 0.05)' : 'rgba(116, 105, 182, 0.05)',
-    gridColor: dark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)',
-    textColor: dark ? '#e4e4e7' : '#52525b',
-    tooltipBg: dark ? '#27272a' : '#ffffff',
-    tooltipText: dark ? '#e4e4e7' : '#18181b',
+    primary: isGold ? '#FFB800' : (dark ? '#c4c4cc' : '#6b7280'),
+    secondary: isGold ? '#FFA500' : (dark ? '#9ca3af' : '#4b5563'),
+    gradient1: isGold ? 'rgba(255, 184, 0, 0.4)' : (dark ? 'rgba(196, 196, 204, 0.5)' : 'rgba(107, 114, 128, 0.4)'),
+    gradient2: isGold ? 'rgba(255, 184, 0, 0.05)' : (dark ? 'rgba(196, 196, 204, 0.08)' : 'rgba(107, 114, 128, 0.05)'),
+    gridColor: dark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
+    textColor: dark ? '#f4f4f5' : '#52525b',
+    tooltipBg: dark ? '#3f3f46' : '#ffffff',
+    tooltipText: dark ? '#f4f4f5' : '#18181b',
   }
 }
 
@@ -74,8 +74,20 @@ const drawChart = () => {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
-        duration: 1200,
-        easing: 'easeInOutQuart',
+        duration: 2000,
+        easing: 'easeOutQuart',
+        delay: (context) => {
+          let delay = 0;
+          if (context.type === 'data' && context.mode === 'default') {
+            delay = context.dataIndex * 30 + context.datasetIndex * 100;
+          }
+          return delay;
+        },
+        onProgress: function(animation) {
+          const chart = animation.chart;
+          const ctx = chart.ctx;
+          ctx.save();
+        },
       },
       interaction: {
         intersect: false,
@@ -227,11 +239,11 @@ canvas {
 
 /* Dark Mode */
 [data-theme="dark"] .chart-container {
-  background: linear-gradient(145deg, rgba(39, 39, 42, 0.9), rgba(24, 24, 27, 0.95));
-  border-color: rgba(116, 105, 182, 0.2);
+  background: linear-gradient(145deg, rgba(63, 63, 70, 0.9), rgba(39, 39, 42, 0.95));
+  border-color: rgba(161, 161, 170, 0.25);
   box-shadow: 
     0 4px 20px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 [data-theme="dark"] .chart-container:hover {
