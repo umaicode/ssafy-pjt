@@ -204,19 +204,8 @@ const bankLogoSrc = computed(() => {
   if (!product.value?.kor_co_nm) return null
 
   const name = product.value.kor_co_nm.trim()
-
-  let fileName = BANK_FILE_MAP[name]
-
-  if (!fileName) {
-    const normalized = name
-      .replace(/^BNK/, '')
-      .replace(/^IBK/, '')
-      .replace(/^KEB/, '')
-      .replace(/^NH/, '')
-      .trim()
-    fileName = BANK_FILE_MAP[normalized]
-  }
-
+  const fileName = BANK_FILE_MAP[name]
+  
   if (!fileName) return null
 
   return (

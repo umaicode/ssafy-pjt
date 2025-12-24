@@ -106,19 +106,19 @@ const BANK_FILE_MAP = {
   수협은행: "수협은행.png",
   한국스탠다드차타드은행: "sc제일은행.png",
 }
-  const bankLogoClass = computed(() => {
-    const name = props.product?.kor_co_nm || ""
+const bankLogoClass = computed(() => {
+  const name = props.product?.kor_co_nm || ""
 
-    // 로고를 크게 보여주고 싶은 은행 목록
-    const largeLogoBanks = [
-      "경남은행",
-      "토스뱅크",
-    ]
+  // 로고를 크게 보여주고 싶은 은행 목록
+  const largeLogoBanks = [
+    "경남은행",
+    "토스뱅크 주식회사",
+  ]
 
-    return largeLogoBanks.some((bank) => name.includes(bank))
-      ? "logo-large"
-      : ""
-  })
+  return largeLogoBanks.some((bank) => name.includes(bank))
+    ? "logo-large"
+    : ""
+})
 
 
 /**
@@ -129,24 +129,9 @@ const bankLogoSrc = computed(() => {
   const name = (props.product?.kor_co_nm || "").trim()
   if (!name) return null
 
-  // 1) 정확 매칭
-  let fileName = BANK_FILE_MAP[name]
-
-  // 2) 접두어 제거 후 재시도 (BNK/IBK/KEB/NH)
-  if (!fileName) {
-    const normalized = name
-      .replace(/^BNK/, "")
-      .replace(/^IBK/, "")
-      .replace(/^KEB/, "")
-      .replace(/^NH/, "")
-      .trim()
-    fileName = BANK_FILE_MAP[normalized]
-  }
-
+  const fileName = BANK_FILE_MAP[name]
   if (!fileName) return null
 
-  // Vite glob 키는 보통 "/src/assets/..." 형태가 됨
-  // 어떤 환경에선 "@/assets/..."가 아닐 수 있어 아래처럼 둘 다 시도
   return (
     bankLogos[`/src/assets/banks/${fileName}`] ||
     bankLogos[`@/assets/banks/${fileName}`] ||

@@ -213,26 +213,24 @@ const drawChart = () => {
   })
 }
 
-// 테마 변경 감지
-const handleThemeChange = () => {
-  drawChart()
-}
+let themeObserver = null
 
 onMounted(() => {
   drawChart()
   // 테마 변경 감지
-  const observer = new MutationObserver((mutations) => {
+  themeObserver = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.attributeName === 'data-theme') {
-        handleThemeChange()
+        drawChart()
       }
     })
   })
-  observer.observe(document.documentElement, { attributes: true })
+  themeObserver.observe(document.documentElement, { attributes: true })
 })
 
 onUnmounted(() => {
   if (chart) chart.destroy()
+  if (themeObserver) themeObserver.disconnect()
 })
 
 watch(() => [props.labels, props.prices, props.metal], drawChart, { deep: true })
