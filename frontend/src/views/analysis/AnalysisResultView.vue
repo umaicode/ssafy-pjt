@@ -294,12 +294,40 @@
                 적금 완료 후 예상 환전 금액
               </h4>
               <div class="exchange-stat">
-                <span class="exchange-label">예상 총 적립금 (원금 + 이자)</span>
-                <span class="exchange-value">{{ formatCurrency(analysisStore.result.exchange_rate_info.total_with_interest_krw) }}</span>
+                <span class="exchange-label">추천 전략</span>
+                <span class="exchange-value">{{ analysisStore.result.exchange_rate_info.strategy_name || '최적 조합' }}</span>
               </div>
               <div class="exchange-stat">
-                <span class="exchange-label">예상 이자 (적용 금리 {{ analysisStore.result.exchange_rate_info.applied_rate }}%)</span>
-                <span class="exchange-value highlight-text">+ {{ formatCurrency(analysisStore.result.exchange_rate_info.estimated_interest) }}</span>
+                <span class="exchange-label">예상 원금</span>
+                <span class="exchange-value">{{ formatCurrency(analysisStore.result.exchange_rate_info.total_principal) }}</span>
+              </div>
+              <div class="exchange-stat">
+                <span class="exchange-label">예상 이자</span>
+                <span class="exchange-value highlight-text">
+                  + {{ formatCurrency(analysisStore.result.exchange_rate_info.total_interest) }}
+                  <template v-if="analysisStore.result.exchange_rate_info.deposit_rate && analysisStore.result.exchange_rate_info.saving_rate">
+                    <br>
+                    <small style="font-size: 0.85em; opacity: 0.8;">
+                      (예금 {{ analysisStore.result.exchange_rate_info.deposit_rate }}% / 적금 {{ analysisStore.result.exchange_rate_info.saving_rate }}%)
+                    </small>
+                  </template>
+                  <template v-else-if="analysisStore.result.exchange_rate_info.deposit_rate">
+                    <br>
+                    <small style="font-size: 0.85em; opacity: 0.8;">
+                      (예금 {{ analysisStore.result.exchange_rate_info.deposit_rate }}%)
+                    </small>
+                  </template>
+                  <template v-else-if="analysisStore.result.exchange_rate_info.saving_rate">
+                    <br>
+                    <small style="font-size: 0.85em; opacity: 0.8;">
+                      (적금 {{ analysisStore.result.exchange_rate_info.saving_rate }}%)
+                    </small>
+                  </template>
+                </span>
+              </div>
+              <div class="exchange-stat">
+                <span class="exchange-label">예상 총 적립금 (원금 + 이자)</span>
+                <span class="exchange-value">{{ formatCurrency(analysisStore.result.exchange_rate_info.total_with_interest_krw) }}</span>
               </div>
               <div class="exchange-stat big">
                 <span class="exchange-label">현지 통화 환산 ({{ analysisStore.result.exchange_rate_info.currency_code }})</span>

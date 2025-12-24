@@ -435,7 +435,8 @@ def get_analysis_result(request, analysis_id: int):
 
                 params = {"authkey": api_key, "searchdate": search_date, "data": "AP01"}
 
-                res = requests.get(base_url, params=params, timeout=10)
+                # 개발 환경에서 verify=False 사용
+                res = requests.get(base_url, params=params, timeout=10, verify=False)
                 data = res.json() if res.status_code == 200 else []
 
                 # 주말/공휴일인 경우 이전 영업일 조회
@@ -468,30 +469,39 @@ def get_analysis_result(request, analysis_id: int):
 
                         foreign_amount = round(target_krw / deal_bas_r, 2)
 
-                        # ✅ 이자 포함 예상 금액 계산
-                        # 추천된 상품 중 최고 금리로 이자 계산
-                        best_rate = 4.0  # 기본값
-                        for opt in saving_opts:
-                            rate = float(opt.intr_rate2 or opt.intr_rate or 0)
-                            if rate > best_rate:
-                                best_rate = rate
+                        # ✅ best_strategy에서 계산된 결과 사용
+                        best_strategy = combination_strategy.get("best_strategy", {})
 
-                        # 월 복리 이자 계산 (단순 단리로 근사)
-                        period_months = int(analysis.period_months)
-                        monthly_amount = int(analysis.monthly_amount)
+                        # best_strategy에서 이미 계산된 값 가져오기
+                        total_with_interest = int(best_strategy.get("total_amount", 0))
+                        total_interest = int(best_strategy.get("total_interest", 0))
+                        strategy_name = best_strategy.get("strategy_name", "")
+                        strategy_type = best_strategy.get("strategy_type", "")
 
-                        # 적금 예상 총액 (원금 + 이자)
-                        total_principal = monthly_amount * period_months
-                        # 단리 이자 계산 (평균 잔액 기준)
-                        avg_balance = total_principal / 2
-                        interest = (
-                            avg_balance * (best_rate / 100) * (period_months / 12)
-                        )
-                        total_with_interest = total_principal + int(interest)
+                        # 예금/적금 세부 정보
+                        deposit_info = best_strategy.get("deposit") or {}
+                        saving_info = best_strategy.get("saving") or {}
+
+                        # 예금 정보 (best_strategy에서)
+                        deposit_principal = int(deposit_info.get("principal", 0))
+                        deposit_interest = int(deposit_info.get("interest", 0))
+                        deposit_rate = deposit_info.get("rate", 0)
+                        deposit_term = deposit_info.get("term", 0)
+
+                        # 적금 정보 (best_strategy에서)
+                        saving_principal = int(saving_info.get("principal", 0))
+                        saving_interest = int(saving_info.get("interest", 0))
+                        saving_rate = saving_info.get("rate", 0)
+                        saving_term = saving_info.get("term", 0)
+
+                        # 총 원금
+                        total_principal = deposit_principal + saving_principal
 
                         # 이자 포함 금액을 현지 통화로 환산
-                        foreign_with_interest = round(
-                            total_with_interest / deal_bas_r, 2
+                        foreign_with_interest = (
+                            round(total_with_interest / deal_bas_r, 2)
+                            if total_with_interest > 0
+                            else 0
                         )
 
                         exchange_rate_info = {
@@ -501,11 +511,24 @@ def get_analysis_result(request, analysis_id: int):
                             "target_krw": target_krw,
                             "target_foreign": foreign_amount,
                             "updated_at": search_date,
-                            # ✅ 이자 포함 예상 금액
+                            # ✅ best_strategy 기반 정보
+                            "strategy_name": strategy_name,
+                            "strategy_type": strategy_type,
+                            # 예금 정보
+                            "deposit_principal": deposit_principal,
+                            "deposit_interest": deposit_interest,
+                            "deposit_rate": deposit_rate,
+                            "deposit_term": deposit_term,
+                            # 적금 정보
+                            "saving_principal": saving_principal,
+                            "saving_interest": saving_interest,
+                            "saving_rate": saving_rate,
+                            "saving_term": saving_term,
+                            # 총액
+                            "total_principal": total_principal,
+                            "total_interest": total_interest,
                             "total_with_interest_krw": total_with_interest,
                             "total_with_interest_foreign": foreign_with_interest,
-                            "estimated_interest": int(interest),
-                            "applied_rate": best_rate,
                         }
                         break
 
