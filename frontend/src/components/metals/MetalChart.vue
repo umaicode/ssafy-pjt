@@ -96,17 +96,18 @@ const drawChart = () => {
           
           if (!chartArea) return;
           
+          // 매 프레임마다 save/restore를 쌍으로 실행
+          ctx.save();
+          
           const progress = animation.currentStep / animation.numSteps;
           const clipWidth = chartArea.left + (chartArea.right - chartArea.left) * progress;
           
-          ctx.save();
           ctx.beginPath();
           ctx.rect(chartArea.left, chartArea.top, clipWidth - chartArea.left, chartArea.bottom - chartArea.top);
           ctx.clip();
-        },
-        onComplete: function(animation) {
-          const chart = animation.chart;
-          chart.ctx.restore();
+          
+          // 차트 그리기 후 즉시 복원
+          ctx.restore();
         },
       },
       interaction: {
