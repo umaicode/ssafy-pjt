@@ -1666,7 +1666,7 @@ const getBankLogo = (bankName) => {
   max-width: 1000px;
   margin: 0 auto;
   padding: 80px 60px;
-  background: linear-gradient(135deg, #1d1d1f 0%, #2D2660 100%);
+  background: linear-gradient(335deg, #212125 0%, #414049 100%);
   border-radius: 40px;
   overflow: hidden;
 }

@@ -249,8 +249,8 @@ const uniqueTerms = computed(() => {
 }
 
 .product-name {
-  font-size: 1.125rem;
-  font-weight: 700;
+  font-size: 1.3rem;
+  font-weight: 600;
   color: #18181b;
   margin-bottom: 20px;
   line-height: 1.4;

@@ -212,7 +212,7 @@ const formatDate = (iso) => {
 }
 
 .page-title {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: white;
   margin: 0;

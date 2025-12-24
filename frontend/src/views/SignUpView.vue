@@ -88,14 +88,32 @@
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                   <path d="M7 11V7a5 5 0 0110 0v4"/>
                 </svg>
-                <input 
-                  type="password" 
-                  id="password1" 
+
+                <input
+                  :type="password1Visible ? 'text' : 'password'"
+                  id="password1"
                   v-model.trim="password1"
-                  class="input input-with-icon"
+                  class="input input-with-icon input-with-toggle"
                   placeholder="비밀번호를 입력하세요"
                   required
                 />
+
+                <!-- 👁️ -->
+                <button
+                  type="button"
+                  class="password-toggle"
+                  @click="password1Visible = !password1Visible"
+                  aria-label="비밀번호 보기"
+                >
+                  <svg v-if="!password1Visible" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                  <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17.94 17.94A10.94 10.94 0 0112 19c-7 0-11-7-11-7"/>
+                    <path d="M1 1l22 22"/>
+                  </svg>
+                </button>
               </div>
             </div>
 
@@ -103,20 +121,38 @@
               <label class="input-label" for="password2">비밀번호 확인</label>
               <div class="input-wrapper">
                 <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M9 12l2 2 4-4"/>
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                   <path d="M7 11V7a5 5 0 0110 0v4"/>
                 </svg>
-                <input 
-                  type="password" 
-                  id="password2" 
+
+                <input
+                  :type="password2Visible ? 'text' : 'password'"
+                  id="password2"
                   v-model.trim="password2"
-                  class="input input-with-icon"
+                  class="input input-with-icon input-with-toggle"
                   placeholder="비밀번호를 다시 입력하세요"
                   required
                 />
+
+                <!-- 👁️ -->
+                <button
+                  type="button"
+                  class="password-toggle"
+                  @click="password2Visible = !password2Visible"
+                  aria-label="비밀번호 보기"
+                >
+                  <svg v-if="!password2Visible" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+                  <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17.94 17.94A10.94 10.94 0 0112 19c-7 0-11-7-11-7"/>
+                    <path d="M1 1l22 22"/>
+                  </svg>
+                </button>
               </div>
             </div>
+
 
             <button type="submit" class="btn btn-primary btn-lg btn-block">
               가입하기
@@ -147,6 +183,9 @@ const username = ref('')
 const nickname = ref('')
 const password1 = ref('')
 const password2 = ref('')
+
+const password1Visible = ref(false)
+const password2Visible = ref(false)
 
 const accountStore = useAccountStore()
 
@@ -345,7 +384,7 @@ const signUp = function () {
   pointer-events: none;
 }
 
-.input-with-icon {
+input.input-with-icon {
   padding-left: 48px;
 }
 
@@ -502,4 +541,40 @@ const signUp = function () {
 [data-theme="dark"] .auth-link {
   color: #E1AFD1;
 }
+/* 비밀번호 보기 버튼 */
+.password-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #a1a1aa;
+}
+
+.password-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.password-toggle:hover {
+  color: #7469B6;
+}
+
+/* 오른쪽 아이콘 공간 확보 */
+.input-with-toggle {
+  padding-right: 48px;
+}
+
+/* 다크모드 */
+[data-theme="dark"] .password-toggle {
+  color: #71717a;
+}
+
+[data-theme="dark"] .password-toggle:hover {
+  color: #E1AFD1;
+}
+
 </style>

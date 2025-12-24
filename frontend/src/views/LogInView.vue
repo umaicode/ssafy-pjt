@@ -66,18 +66,52 @@
             <div class="input-group">
               <label class="input-label" for="password">비밀번호</label>
               <div class="input-wrapper">
+                <!-- 자물쇠 아이콘 -->
                 <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                   <path d="M7 11V7a5 5 0 0110 0v4"/>
                 </svg>
-                <input 
-                  type="password" 
-                  id="password" 
+
+                <!-- input -->
+                <input
+                  :type="passwordVisible ? 'text' : 'password'"
+                  id="password"
                   v-model.trim="password"
-                  class="input input-with-icon"
+                  class="input input-with-icon input-with-toggle"
                   placeholder="비밀번호를 입력하세요"
                   required
                 />
+
+                <!-- 👁️ 보기/숨기기 버튼 -->
+                <button
+                  type="button"
+                  class="password-toggle"
+                  @click="passwordVisible = !passwordVisible"
+                  aria-label="비밀번호 보기"
+                >
+                  <svg
+                    v-if="!passwordVisible"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+                    <circle cx="12" cy="12" r="3"/>
+                  </svg>
+
+                  <svg
+                    v-else
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M17.94 17.94A10.94 10.94 0 0112 19c-7 0-11-7-11-7a21.77 21.77 0 015.17-5.94"/>
+                    <path d="M1 1l22 22"/>
+                    <path d="M9.53 9.53A3.5 3.5 0 0012 15.5a3.5 3.5 0 002.47-5.97"/>
+                  </svg>
+                </button>
               </div>
             </div>
 
@@ -109,6 +143,7 @@ import { useAccountStore } from '@/stores/accounts'
 const username = ref('')
 const password = ref('')
 const accountStore = useAccountStore()
+const passwordVisible = ref(false) 
 
 const logIn = () => {
   const payload = {
@@ -471,6 +506,45 @@ const logIn = () => {
 }
 
 [data-theme="dark"] .auth-link {
+  color: #E1AFD1; 
+}
+/* 비밀번호 보기 버튼 */
+.password-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #a1a1aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.password-toggle:hover {
+  color: #7469B6;
+}
+
+/* 아이콘 + 토글 버튼 공간 확보 */
+.input-with-toggle {
+  padding-right: 48px;
+}
+
+/* 다크모드 */
+[data-theme="dark"] .password-toggle {
+  color: #71717a;
+}
+
+[data-theme="dark"] .password-toggle:hover {
   color: #E1AFD1;
 }
+
 </style>

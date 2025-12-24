@@ -405,10 +405,10 @@ onMounted(() => {
 
 .product-title {
   font-size: 1.55rem;
-  font-weight: 800;
+  font-weight: 600;
   color: #18181b;
   line-height: 1.3;
-  margin-bottom: 50px;
+  margin-bottom: 70px;
   margin-top: 50px;
 }
 

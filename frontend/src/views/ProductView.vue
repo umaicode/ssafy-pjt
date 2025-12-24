@@ -1,11 +1,21 @@
 <template>
   <div class="products-page">
-    <div class="container">
-      <!-- Page Header -->
-      <div class="page-header">
-        <h1 class="page-title">금융상품</h1>
-        <p class="page-description">다양한 예금·적금 상품을 비교하고 나에게 맞는 상품을 찾아보세요</p>
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="header-content">
+        <div class="header-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="header-text">
+          <h1 class="page-title">금융상품</h1>
+          <p class="page-subtitle">다양한 예금·적금 상품을 비교하고 나에게 맞는 상품을 찾아보세요</p>
+        </div>
       </div>
+    </header>
+
+    <div class="container">
 
       <!-- Tab Navigation -->
       <div class="tabs-container">
@@ -253,33 +263,67 @@ const resetFilter = () => {
 <style scoped>
 .products-page {
   min-height: calc(100vh - 72px);
-  padding: 48px 24px;
   background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
+}
+
+/* Page Header */
+.page-header {
+  background: linear-gradient(135deg, #E1AFD1 0%, #AD88C6 50%, #7469B6 100%);
+  padding: 40px 24px;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+.header-icon svg {
+  width: 32px;
+  height: 32px;
+  color: white;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+  text-align: left;
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0;
+  text-align: left;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
-}
-
-/* Page Header */
-.page-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.page-title {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #18181b;
-  margin-bottom: 12px;
-}
-
-.page-description {
-  font-size: 1.0625rem;
-  color: #71717a;
-  max-width: 500px;
-  margin: 0 auto;
+  padding: 48px 24px;
 }
 
 /* Tabs */
@@ -536,12 +580,35 @@ const resetFilter = () => {
 }
 
 @media (max-width: 600px) {
-  .products-page {
-    padding: 32px 16px;
+  .page-header {
+    padding: 32px 20px;
+  }
+
+  .header-content {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .header-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .header-icon svg {
+    width: 24px;
+    height: 24px;
   }
 
   .page-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .container {
+    padding: 32px 16px;
   }
 
   .filter-grid {
@@ -563,15 +630,19 @@ const resetFilter = () => {
    Dark Mode Styles
    ═══════════════════════════════════════════════════════════════════════════ */
 [data-theme="dark"] .products-page {
-  background: #0a0a0a;
+  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 50%, #0a0a0a 100%);
+}
+
+[data-theme="dark"] .page-header {
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 50%, #9b7ab8 100%);
 }
 
 [data-theme="dark"] .page-title {
-  color: #e4e4e7;
+  color: white;
 }
 
-[data-theme="dark"] .page-description {
-  color: #a1a1aa;
+[data-theme="dark"] .page-subtitle {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 [data-theme="dark"] .tabs-pill {

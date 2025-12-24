@@ -605,7 +605,7 @@ onUnmounted(() => {
    Footer - Modern Style (70% 축소)
    ═══════════════════════════════════════════════════════════════════════════ */
 .footer {
-  background: linear-gradient(180deg, #1d1d1f 0%, #0d0d0e 100%);
+  background: #2d2d44;
   color: white;
   padding: 20px 24px 28px;
   margin-top: auto;
