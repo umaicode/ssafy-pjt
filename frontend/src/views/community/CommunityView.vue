@@ -192,6 +192,7 @@ const formatDate = (iso) => {
   font-weight: 800;
   color: #18181b;
   margin: 0;
+  text-align: left;
 }
 
 .page-description {

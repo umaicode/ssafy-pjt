@@ -185,7 +185,7 @@ onMounted(() => {
 .youtube-icon svg {
   width: 32px;
   height: 32px;
-  color: #7469B6;
+  color: #dc2626;
 }
 
 .page-title {
@@ -193,6 +193,7 @@ onMounted(() => {
   font-weight: 800;
   color: white;
   margin: 0;
+  text-align: left;
 }
 
 .page-subtitle {

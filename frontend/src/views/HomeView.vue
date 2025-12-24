@@ -66,7 +66,7 @@
           <!-- Stats -->
           <div class="hero-stats">
             <div class="stat-item">
-              <span class="stat-number">500<span class="stat-plus">+</span></span>
+              <span class="stat-number">50<span class="stat-plus">+</span></span>
               <span class="stat-label">금융 상품</span>
             </div>
             <div class="stat-divider"></div>
