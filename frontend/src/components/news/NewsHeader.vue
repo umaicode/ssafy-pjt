@@ -87,7 +87,7 @@ const goBookmark = function () {
 
 <style scoped>
 .news-header {
-  background: linear-gradient(135deg, #1d1d1f 0%, #2D2660 100%);
+  background: linear-gradient(135deg, #5b5b6d 0%, #6d698f 100%);
   padding: 20px 24px;
 }
 

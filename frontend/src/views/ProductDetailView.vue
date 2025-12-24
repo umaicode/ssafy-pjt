@@ -14,7 +14,7 @@
         <!-- Header Card -->
         <div class="product-header-card">
           <div class="product-badge-row">
-            <span class="product-type-badge">
+            <span class="product-type-badge" :class="route.params.type === 'deposit' ? 'deposit' : 'saving'">
               {{ route.params.type === 'deposit' ? '예금' : '적금' }}
             </span>
             <span class="product-join-badge" :class="joinDenyClass">
@@ -23,7 +23,6 @@
           </div>
           
           <div class="product-bank-info">
-            <!-- ✅ 은행 로고 -->
             <div class="bank-logo-large">
               <img
                 v-if="bankLogoSrc"
@@ -32,25 +31,8 @@
                 class="bank-logo-img-large"
                 loading="lazy"
               />
-              <svg
-                v-else
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M3 21h18"/>
-                <path d="M3 10h18"/>
-                <path d="M5 6l7-3 7 3"/>
-                <path d="M4 10v11"/>
-                <path d="M20 10v11"/>
-                <path d="M8 14v3"/>
-                <path d="M12 14v3"/>
-                <path d="M16 14v3"/>
-              </svg>
             </div>
           </div>
-
           
           <h1 class="product-title">{{ product.fin_prdt_nm }}</h1>
 
@@ -400,7 +382,7 @@ onMounted(() => {
 }
 
 .bank-logo-large {
-  width: 150px;
+  width: 130px;
   height: 48px;
   border-radius: 12px;
   display: flex;
@@ -422,7 +404,7 @@ onMounted(() => {
 }
 
 .product-title {
-  font-size: 1.75rem;
+  font-size: 1.55rem;
   font-weight: 800;
   color: #18181b;
   line-height: 1.3;

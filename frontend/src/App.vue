@@ -273,7 +273,7 @@ onUnmounted(() => {
 }
 
 .navbar-brand {
-  font-size: 1.75rem;
+  font-size: 2.6rem;
   font-weight: 800;
   background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 35%, #AD88C6 70%, #7469B6 100%);
   -webkit-background-clip: text;

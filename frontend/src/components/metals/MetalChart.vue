@@ -20,20 +20,33 @@ let chart = null
 // 테마 감지
 const isDarkMode = () => document.documentElement.getAttribute('data-theme') === 'dark'
 
-// 색상 팔레트
+// 색상 팔레트 - 미니멀하고 프리미엄한 색상
 const getColors = () => {
   const isGold = props.metal === 'gold'
   const dark = isDarkMode()
   
-  return {
-    primary: isGold ? '#FFB800' : (dark ? '#c4c4cc' : '#6b7280'),
-    secondary: isGold ? '#FFA500' : (dark ? '#9ca3af' : '#4b5563'),
-    gradient1: isGold ? 'rgba(255, 184, 0, 0.4)' : (dark ? 'rgba(196, 196, 204, 0.5)' : 'rgba(107, 114, 128, 0.4)'),
-    gradient2: isGold ? 'rgba(255, 184, 0, 0.05)' : (dark ? 'rgba(196, 196, 204, 0.08)' : 'rgba(107, 114, 128, 0.05)'),
-    gridColor: dark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.06)',
-    textColor: dark ? '#f4f4f5' : '#52525b',
-    tooltipBg: dark ? '#3f3f46' : '#ffffff',
-    tooltipText: dark ? '#f4f4f5' : '#18181b',
+  if (isGold) {
+    return {
+      primary: dark ? '#F7D794' : '#D4AF37',
+      gradient1: dark ? 'rgba(247, 215, 148, 0.25)' : 'rgba(212, 175, 55, 0.2)',
+      gradient2: dark ? 'rgba(247, 215, 148, 0.02)' : 'rgba(212, 175, 55, 0.01)',
+      gridColor: dark ? 'rgba(247, 215, 148, 0.05)' : 'rgba(212, 175, 55, 0.08)',
+      textColor: dark ? '#d4d4d8' : '#52525b',
+      tooltipBg: dark ? 'rgba(24, 24, 27, 0.95)' : 'rgba(255, 255, 255, 0.98)',
+      tooltipText: dark ? '#F7D794' : '#D4AF37',
+      tooltipBorder: dark ? '#F7D794' : '#D4AF37',
+    }
+  } else {
+    return {
+      primary: dark ? '#CBD5E1' : '#64748B',
+      gradient1: dark ? 'rgba(203, 213, 225, 0.2)' : 'rgba(100, 116, 139, 0.15)',
+      gradient2: dark ? 'rgba(203, 213, 225, 0.02)' : 'rgba(100, 116, 139, 0.01)',
+      gridColor: dark ? 'rgba(203, 213, 225, 0.05)' : 'rgba(100, 116, 139, 0.08)',
+      textColor: dark ? '#d4d4d8' : '#52525b',
+      tooltipBg: dark ? 'rgba(24, 24, 27, 0.95)' : 'rgba(255, 255, 255, 0.98)',
+      tooltipText: dark ? '#CBD5E1' : '#64748B',
+      tooltipBorder: dark ? '#CBD5E1' : '#64748B',
+    }
   }
 }
 
@@ -55,18 +68,18 @@ const drawChart = () => {
       labels: props.labels,
       datasets: [
         {
-          label: props.metal === 'gold' ? 'Gold Price (USD/oz)' : 'Silver Price (USD/oz)',
+          label: props.metal === 'gold' ? 'Gold (USD/oz)' : 'Silver (USD/oz)',
           data: props.prices,
           borderColor: colors.primary,
           backgroundColor: gradient,
-          borderWidth: 3,
+          borderWidth: 2,
           tension: 0.4,
           fill: true,
           pointRadius: 0,
-          pointHoverRadius: 8,
+          pointHoverRadius: 6,
           pointHoverBackgroundColor: colors.primary,
-          pointHoverBorderColor: '#fff',
-          pointHoverBorderWidth: 3,
+          pointHoverBorderColor: colors.tooltipBg,
+          pointHoverBorderWidth: 2,
         }
       ]
     },
@@ -75,18 +88,25 @@ const drawChart = () => {
       maintainAspectRatio: false,
       animation: {
         duration: 2000,
-        easing: 'easeOutQuart',
-        delay: (context) => {
-          let delay = 0;
-          if (context.type === 'data' && context.mode === 'default') {
-            delay = context.dataIndex * 30 + context.datasetIndex * 100;
-          }
-          return delay;
-        },
+        easing: 'easeInOutQuart',
         onProgress: function(animation) {
           const chart = animation.chart;
           const ctx = chart.ctx;
+          const chartArea = chart.chartArea;
+          
+          if (!chartArea) return;
+          
+          const progress = animation.currentStep / animation.numSteps;
+          const clipWidth = chartArea.left + (chartArea.right - chartArea.left) * progress;
+          
           ctx.save();
+          ctx.beginPath();
+          ctx.rect(chartArea.left, chartArea.top, clipWidth - chartArea.left, chartArea.bottom - chartArea.top);
+          ctx.clip();
+        },
+        onComplete: function(animation) {
+          const chart = animation.chart;
+          chart.ctx.restore();
         },
       },
       interaction: {
@@ -102,40 +122,46 @@ const drawChart = () => {
             color: colors.textColor,
             font: {
               size: 12,
-              weight: '600',
-              family: "'Pretendard', sans-serif",
+              weight: '500',
+              family: "'Pretendard', -apple-system, sans-serif",
             },
             usePointStyle: true,
             pointStyle: 'circle',
-            padding: 20,
+            padding: 16,
+            boxWidth: 8,
+            boxHeight: 8,
           }
         },
         tooltip: {
           enabled: true,
           backgroundColor: colors.tooltipBg,
-          titleColor: colors.tooltipText,
+          titleColor: colors.textColor,
           bodyColor: colors.tooltipText,
           titleFont: {
-            size: 13,
-            weight: '700',
-            family: "'Pretendard', sans-serif",
+            size: 11,
+            weight: '500',
+            family: "'Pretendard', -apple-system, sans-serif",
           },
           bodyFont: {
-            size: 14,
+            size: 15,
             weight: '600',
-            family: "'Pretendard', sans-serif",
+            family: "'Pretendard', -apple-system, sans-serif",
           },
-          padding: 14,
-          cornerRadius: 12,
-          displayColors: true,
-          boxPadding: 6,
-          borderColor: colors.primary,
+          padding: 12,
+          cornerRadius: 10,
+          displayColors: false,
+          borderColor: colors.tooltipBorder,
           borderWidth: 1,
+          caretSize: 6,
+          caretPadding: 8,
           callbacks: {
             label: function(context) {
               const value = context.parsed.y
-              return ` $${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-            }
+              return `$${value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+            },
+            title: function(context) {
+              return context[0].label || '';
+            },
           }
         }
       },
@@ -147,12 +173,12 @@ const drawChart = () => {
           ticks: {
             color: colors.textColor,
             font: {
-              size: 11,
-              weight: '500',
-              family: "'Pretendard', sans-serif",
+              size: 10,
+              weight: '400',
+              family: "'Pretendard', -apple-system, sans-serif",
             },
             maxRotation: 0,
-            maxTicksLimit: 8,
+            maxTicksLimit: 10,
           },
           border: {
             display: false,
@@ -162,21 +188,23 @@ const drawChart = () => {
           grid: {
             color: colors.gridColor,
             lineWidth: 1,
+            drawTicks: false,
           },
           ticks: {
             color: colors.textColor,
             font: {
-              size: 11,
-              weight: '500',
-              family: "'Pretendard', sans-serif",
+              size: 10,
+              weight: '400',
+              family: "'Pretendard', -apple-system, sans-serif",
             },
-            padding: 12,
+            padding: 10,
             callback: function(value) {
               return '$' + value.toLocaleString()
             }
           },
           border: {
             display: false,
+            dash: [4, 4],
           }
         }
       }
@@ -213,23 +241,22 @@ watch(() => [props.labels, props.prices, props.metal], drawChart, { deep: true }
 .chart-container {
   position: relative;
   width: 100%;
-  height: 320px;
-  padding: 16px;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.8), rgba(249, 250, 251, 0.9));
-  border-radius: 16px;
+  height: 400px;
+  padding: 32px 24px;
+  background: #ffffff;
+  border-radius: 20px;
   box-shadow: 
-    0 4px 20px rgba(116, 105, 182, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(116, 105, 182, 0.1);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .chart-container:hover {
-  transform: translateY(-2px);
   box-shadow: 
-    0 8px 30px rgba(116, 105, 182, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 2px 4px rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
 canvas {
@@ -239,16 +266,17 @@ canvas {
 
 /* Dark Mode */
 [data-theme="dark"] .chart-container {
-  background: linear-gradient(145deg, rgba(63, 63, 70, 0.9), rgba(39, 39, 42, 0.95));
-  border-color: rgba(161, 161, 170, 0.25);
+  background: #18181b;
+  border-color: rgba(255, 255, 255, 0.08);
   box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    0 1px 3px rgba(0, 0, 0, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="dark"] .chart-container:hover {
   box-shadow: 
-    0 8px 30px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 </style>

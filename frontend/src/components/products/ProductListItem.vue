@@ -6,12 +6,12 @@
       </div>
 
       <div class="product-bank">
-        <!-- ✅ 로고 있으면 은행 CI (로컬 assets/banks/*.png) -->
         <img
           v-if="bankLogoSrc"
           :src="bankLogoSrc"
           :alt="product.kor_co_nm"
           class="bank-logo-img"
+          :class="bankLogoClass"
           loading="lazy"
         />
       </div>
@@ -106,6 +106,20 @@ const BANK_FILE_MAP = {
   수협은행: "수협은행.png",
   한국스탠다드차타드은행: "sc제일은행.png",
 }
+  const bankLogoClass = computed(() => {
+    const name = props.product?.kor_co_nm || ""
+
+    // 로고를 크게 보여주고 싶은 은행 목록
+    const largeLogoBanks = [
+      "경남은행",
+      "토스뱅크",
+    ]
+
+    return largeLogoBanks.some((bank) => name.includes(bank))
+      ? "logo-large"
+      : ""
+  })
+
 
 /**
  * ✅ 현재 상품 은행명으로 로고 src 찾기
@@ -180,12 +194,13 @@ const uniqueTerms = computed(() => {
   align-items: center;
   justify-content: space-between;
   padding: 20px 24px;
+  height: 80px;
   border-bottom: 1px solid #f4f4f5;
 }
 
 .product-type-badge {
   padding: 6px 12px;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
   border-radius: 20px;
 }
@@ -395,4 +410,16 @@ const uniqueTerms = computed(() => {
 [data-theme="dark"] .detail-link {
   color: #c9b8c6;
 }
+.bank-logo-img {
+  width: 80px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* ✅ 경남은행 전용 */
+.bank-logo-img.logo-large  {
+  width: 100px;   /* 원하는 만큼 */
+  height: 75px;
+}
+
 </style>

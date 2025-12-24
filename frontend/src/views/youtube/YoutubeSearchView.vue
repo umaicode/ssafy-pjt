@@ -155,7 +155,7 @@ onMounted(() => {
 /* Page Header */
 .page-header {
   background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
-  padding: 40px 24px 32px;
+  padding: 25px 24px 25px;
 }
 
 .header-content {

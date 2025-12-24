@@ -689,6 +689,7 @@ const submit = () => {
 .analysis-page {
   min-height: calc(100vh - 200px);
   background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
+  margin-bottom: 200px;
 }
 
 /* Page Header */

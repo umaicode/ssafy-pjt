@@ -1,16 +1,43 @@
 <template>
   <section class="comments-section">
     <div class="comments-header">
-      <div class="header-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
-        </svg>
+      <div class="header-left">
+        <div class="header-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+          </svg>
+        </div>
+        <h3>댓글 <span class="count">{{ comments.length }}</span></h3>
       </div>
-      <h3>댓글 <span class="count">{{ comments.length }}</span></h3>
+      <div class="sort-buttons">
+        <button 
+          class="sort-btn" 
+          :class="{ active: sortType === 'latest' }" 
+          type="button" 
+          @click="changeSortType('latest')"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"/>
+            <polyline points="19 12 12 19 5 12"/>
+          </svg>
+          최신순
+        </button>
+        <button 
+          class="sort-btn" 
+          :class="{ active: sortType === 'likes' }" 
+          type="button" 
+          @click="changeSortType('likes')"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+          </svg>
+          좋아요순
+        </button>
+      </div>
     </div>
 
     <ul v-if="comments.length" class="comments-list">
-      <li v-for="c in comments" :key="c.id" class="comment-item">
+      <li v-for="c in sortedComments" :key="c.id" class="comment-item">
         <!-- 수정 모드 -->
         <template v-if="editingId === c.id">
           <div class="edit-mode">
@@ -93,7 +120,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAccountStore } from '@/stores/accounts'
 
 const props = defineProps({
@@ -103,6 +130,25 @@ const props = defineProps({
 const emit = defineEmits(['delete', 'update', 'toggle-like'])
 
 const accountStore = useAccountStore()
+
+// 정렬 타입
+const sortType = ref('latest')
+
+// 정렬된 댓글 목록
+const sortedComments = computed(() => {
+  const commentsCopy = [...props.comments]
+  if (sortType.value === 'latest') {
+    return commentsCopy.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+  } else if (sortType.value === 'likes') {
+    return commentsCopy.sort((a, b) => (b.likes_count || 0) - (a.likes_count || 0))
+  }
+  return commentsCopy
+})
+
+// 정렬 타입 변경
+const changeSortType = (type) => {
+  sortType.value = type
+}
 
 // 수정 모드 상태
 const editingId = ref(null)
@@ -167,10 +213,17 @@ const onToggleCommentLike = (commentId) => {
 .comments-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   padding-bottom: 16px;
   border-bottom: 1px solid #e4e4e7;
   margin-bottom: 16px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .header-icon {
@@ -199,6 +252,48 @@ const onToggleCommentLike = (commentId) => {
 .comments-header .count {
   color: #7469B6;
   margin-left: 4px;
+}
+
+/* Sort Buttons */
+.sort-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #71717a;
+  background: white;
+  border: 1px solid #e4e4e7;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sort-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.sort-btn:hover {
+  background: #fafafa;
+  border-color: #d4d4d8;
+  color: #3f3f46;
+}
+
+.sort-btn.active {
+  color: white;
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+  border-color: transparent;
+}
+
+.sort-btn.active:hover {
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
 }
 
 /* Comments List */
@@ -467,6 +562,24 @@ const onToggleCommentLike = (commentId) => {
 
 [data-theme="dark"] .comments-header .count {
   color: #E1AFD1;
+}
+
+[data-theme="dark"] .sort-btn {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .sort-btn:hover {
+  background: #3f3f46;
+  border-color: #52525b;
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .sort-btn.active {
+  color: white;
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+  border-color: transparent;
 }
 
 [data-theme="dark"] .comment-item {
