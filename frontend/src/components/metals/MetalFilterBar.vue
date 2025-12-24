@@ -52,14 +52,13 @@
         <label class="filter-label">귀금속 선택</label>
         <div class="metal-toggle">
           <button
-            class="metal-btn"
+            class="metal-btn metal-btn-gold"
             :class="{ active: store.metal === 'gold' }"
             @click="store.setMetal('gold')"
           >
             <span class="metal-icon gold">Au</span>
             금
           </button>
-
           <button
             class="metal-btn"
             :class="{ active: store.metal === 'silver' }"
@@ -219,20 +218,20 @@ const applyDates = () => {
   font-weight: 600;
   color: #52525b;
   background: white;
-  border: 2px solid #e4e4e7;
+  border: 2px solid #c3c3ce;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .metal-btn:hover {
-  border-color: #d97706;
+  border-color: #9e9c98;
 }
 
 .metal-btn.active {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  border-color: #d97706;
-  color: white;
+  background: linear-gradient(135deg, #f1efed 0%, #bdbdc7 100%);
+  border-color: #c2c2cc;
+  color: rgb(70, 63, 63);
 }
 
 .metal-icon {
@@ -250,15 +249,33 @@ const applyDates = () => {
   background: #fef3c7;
   color: #b45309;
 }
+/* ✅ 금 버튼 기본 색(비활성) */
+.metal-btn.metal-btn-gold {
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(245, 158, 11, 0.08);
+  color: #92400e;
+}
+
+/* ✅ 금 버튼 hover */
+.metal-btn.metal-btn-gold:hover {
+  border-color: #e6dac7;
+}
+
+/* ✅ 금 버튼 active(선택됨) */
+.metal-btn.metal-btn-gold.active {
+  background: linear-gradient(135deg, #ffda9a 0%, #e7a456 100%);
+  border-color: #f59e0b;
+  color: white;
+}
 
 .metal-btn.active .metal-icon.gold {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(194, 184, 184, 0.25);
   color: white;
 }
 
 .metal-icon.silver {
   background: #f4f4f5;
-  color: #52525b;
+  color: #7c7c88;
 }
 
 .metal-btn.active .metal-icon.silver {
