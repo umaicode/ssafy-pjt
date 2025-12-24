@@ -67,7 +67,7 @@ def fetch_exchange_rates(request):
             # 최대
             try:
                 response = requests.get(
-                    base_url, params=params, timeout=10, verify=certifi.where()
+                    base_url, params=params, timeout=10, verify=False
                 )
             except:
                 response = requests.get(base_url, params=params, timeout=10)
