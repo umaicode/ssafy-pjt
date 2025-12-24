@@ -17,9 +17,6 @@
             <span class="product-type-badge" :class="route.params.type === 'deposit' ? 'deposit' : 'saving'">
               {{ route.params.type === 'deposit' ? '예금' : '적금' }}
             </span>
-            <span class="product-join-badge" :class="joinDenyClass">
-              {{ joinDenyText }}
-            </span>
           </div>
           
           <div class="product-bank-info">
@@ -348,20 +345,6 @@ onMounted(() => {
   border-radius: 20px;
 }
 
-.badge-success {
-  color: #059669;
-  background: #d1fae5;
-}
-
-.badge-warning {
-  color: #d97706;
-  background: #fef3c7;
-}
-
-.badge-info {
-  color: #0284c7;
-  background: #e0f2fe;
-}
 
 .product-bank-info {
   display: flex;
@@ -433,8 +416,8 @@ onMounted(() => {
 }
 
 .like-btn.liked {
-  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
-  color: white;
+  background: #c6a3dd;
+  color: rgb(243, 240, 240);
   border-color: transparent;
 }
 
@@ -456,7 +439,7 @@ onMounted(() => {
 }
 
 .map-btn {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: #8ea3db;
   color: white;
   border: none;
 }
