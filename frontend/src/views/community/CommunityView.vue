@@ -1,13 +1,17 @@
 <template>
   <div class="community-page">
-    <div class="container">
-      <!-- Page Header -->
-      <header class="page-header">
-        <div class="header-left">
-          <h1 class="page-title">커뮤니티</h1>
-          <p class="page-description">다양한 이야기를 나눠보세요</p>
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="header-content">
+        <div class="header-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+          </svg>
         </div>
-
+        <div class="header-text">
+          <h1 class="page-title">커뮤니티</h1>
+          <p class="page-subtitle">다양한 이야기를 나눠보세요</p>
+        </div>
         <RouterLink class="create-btn" :to="{ name: 'CreateView' }">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="12" y1="5" x2="12" y2="19"/>
@@ -15,7 +19,10 @@
           </svg>
           글 작성하기
         </RouterLink>
-      </header>
+      </div>
+    </header>
+
+    <div class="container">
 
       <!-- Board -->
       <section class="board-section">
@@ -162,43 +169,61 @@ const formatDate = (iso) => {
 <style scoped>
 .community-page {
   min-height: calc(100vh - 72px);
-  padding: 48px 24px;
   background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
-}
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
 }
 
 /* Page Header */
 .page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-  gap: 24px;
-  flex-wrap: wrap;
+  background: linear-gradient(135deg, #E1AFD1 0%, #AD88C6 50%, #7469B6 100%);
+  padding: 30px 24px;
 }
 
-.header-left {
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-icon {
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
+}
+
+.header-icon svg {
+  width: 32px;
+  height: 32px;
+  color: white;
+}
+
+.header-text {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  flex: 1;
 }
 
 .page-title {
   font-size: 2rem;
   font-weight: 800;
-  color: #18181b;
+  color: white;
   margin: 0;
   text-align: left;
 }
 
-.page-description {
+.page-subtitle {
   font-size: 1rem;
-  color: #71717a;
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
+  text-align: left;
 }
 
 .create-btn {
@@ -209,20 +234,31 @@ const formatDate = (iso) => {
   font-size: 0.9375rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 14px;
   text-decoration: none;
   transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+  flex-shrink: 0;
 }
 
 .create-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(116, 105, 182, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .create-btn svg {
   width: 18px;
   height: 18px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px;
 }
 
 /* Board */
@@ -244,7 +280,7 @@ const formatDate = (iso) => {
   padding: 16px 24px;
   background: #fafafa;
   border-bottom: 2px solid #e4e4e7;
-  font-size: 0.8125rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #52525b;
 }
@@ -286,7 +322,7 @@ const formatDate = (iso) => {
 }
 
 .article-title {
-  font-size: 0.9375rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #18181b;
   transition: color 0.2s;
@@ -326,17 +362,14 @@ const formatDate = (iso) => {
 }
 
 .col-author {
-  font-size: 0.875rem;
   color: #52525b;
 }
 
 .col-date {
-  font-size: 0.8125rem;
   color: #71717a;
 }
 
 .col-views {
-  font-size: 0.8125rem;
   font-weight: 600;
   color: #71717a;
 }
@@ -418,17 +451,40 @@ const formatDate = (iso) => {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .community-page {
-    padding: 32px 16px;
+  .page-header {
+    padding: 32px 20px;
   }
 
-  .page-header {
-    flex-direction: column;
-    align-items: stretch;
+  .header-content {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .header-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .header-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.875rem;
   }
 
   .create-btn {
+    width: 100%;
     justify-content: center;
+  }
+
+  .container {
+    padding: 32px 16px;
   }
 
   .board-header {
@@ -455,19 +511,29 @@ const formatDate = (iso) => {
 
 /* Dark Mode Styles */
 [data-theme="dark"] .community-page {
-  background: #0a0a0a;
+  background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0f 50%, #0a0a0a 100%);
+}
+
+[data-theme="dark"] .page-header {
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 50%, #9b7ab8 100%);
 }
 
 [data-theme="dark"] .page-title {
-  color: #e4e4e7;
+  color: white;
 }
 
-[data-theme="dark"] .page-description {
-  color: #a1a1aa;
+[data-theme="dark"] .page-subtitle {
+  color: rgba(255, 255, 255, 0.85);
 }
 
 [data-theme="dark"] .create-btn {
-  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+[data-theme="dark"] .create-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 [data-theme="dark"] .board-card {

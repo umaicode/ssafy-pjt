@@ -40,7 +40,7 @@
           
           <!-- Description -->
           <p class="hero-description">
-            F!NK의 AI가 당신의 재정 상황을 분석하고<br>
+            <span class="fink-brand">F!NK</span>의 AI가 당신의 재정 상황을 분석하고<br>
             <strong>최적의 금융 상품</strong>을 추천해 드립니다.
           </p>
           
@@ -233,7 +233,7 @@
       <div class="section-container">
         <div class="section-header">
           <span class="section-badge">서비스</span>
-          <h2 class="section-title">F!NK와 함께하는<br>스마트 금융 생활</h2>
+          <h2 class="section-title"><span class="fink-brand">F!NK</span>와 함께하는<br>스마트 금융 생활</h2>
           <p class="section-subtitle">
             모든 금융 서비스를 한 곳에서 관리하세요
           </p>
@@ -798,10 +798,17 @@ const getBankLogo = (bankName) => {
   line-height: 1.6;
   color: #6e6e73;
   margin-bottom: 36px;
-  animation: fadeInUp 0.8s ease forwards;
-  animation-delay: 0.4s;
-  opacity: 0;
 }
+
+.fink-brand {
+  font-weight: 800;
+  background: linear-gradient(135deg, #FFE6E6 0%, #E1AFD1 35%, #AD88C6 70%, #7469B6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.04em;
+}
+
 
 .hero-description strong {
   color: #1d1d1f;
