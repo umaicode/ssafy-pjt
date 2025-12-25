@@ -1,3 +1,25 @@
+/**
+ * @파일명 stocks.js
+ * @설명 주식 정보 관리 스토어
+ * @기능
+ *   - 국내/해외 주식 목록 조회 (fetchKrStocks, fetchUsStocks)
+ *   - 주요 지표 조회 (fetchMarketIndices)
+ *   - 주식 검색 및 상세 조회 (searchStocks, fetchStockDetail)
+ *   - 북마크 관리 (fetchBookmarkedStocks, toggleBookmark)
+ *   - 차트/뉴스 데이터 조회 (fetchChartData, fetchStockNews)
+ *   - AI 분석 (fetchAIAnalysis)
+ * @API엔드포인트
+ *   - GET /api/stocks/kr/ : 국내 주식 목록
+ *   - GET /api/stocks/us/ : 해외 주식 목록
+ *   - GET /api/stocks/indices/ : 주요 지표 (나스닥, S&P500, 환율)
+ *   - POST /api/stocks/refresh/ : 주식 데이터 갱신
+ *   - GET /api/stocks/search/ : 주식 검색
+ *   - GET /api/stocks/<symbol>/ : 주식 상세 정보
+ *   - GET /api/stocks/<symbol>/chart/ : 차트 데이터
+ *   - GET /api/stocks/<symbol>/news/ : 관련 뉴스
+ *   - POST /api/stocks/<symbol>/bookmark/ : 북마크 토글
+ */
+
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import axios from "axios";
@@ -5,9 +27,15 @@ import axios from "axios";
 export const useStocksStore = defineStore(
   "stocks",
   () => {
+    // ========================================
+    // 상수 및 헬퍼 함수
+    // ========================================
     const API_URL = "http://127.0.0.1:8000";
 
-    // 토큰 가져오기 헬퍼 함수 (Pinia persist에서 가져오기)
+    /**
+     * 로컬스토리지에서 인증 토큰을 가져옵니다
+     * @returns {string|null} 인증 토큰 또는 null
+     */
     const getToken = () => {
       try {
         const stored = localStorage.getItem('account');
@@ -21,7 +49,9 @@ export const useStocksStore = defineStore(
       }
     };
 
-    // State
+    // ========================================
+    // 상태 (State)
+    // ========================================
     const popularStocks = ref([]);
     const stockList = ref([]);  // 종목 목록 (국내/해외/북마크)
     const krStocks = ref([]);   // 국내 주식 목록
@@ -33,27 +63,26 @@ export const useStocksStore = defineStore(
     const stockNews = ref([]);
     const marketIndices = ref([]);  // 주요 지표 (나스닥, S&P500, 환율)
 
+    // 로딩 상태
     const loading = ref(false);
     const listLoading = ref(false);
     const chartLoading = ref(false);
     const searchLoading = ref(false);
     const indicesLoading = ref(false);
     const bookmarkLoading = ref(false);
-    const refreshLoading = ref(false);  // 갱신 중 상태
+    const refreshLoading = ref(false);  // 데이터 갱신 중 상태
     const bookmarkRefreshLoading = ref(false);  // 북마크 갱신 중 상태
     const bookmarkRefreshTime = ref(null);  // 북마크 마지막 갱신 시간
     const errorMessage = ref(null);
 
-    // 선택된 마켓 (BOOKMARK, KR, US)
-    const selectedMarket = ref("KR");
-
-    // 페이지네이션
+    // 마켓 및 페이지네이션 상태
+    const selectedMarket = ref("KR");  // BOOKMARK, KR, US
     const currentPage = ref(1);
     const totalPages = ref(1);
     const totalCount = ref(0);
-    const perPage = ref(20);  // 기본 페이지 크기
+    const perPage = ref(20);
 
-    // 갱신 상태
+    // 갱신 상태 (30분 제한용)
     const updateStatus = ref({
       KR: { last_updated: null, can_update: true, stock_count: 0 },
       US: { last_updated: null, can_update: true, stock_count: 0 },
@@ -63,7 +92,11 @@ export const useStocksStore = defineStore(
     const chartPeriod = ref("1mo");
     const chartInterval = ref("1d");
 
-    // Computed
+    // ========================================
+    // 계산된 속성 (Getters)
+    // ========================================
+    
+    /** 선택된 마켓에 따른 필터링된 주식 목록 */
     const filteredStocks = computed(() => {
       if (selectedMarket.value === "BOOKMARK") {
         return bookmarkedStocks.value;
@@ -81,8 +114,14 @@ export const useStocksStore = defineStore(
       () => chartData.value && chartData.value.data?.length > 0
     );
 
-    // Actions
-    // 주요 지표 조회 (나스닥, S&P500, 환율 등)
+    // ========================================
+    // 액션 (Actions)
+    // ========================================
+
+    /**
+     * 주요 시장 지표 조회 (나스닥, S&P500, 환율 등)
+     * @param {string} period - 조회 기간 (기본: '5d')
+     */
     const fetchMarketIndices = async (period = '5d') => {
       indicesLoading.value = true;
       try {
@@ -98,7 +137,9 @@ export const useStocksStore = defineStore(
       }
     };
 
-    // 갱신 상태 조회
+    /**
+     * 주식 데이터 갱신 상태 조회
+     */
     const fetchUpdateStatus = async () => {
       try {
         const response = await axios.get(`${API_URL}/api/stocks/update-status/`);
@@ -108,7 +149,11 @@ export const useStocksStore = defineStore(
       }
     };
 
-    // 국내 주식 목록 조회 (DB에서, 페이지네이션)
+    /**
+     * 국내 주식 목록 조회
+     * @param {number} page - 페이지 번호
+     * @param {number} size - 페이지 크기
+     */
     const fetchKrStocks = async (page = 1, size = 20) => {
       listLoading.value = true;
       errorMessage.value = null;
@@ -126,7 +171,6 @@ export const useStocksStore = defineStore(
           currentPage.value = response.data.page || 1;
         }
         
-        // 데이터가 없으면 메시지 표시
         if (response.data.message) {
           errorMessage.value = response.data.message;
         }
@@ -140,7 +184,11 @@ export const useStocksStore = defineStore(
       }
     };
 
-    // 해외 주식 목록 조회 (DB에서, 페이지네이션)
+    /**
+     * 해외 주식 목록 조회
+     * @param {number} page - 페이지 번호
+     * @param {number} size - 페이지 크기
+     */
     const fetchUsStocks = async (page = 1, size = 20) => {
       listLoading.value = true;
       errorMessage.value = null;
@@ -158,7 +206,6 @@ export const useStocksStore = defineStore(
           currentPage.value = response.data.page || 1;
         }
         
-        // 데이터가 없으면 메시지 표시
         if (response.data.message) {
           errorMessage.value = response.data.message;
         }
@@ -172,7 +219,11 @@ export const useStocksStore = defineStore(
       }
     };
 
-    // 주식 데이터 갱신 (30분 제한)
+    /**
+     * 주식 데이터 갱신 (30분 제한)
+     * @param {string} market - 시장 코드 (KR 또는 US)
+     * @returns {Object} 갱신 결과
+     */
     const refreshStocks = async (market) => {
       refreshLoading.value = true;
       errorMessage.value = null;
@@ -182,14 +233,12 @@ export const useStocksStore = defineStore(
           market: market.toUpperCase()
         });
         
-        // 갱신 성공 시 데이터 다시 로드
         if (response.data.success) {
           if (market === 'KR') {
             await fetchKrStocks(1, perPage.value);
           } else {
             await fetchUsStocks(1, perPage.value);
           }
-          // 갱신 상태도 업데이트
           await fetchUpdateStatus();
         }
         

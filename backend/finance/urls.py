@@ -57,9 +57,6 @@ urlpatterns = [
     
     # AI 챗봇
     path("api/chatbot/", include("chatbot.urls")),
-
-    # 주식
-    path("api/stocks/", include("stocks.urls")),
     
     # ========================================
     # API 문서 (drf-spectacular)
