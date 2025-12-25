@@ -220,6 +220,7 @@ const createChart = () => {
         },
         y: {
           position: 'right',
+          grace: '10%',
           grid: {
             color: '#f3f4f6'
           },

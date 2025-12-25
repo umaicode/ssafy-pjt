@@ -1118,8 +1118,8 @@ const formatNewsDate = (dateStr) => {
 
 /* Bookmark Button */
 .bookmark-btn {
-  width: 44px;
-  height: 44px;
+  width: 30px;
+  height: 30px;
   border: 1px solid #e0e0e0;
   background: white;
   border-radius: 12px;
@@ -1132,8 +1132,8 @@ const formatNewsDate = (dateStr) => {
 }
 
 .bookmark-btn svg {
-  width: 22px;
-  height: 22px;
+  width: 16px;
+  height: 18px;
   color: #888;
 }
 
