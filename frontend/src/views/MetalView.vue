@@ -69,10 +69,11 @@ onMounted(() => {
 .page-header {
   background: linear-gradient(135deg, #E1AFD1 0%, #AD88C6 50%, #7469B6 100%);
   padding: 32px 24px;
+  margin-bottom: 0px;
 }
 
 .header-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -119,7 +120,7 @@ onMounted(() => {
 
 /* Main Content */
 .main-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 32px 24px 60px;
 }

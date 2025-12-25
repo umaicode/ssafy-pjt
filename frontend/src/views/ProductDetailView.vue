@@ -17,9 +17,6 @@
             <span class="product-type-badge" :class="route.params.type === 'deposit' ? 'deposit' : 'saving'">
               {{ route.params.type === 'deposit' ? '예금' : '적금' }}
             </span>
-            <span class="product-join-badge" :class="joinDenyClass">
-              {{ joinDenyText }}
-            </span>
           </div>
           
           <div class="product-bank-info">
@@ -35,6 +32,39 @@
           </div>
           
           <h1 class="product-title">{{ product.fin_prdt_nm }}</h1>
+
+        <!-- Details Card -->
+        <div class="details-card">
+          <h2 class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <path d="M14 2v6h6"/>
+              <path d="M16 13H8"/>
+              <path d="M16 17H8"/>
+              <path d="M10 9H8"/>
+            </svg>
+            상품 상세정보
+          </h2>
+          
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">가입 대상</span>
+              <span class="detail-value">{{ product.join_member || '-' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">가입 방법</span>
+              <span class="detail-value">{{ product.join_way || '-' }}</span>
+            </div>
+            <div class="detail-item detail-full">
+              <span class="detail-label">우대조건</span>
+              <span class="detail-value">{{ product.spcl_cnd || '-' }}</span>
+            </div>
+            <div class="detail-item detail-full">
+              <span class="detail-label">기타 사항</span>
+              <span class="detail-value">{{ product.etc_note || '-' }}</span>
+            </div>
+          </div>
+        </div>
 
           <!-- Action Buttons -->
           <div class="action-buttons">
@@ -111,41 +141,7 @@
             </table>
           </div>
         </div>
-
-        <!-- Details Card -->
-        <div class="details-card">
-          <h2 class="card-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-              <path d="M14 2v6h6"/>
-              <path d="M16 13H8"/>
-              <path d="M16 17H8"/>
-              <path d="M10 9H8"/>
-            </svg>
-            상품 상세정보
-          </h2>
-          
-          <div class="detail-grid">
-            <div class="detail-item">
-              <span class="detail-label">가입 대상</span>
-              <span class="detail-value">{{ product.join_member || '-' }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">가입 방법</span>
-              <span class="detail-value">{{ product.join_way || '-' }}</span>
-            </div>
-            <div class="detail-item detail-full">
-              <span class="detail-label">우대조건</span>
-              <span class="detail-value">{{ product.spcl_cnd || '-' }}</span>
-            </div>
-            <div class="detail-item detail-full">
-              <span class="detail-label">기타 사항</span>
-              <span class="detail-value">{{ product.etc_note || '-' }}</span>
-            </div>
-          </div>
-        </div>
       </div>
-
       <!-- Loading State -->
       <div v-else class="loading-state">
         <div class="loading-spinner"></div>
@@ -165,13 +161,13 @@ import { useAccountStore } from '@/stores/accounts'
 import ProductBankMap from '@/components/products/ProductBankMap.vue'
 
 
-/* ✅ banks 폴더 png 전체 import */
+/* banks 폴더 png 전체 import */
 const bankLogos = import.meta.glob('@/assets/banks/*.png', {
   eager: true,
   import: 'default',
 })
 
-/* ✅ 은행명 → 파일명 매핑 */
+/* 은행명 → 파일명 매핑 */
 const BANK_FILE_MAP = {
   국민은행: "국민은행.png",
   신한은행: "신한은행.png",
@@ -199,7 +195,7 @@ const BANK_FILE_MAP = {
   한국스탠다드차타드은행: "sc제일은행.png",
 }
 
-/* ✅ 상세페이지용 은행 로고 src */
+/* 상세페이지용 은행 로고 src */
 const bankLogoSrc = computed(() => {
   if (!product.value?.kor_co_nm) return null
 
@@ -225,18 +221,6 @@ const product = ref(null)
 const options = ref([])
 const showMap = ref(false)
 
-const joinDenyText = computed(() => {
-  if (!product.value) return ''
-  const map = { 1: '제한 없음', 2: '서민 전용', 3: '일부 제한' }
-  return map[product.value.join_deny]
-})
-
-const joinDenyClass = computed(() => {
-  if (!product.value) return ''
-  const classMap = { 1: 'badge-success', 2: 'badge-warning', 3: 'badge-info' }
-  return classMap[product.value.join_deny]
-})
-
 const toggleLike = function () {
   const payload = {
     fin_prdt_cd: route.params.fin_prdt_cd,
@@ -246,7 +230,7 @@ const toggleLike = function () {
   likeStore.toggleLike(payload)
     .then(() => {})
     .catch((err) => {
-      console.log(err)
+      console.error('좋아요 처리 실패:', err)
       alert('좋아요 처리에 실패했습니다.')
     })
 }
@@ -271,7 +255,7 @@ onMounted(() => {
       likeStore.liked = res.data.is_liked ?? res.data.liked ?? false
       likeStore.likesCount = res.data.likes_count ?? 0
     })
-    .catch((err) => console.log(err))
+    .catch((err) => console.error('상품 정보 로드 실패:', err))
 })
 </script>
 
@@ -348,20 +332,6 @@ onMounted(() => {
   border-radius: 20px;
 }
 
-.badge-success {
-  color: #059669;
-  background: #d1fae5;
-}
-
-.badge-warning {
-  color: #d97706;
-  background: #fef3c7;
-}
-
-.badge-info {
-  color: #0284c7;
-  background: #e0f2fe;
-}
 
 .product-bank-info {
   display: flex;
@@ -371,13 +341,12 @@ onMounted(() => {
 }
 
 .bank-logo-large {
-  width: 130px;
-  height: 48px;
+  width: 90px;
+  height: 30px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .bank-logo-large svg {
@@ -393,12 +362,12 @@ onMounted(() => {
 }
 
 .product-title {
-  font-size: 1.55rem;
+  font-size: 1.35rem;
   font-weight: 600;
   color: #18181b;
   line-height: 1.3;
   margin-bottom: 70px;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 /* Action Buttons */
@@ -433,8 +402,8 @@ onMounted(() => {
 }
 
 .like-btn.liked {
-  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
-  color: white;
+  background: #c6a3dd;
+  color: rgb(243, 240, 240);
   border-color: transparent;
 }
 
@@ -456,7 +425,7 @@ onMounted(() => {
 }
 
 .map-btn {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: #8ea3db;
   color: white;
   border: none;
 }
@@ -472,28 +441,30 @@ onMounted(() => {
 }
 
 /* Options Card */
-.options-card,
 .details-card {
+  margin-bottom: 50px;
+}
+.options-card{
   background: white;
   border-radius: 24px;
   padding: 32px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 }
 
 .card-title {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 500;
   color: #18181b;
   margin-bottom: 24px;
 }
 
 .card-title svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   color: #7469B6;
 }
 
@@ -637,12 +608,6 @@ onMounted(() => {
     justify-content: center;
   }
 }
-
-/* .bank-logo-img-large {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-} */
 
 /* Dark Mode */
 [data-theme="dark"] .product-detail-page {

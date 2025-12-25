@@ -176,6 +176,64 @@
                       ✨ AI 분석으로 여행 계획 세우기
                     </router-link>
                   </template>
+
+                  <!-- 종목 여론 분석 -->
+                  <template v-if="msg.data.type === 'stock_sentiment'">
+                    <div class="sentiment-analysis">
+                      <div class="sentiment-header">
+                        <span class="stock-name">{{ msg.data.stock_name }}</span>
+                        <span 
+                          class="recommendation-badge"
+                          :class="{
+                            'buy': msg.data.recommendation === '매수',
+                            'sell': msg.data.recommendation === '매도',
+                            'hold': msg.data.recommendation === '보유'
+                          }"
+                        >
+                          {{ msg.data.recommendation }}
+                        </span>
+                      </div>
+                      <div class="sentiment-stats">
+                        <span class="stat-item">📊 분석 댓글: {{ msg.data.comments_count }}개</span>
+                        <span class="stat-item">🎯 신뢰도: {{ msg.data.confidence }}%</span>
+                      </div>
+                      <div class="sentiment-summary">
+                        <p>{{ msg.data.analysis }}</p>
+                      </div>
+                    </div>
+                  </template>
+
+                  <!-- 종목 여론 관련 뉴스 -->
+                  <template v-if="msg.data.type === 'stock_sentiment' && msg.data.news?.length">
+                    <div class="news-cards">
+                      <a 
+                        v-for="news in msg.data.news.slice(0, 3)" 
+                        :key="news.link"
+                        :href="news.link"
+                        target="_blank"
+                        class="news-card"
+                      >
+                        <span class="news-title">{{ truncateText(news.title, 50) }}</span>
+                        <span class="news-desc">{{ truncateText(news.description, 60) }}</span>
+                      </a>
+                    </div>
+                  </template>
+
+                  <!-- 종목 여론 관련 유튜브 -->
+                  <template v-if="msg.data.type === 'stock_sentiment' && msg.data.youtube_videos?.length">
+                    <div class="youtube-cards">
+                      <a 
+                        v-for="video in msg.data.youtube_videos.slice(0, 3)" 
+                        :key="video.video_id"
+                        :href="video.url"
+                        target="_blank"
+                        class="youtube-card"
+                      >
+                        <img :src="video.thumbnail" :alt="video.title" class="youtube-thumb"/>
+                        <span class="youtube-title">{{ truncateText(video.title, 40) }}</span>
+                      </a>
+                    </div>
+                  </template>
                 </div>
 
                 <span class="message-time">{{ formatTime(msg.timestamp) }}</span>
@@ -234,6 +292,29 @@
 </template>
 
 <script setup>
+/**
+ * @컴포넌트 ChatBot.vue
+ * @설명 AI 챗봇 플로팅 컴포넌트
+ * 
+ * @기능
+ *   - 플로팅 버튼으로 챗봇 열기/닫기
+ *   - 다양한 메시지 타입 렌더링 (텍스트, 상품 카드, 뉴스, 유튜브, 지도)
+ *   - 의도별 응답 처리 (은행 위치, 상품 검색, 뉴스, 투자 조언, 여행 등)
+ *   - 위치 기반 서비스 (은행 찾기)
+ *   - 추천 질문 표시
+ * 
+ * @메시지타입
+ *   - general_chat: 일반 대화
+ *   - product_search: 금융 상품 검색 결과
+ *   - bank_location: 은행 위치 (카카오맵 연동)
+ *   - news_search: 뉴스 검색 결과
+ *   - investment_advice: 투자 조언 (뉴스/유튜브 포함)
+ *   - travel_budget: 여행 예산 정보
+ *   - stock_sentiment: 종목 여론 분석
+ * 
+ * @스토어 useChatbotStore - 채팅 상태 및 메시지 관리
+ */
+
 import { ref, watch, nextTick, onMounted } from 'vue'
 import { useChatbotStore } from '@/stores/chatbot'
 
@@ -242,7 +323,12 @@ const inputMessage = ref('')
 const messagesContainer = ref(null)
 const unreadCount = ref(0)
 
-// 챗봇 열기
+/**
+ * 챗봇 창 열기
+ * - 인사말 초기화
+ * - 추천 질문 로드
+ * - 읽지 않은 메시지 카운트 초기화
+ */
 const openChatbot = () => {
   chatbotStore.openChat()
   chatbotStore.initGreeting()
@@ -250,19 +336,31 @@ const openChatbot = () => {
   unreadCount.value = 0
 }
 
-// 메시지 전송
+/**
+ * 메시지 전송
+ * - 입력된 메시지를 스토어로 전달
+ * - 입력창 초기화
+ */
 const sendMessage = () => {
   if (!inputMessage.value.trim()) return
   chatbotStore.sendMessage(inputMessage.value)
   inputMessage.value = ''
 }
 
-// 추천 질문 전송
+/**
+ * 추천 질문 클릭 시 자동 전송
+ * @param {string} question - 추천 질문 텍스트
+ */
 const sendSuggestion = (question) => {
   chatbotStore.sendMessage(question)
 }
 
-// 위치 요청 함수
+/**
+ * 사용자 위치 요청 및 은행 검색
+ * - Geolocation API 사용
+ * - 위치 권한 거부 시 안내 메시지 표시
+ * @param {string} bankName - 검색할 은행명
+ */
 const requestLocation = (bankName) => {
   if (!navigator.geolocation) {
     chatbotStore.addMessage({
@@ -1017,5 +1115,90 @@ onMounted(() => {
 
 [data-theme="dark"] .bank-phone {
   color: #34d399;
+}
+
+/* 종목 여론 분석 스타일 */
+.sentiment-analysis {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.sentiment-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.stock-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.recommendation-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+}
+
+.recommendation-badge.buy {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.recommendation-badge.sell {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.recommendation-badge.hold {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+}
+
+.sentiment-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.stat-item {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.sentiment-summary {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.sentiment-summary p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #374151;
+}
+
+[data-theme="dark"] .sentiment-analysis {
+  background: linear-gradient(135deg, #27272a 0%, #18181b 100%);
+}
+
+[data-theme="dark"] .stock-name {
+  color: #f4f4f5;
+}
+
+[data-theme="dark"] .stat-item {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .sentiment-summary {
+  background: #3f3f46;
+}
+
+[data-theme="dark"] .sentiment-summary p {
+  color: #e4e4e7;
 }
 </style>

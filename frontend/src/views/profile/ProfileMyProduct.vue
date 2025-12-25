@@ -503,13 +503,15 @@ const formatCurrency = (value) => {
   display: flex;
   flex-direction: column;
   gap: 24px;
+  max-height: 600px;
+  overflow-y: auto;
 }
 
 /* Selected Products */
 .selected-products {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
-  overflow-x: auto;
   padding-bottom: 8px;
 }
 

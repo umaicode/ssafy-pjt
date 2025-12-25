@@ -1,3 +1,17 @@
+"""
+파일명: recommendations/serializers.py
+설명: AI 추천 시스템 시리얼라이저
+
+클래스:
+    - AnalysisCreateSerializer: 분석 요청 생성 시리얼라이저
+    - RecommendationResultSerializer: 추천 결과 시리얼라이저
+
+목적별 필드:
+    - housing: 주거 관련 (housing_type, target_region, apartment_price)
+    - travel: 여행 관련 (travel_destination, travel_country_code)
+    - savings: 목돈 관련 (savings_purpose_detail)
+"""
+
 from rest_framework import serializers
 from .models import AnalysisRequest, RecommendationResult
 

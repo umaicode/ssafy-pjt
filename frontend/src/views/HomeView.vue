@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <!-- Hero Section - 제주은행 스타일 풀스크린 히어로 -->
     <section class="hero-section">
       <!-- Animated Background -->
       <div class="hero-bg">
@@ -551,7 +550,7 @@ const getBankLogo = (bankName) => {
   grid-template-columns: 1fr 1fr;
   gap: 80px;
   align-items: center;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 120px 24px 80px;
 }
@@ -1289,7 +1288,7 @@ const getBankLogo = (bankName) => {
 }
 
 .section-container {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 24px;
 }

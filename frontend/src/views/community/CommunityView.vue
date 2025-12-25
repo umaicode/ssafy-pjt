@@ -176,10 +176,11 @@ const formatDate = (iso) => {
 .page-header {
   background: linear-gradient(135deg, #E1AFD1 0%, #AD88C6 50%, #7469B6 100%);
   padding: 30px 24px;
+  margin-bottom: 0px;
 }
 
 .header-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -256,7 +257,7 @@ const formatDate = (iso) => {
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 48px 24px;
 }

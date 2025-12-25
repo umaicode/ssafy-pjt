@@ -1,3 +1,26 @@
+"""
+파일명: articles/views.py
+설명: 커뮤니티 게시판 API 뷰
+
+기능:
+    - 게시글 CRUD (생성, 조회, 수정, 삭제)
+    - 댓글 CRUD (생성, 조회, 수정, 삭제)
+    - 게시글/댓글 좋아요 기능
+    - 페이지네이션 지원
+
+API 엔드포인트:
+    게시글:
+    - GET/POST /articles/              : 목록 조회/생성
+    - GET/PATCH/DELETE /articles/<pk>/ : 상세/수정/삭제
+    - POST /articles/<pk>/like/        : 좋아요 토글
+    
+    댓글:
+    - GET /articles/<pk>/comments/     : 댓글 목록
+    - POST /articles/<pk>/comments/create/ : 댓글 생성
+    - GET/PATCH/DELETE /comments/<pk>/ : 상세/수정/삭제
+    - POST /comments/<pk>/like/        : 좋아요 토글
+"""
+
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -34,7 +57,7 @@ def article_list(request):
         paginator = ArticlePagination()
         paginated = paginator.paginate_queryset(articles, request)
 
-        # ✅ 목록에서도 (원하면) is_liked 같은 걸 계산하려면 context 넘기는 버전으로 바꿀 수 있음
+        # 목록에서도 (원하면) is_liked 같은 걸 계산하려면 context 넘기는 버전으로 바꿀 수 있음
         # 지금은 목록에서 is_liked 안 쓰는 구조면 그대로 둬도 OK
         serializer = ArticleListSerializer(paginated, many=True)
 
@@ -48,7 +71,7 @@ def article_list(request):
         )
 
     elif request.method == "POST":
-        # ✅ 게시글 작성은 로그인 필요
+        # 게시글 작성은 로그인 필요
         # (프론트에서 로그인 체크를 안 하더라도, 서버는 막는 게 정상)
         if not request.user.is_authenticated:
             return Response({"detail": "로그인이 필요합니다."}, status=status.HTTP_401_UNAUTHORIZED)
@@ -74,7 +97,7 @@ def article_detail(request, article_pk):
         article.views += 1
         article.save(update_fields=["views"])
 
-        # ✅ is_liked 계산하려면 request context 필수
+        # is_liked 계산하려면 request context 필수
         serializer = ArticleSerializer(article, context={"request": request})
         return Response(serializer.data)
 
@@ -98,7 +121,7 @@ def article_detail(request, article_pk):
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        # ✅ 수정 후 반환도 context 포함해서 (is_liked/likes_count 등 일관성 유지)
+        # 수정 후 반환도 context 포함해서 (is_liked/likes_count 등 일관성 유지)
         return Response(ArticleSerializer(article, context={"request": request}).data)
 
 
@@ -111,7 +134,7 @@ def comment_list(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
     qs = article.comment_set.all().order_by("-id")
 
-    # ✅ 댓글도 is_liked 계산하려면 request context 필수
+    # 댓글도 is_liked 계산하려면 request context 필수
     serializer = CommentSerializer(qs, many=True, context={"request": request})
     return Response(serializer.data)
 
@@ -127,7 +150,7 @@ def comment_detail(request, comment_pk):
     comment = get_object_or_404(Comment, pk=comment_pk)
 
     if request.method == "GET":
-        # ✅ 단건 조회도 context 포함
+        # 단건 조회도 context 포함
         serializer = CommentSerializer(comment, context={"request": request})
         return Response(serializer.data)
 
@@ -158,7 +181,7 @@ def comment_detail(request, comment_pk):
 # POST /api/v1/articles/<article_pk>/comments/create/
 # --------------------------------------------------
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])  # ✅ 댓글 작성은 로그인 필요
+@permission_classes([IsAuthenticated])  # 댓글 작성은 로그인 필요
 def comment_create(request, article_pk):
     article = get_object_or_404(Article, pk=article_pk)
 
@@ -174,7 +197,7 @@ def comment_create(request, article_pk):
 # POST /api/v1/articles/<article_pk>/like/
 # --------------------------------------------------
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])  # ✅ 좋아요는 로그인 필요
+@permission_classes([IsAuthenticated])  # 좋아요는 로그인 필요
 def toggle_article_like(request, article_pk):
     """
     게시글 좋아요 토글
@@ -197,13 +220,12 @@ def toggle_article_like(request, article_pk):
         status=status.HTTP_200_OK,
     )
 
-
 # --------------------------------------------------
 # 댓글 좋아요 토글
 # POST /api/v1/comments/<comment_pk>/like/
 # --------------------------------------------------
 @api_view(["POST"])
-@permission_classes([IsAuthenticated])  # ✅ 좋아요는 로그인 필요
+@permission_classes([IsAuthenticated])  # 좋아요는 로그인 필요
 def toggle_comment_like(request, comment_pk):
     """댓글 좋아요 토글"""
     comment = get_object_or_404(Comment, pk=comment_pk)

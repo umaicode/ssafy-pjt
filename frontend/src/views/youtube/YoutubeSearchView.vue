@@ -159,7 +159,7 @@ onMounted(() => {
 }
 
 .header-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -239,7 +239,7 @@ onMounted(() => {
 
 /* Search Section */
 .search-section {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: -24px auto 0;
   padding: 0 24px;
 }
@@ -377,7 +377,7 @@ onMounted(() => {
 
 /* Results Section */
 .results-section {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 32px auto 0;
   padding: 0 24px;
 }

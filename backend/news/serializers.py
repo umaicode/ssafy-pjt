@@ -1,3 +1,15 @@
+"""
+파일명: news/serializers.py
+설명: 뉴스 시리얼라이저
+
+클래스:
+    - NewsSerializer: 뉴스 시리얼라이저
+
+주요 기능:
+    - 북마크 여부(is_bookmarked) 자동 계산
+    - 현재 로그인한 사용자 기준으로 판단
+"""
+
 from rest_framework import serializers
 from .models import News
 

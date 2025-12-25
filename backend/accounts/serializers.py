@@ -1,3 +1,16 @@
+"""
+파일명: accounts/serializers.py
+설명: 사용자 계정 관련 시리얼라이저
+
+클래스:
+    - CustomRegisterSerializer: 회원가입 시리얼라이저 (nickname 필드 추가)
+    - CustomUserDetailsSerializer: 사용자 정보 조회/수정 시리얼라이저
+
+사용 위치:
+    - dj-rest-auth 회원가입 API (/accounts/registration/)
+    - 사용자 정보 API (/accounts/user/)
+"""
+
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from dj_rest_auth.serializers import UserDetailsSerializer

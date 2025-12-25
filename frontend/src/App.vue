@@ -21,6 +21,13 @@
             </svg>
             AI 분석
           </RouterLink>
+          <RouterLink :to="{ name: 'StockView' }" class="navbar-link">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+              <polyline points="16 7 22 7 22 13"/>
+            </svg>
+            주식
+          </RouterLink>
           <RouterLink :to="{ name: 'NewsView' }" class="navbar-link">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
@@ -41,6 +48,7 @@
             </svg>
             현물
           </RouterLink>
+
           <RouterLink :to="{ name: 'KakaoMapView' }" class="navbar-link">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
@@ -126,6 +134,7 @@
           <RouterLink :to="{ name: 'NewsView' }" class="mobile-link" @click="mobileMenuOpen = false">금융뉴스</RouterLink>
           <RouterLink :to="{ name: 'YoutubeSearchView' }" class="mobile-link" @click="mobileMenuOpen = false">유튜브</RouterLink>
           <RouterLink :to="{ name: 'MetalView' }" class="mobile-link" @click="mobileMenuOpen = false">현물</RouterLink>
+          <RouterLink :to="{ name: 'StockView' }" class="mobile-link" @click="mobileMenuOpen = false">주식</RouterLink>
           <RouterLink :to="{ name: 'KakaoMapView' }" class="mobile-link" @click="mobileMenuOpen = false">은행찾기</RouterLink>
           <RouterLink :to="{ name: 'CommunityView' }" class="mobile-link" @click="mobileMenuOpen = false">커뮤니티</RouterLink>
           <div class="mobile-divider"></div>
@@ -185,11 +194,13 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAccountStore } from './stores/accounts'
 import { useExchangeStore } from './stores/exchange'
 import { useThemeStore } from './stores/theme'
 import ChatBot from './components/ChatBot.vue'
 
+const router = useRouter()
 const accountStore = useAccountStore()
 const exchangeStore = useExchangeStore()
 const themeStore = useThemeStore()
@@ -206,21 +217,6 @@ const formatRate = (rate) => {
   return numRate.toLocaleString('ko-KR', { maximumFractionDigits: 2 })
 }
 
-// 통화별 이모지
-const getCurrencyEmoji = (unit) => {
-  const emojis = {
-    'USD': '🇺🇸',
-    'EUR': '🇪🇺',
-    'JPY(100)': '🇯🇵',
-    'CNH': '🇨🇳',
-    'GBP': '🇬🇧',
-    'THB': '🇹🇭',
-    'SGD': '🇸🇬',
-    'HKD': '🇭🇰',
-  }
-  return emojis[unit] || '💱'
-}
-
 // 3초마다 환율 자동 전환
 const startTicker = () => {
   if (exchangeStore.rates.length === 0) return
@@ -230,7 +226,7 @@ const startTicker = () => {
 }
 
 onMounted(() => {
-  if (accountStore.isLogin) {
+  if (accountStore.isLogin && exchangeStore.rates.length > 0) {
     startTicker()
   }
 })
@@ -390,10 +386,6 @@ onUnmounted(() => {
 .ticker-item.active {
   opacity: 1;
   transform: translateY(0);
-}
-
-.ticker-flag {
-  font-size: 1rem;
 }
 
 .ticker-name {

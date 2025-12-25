@@ -1,3 +1,24 @@
+/**
+ * @파일명 router/index.js
+ * @설명 Vue Router 설정 파일
+ * 
+ * @라우트구조
+ *   - / : 홈 (HomeView)
+ *   - /signup, /login : 인증
+ *   - /products : 금융 상품 목록/상세
+ *   - /profile/* : 프로필 (인증 필요)
+ *   - /analysis/* : AI 분석 (인증 필요)
+ *   - /kakaomap : 카카오맵
+ *   - /news : 뉴스
+ *   - /youtube/* : 유튜브
+ *   - /metals : 금/은 시세
+ *   - /stocks : 주식
+ *   - /community/* : 커뮤니티
+ * 
+ * @네비게이션가드
+ *   - requiresAuth: true인 라우트는 로그인 필요
+ */
+
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAccountStore } from '@/stores/accounts'
 import HomeView from '@/views/HomeView.vue'
@@ -28,6 +49,7 @@ import YoutubeSearchView from '@/views/youtube/YoutubeSearchView.vue'
 import YoutubeVideoDetailView from '@/views/youtube/YoutubeVideoDetailView.vue'
 import YoutubeSavedLayoutView from '@/views/youtube/YoutubeSavedLayoutView.vue'
 import MetalView from '@/views/MetalView.vue'
+import StockView from '@/views/StockView.vue'
 
 // 커뮤니티
 import CommunityView from '@/views/community/CommunityView.vue'
@@ -140,6 +162,12 @@ const router = createRouter({
       path: '/metals',
       name: 'MetalView',
       component: MetalView,
+    },
+    // 주식
+    {
+      path: '/stocks',
+      name: 'StockView',
+      component: StockView,
     },
     // 커뮤니티
     { path: '/community', name: 'CommunityView', component: CommunityView },
