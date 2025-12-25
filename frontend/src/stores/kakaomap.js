@@ -172,13 +172,31 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
           (error) => {
             console.error('현재 위치를 가져올 수 없습니다. 기본 위치(강남역)를 사용합니다.', error);
             // 기본 위치로 출발지 설정
+            currentLocation.value = { lat: defaultLat, lng: defaultLng };
+            
             if (options.autoSetOrigin !== false) {
-              currentLocation.value = { lat: defaultLat, lng: defaultLng };
+              originLocation.value = { lat: defaultLat, lng: defaultLng, name: '기본 위치 (강남역)' };
+            }
+            
+            // 위치 권한 거부 시에도 자동 검색 실행
+            if (options.autoSearch && options.bankName) {
+              searchBankNearby(options.bankName, defaultLat, defaultLng);
             }
           }
         );
       } else {
         console.error('Geolocation을 지원하지 않는 브라우저입니다.');
+        // Geolocation 미지원 시 기본 위치 사용
+        currentLocation.value = { lat: defaultLat, lng: defaultLng };
+        
+        if (options.autoSetOrigin !== false) {
+          originLocation.value = { lat: defaultLat, lng: defaultLng, name: '기본 위치 (강남역)' };
+        }
+        
+        // 자동 검색 실행
+        if (options.autoSearch && options.bankName) {
+          searchBankNearby(options.bankName, defaultLat, defaultLng);
+        }
       }
     });
   };
@@ -452,7 +470,12 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
    */
   const setOriginToCurrentLocation = () => {
     if (!currentLocation.value) {
-      alert('현재 위치를 가져올 수 없습니다.');
+      console.warn('현재 위치 정보가 없습니다. 위치를 가져오는 중일 수 있습니다.');
+      return;
+    }
+    
+    if (!window.kakao || !window.kakao.maps) {
+      console.warn('카카오맵이 아직 로드되지 않았습니다.');
       return;
     }
     

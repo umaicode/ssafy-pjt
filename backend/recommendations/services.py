@@ -234,24 +234,36 @@ def condition_penalty(spcl_cnd: str) -> float:
 
 
 def feasibility_score(
-    period_months: int, target_amount: int, monthly_amount: int
+    user_input: Dict[str, Any],
+    deposit_rate: float = 3.5,
+    saving_rate: float = 4.0,
 ) -> float:
     """
-    monthly_amount * period_months 가 target_amount에 얼마나 근접/충족하는지 점수화 (0~1 권장)
-    - 부족하면 0~1 사이
-    - 초과해도 1 이상으로 올리지 않고 1로 캡
+    보유금 + 적금 원금 + 이자를 모두 포함하여 목표 달성 가능성 점수화 (0~1)
+    - compute_goal_math를 활용하여 정확한 계산
+    - 부족하면 0~1 사이, 초과해도 1로 캡
     """
-    period_months = max(1, int(period_months))
-    target_amount = max(1, int(target_amount))
-    monthly_amount = max(0, int(monthly_amount))
+    period_months = max(1, int(user_input.get("period_months") or 1))
+    target_amount = max(1, int(user_input.get("target_amount") or 1))
+    monthly_amount = max(0, int(user_input.get("monthly_amount") or 0))
+    current_savings = max(0, int(user_input.get("current_savings") or 0))
 
-    planned = monthly_amount * period_months  # 단순 누적(이자 고려 X)
-    ratio = planned / target_amount
+    # 이자 포함 총액 계산
+    # 예금 이자 (보유금)
+    deposit_interest = current_savings * (deposit_rate / 100) * (period_months / 12)
+    
+    # 적금 이자 (단리: 등차급수 공식)
+    saving_interest = 0
+    if monthly_amount > 0 and period_months > 0:
+        saving_interest = monthly_amount * period_months * (period_months + 1) / 2 * ((saving_rate / 100) / 12)
+    
+    # 총 예상 금액 (보유금 + 적금원금 + 이자)
+    total_with_interest = current_savings + deposit_interest + (monthly_amount * period_months) + saving_interest
+    
+    ratio = total_with_interest / target_amount
 
-    # 너무 부족하면 낮게, 1 이상이면 1로
     if ratio >= 1.0:
         return 1.0
-    # 0.0 ~ 1.0
     return max(0.0, min(1.0, ratio))
 
 
@@ -334,8 +346,15 @@ def candidate_score(
     opt_period = int(getattr(opt, "save_trm", 0) or 0)
     tadj = term_adjustment(user_period, opt_period)
 
-    # 1) 달성가능성(중요도 높게)
-    feas = feasibility_score(period_months, target_amount, monthly_amount)  # 0~1
+    # 해당 옵션의 금리 가져오기
+    opt_rate = float(getattr(opt, "intr_rate2", 0) or getattr(opt, "intr_rate", 0) or 3.5)
+    
+    # 1) 달성가능성(중요도 높게) - 이자/보유금 포함
+    feas = feasibility_score(
+        user_input,
+        deposit_rate=opt_rate if kind == "deposit" else 3.5,
+        saving_rate=opt_rate if kind == "saving" else 4.0,
+    )  # 0~1
 
     # 2) 금리
     rscore = rate_score(
@@ -519,7 +538,7 @@ def make_cache_key(user_input: dict, candidates: list[dict]) -> str:
         ),  # ★ 보유금도 캐시 키에 포함
         # 후보 전체를 넣으면 길어지니까 option_id만 사용
         "candidate_option_ids": [c.get("option_id") for c in candidates],
-        "v": 4,  # ★ 버전 올림 - 기존 캐시 무효화
+        "v": 8,  # ★ 버전 올림 - enriched_items 기반 정렬 (기존 캐시 무효화)
     }
     s = json.dumps(base, sort_keys=True, ensure_ascii=False)
     return hashlib.sha256(s.encode("utf-8")).hexdigest()

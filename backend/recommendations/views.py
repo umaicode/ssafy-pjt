@@ -41,6 +41,9 @@ from .services import (
     build_smart_alternative_plans,
     build_smart_alternative_plans_with_products,
     build_purpose_specific_data,
+    condition_penalty,
+    channel_bonus,
+    limit_fitness,
 )
 
 from .llm import SYSTEM_PROMPT, build_user_prompt, call_gpt_json
@@ -89,6 +92,7 @@ def create_analysis(request):
             summary=cache.payload.get("summary", ""),
             items=cache.payload.get("items", []),
             gpt_raw="",
+            ai_verdict=cache.payload.get("ai_verdict", ""),  # 캐시에서 ai_verdict 복원
         )
         return Response({"analysis_id": analysis.id}, status=status.HTTP_201_CREATED)
 
@@ -106,6 +110,7 @@ def create_analysis(request):
                 # (선택) 스키마 확장했다면 저장
                 "strategy": cleaned.get("strategy", ""),
                 "goal_math": cleaned.get("goal_math", {}),
+                "ai_verdict": raw.get("ai_verdict", ""),  # ai_verdict 캐시
             },
         )
 
@@ -114,6 +119,7 @@ def create_analysis(request):
             summary=cleaned.get("summary", ""),
             items=cleaned.get("items", []),
             gpt_raw=str(raw)[:5000],
+            ai_verdict=raw.get("ai_verdict", ""),  # GPT ai_verdict 저장
         )
 
         return Response({"analysis_id": analysis.id}, status=status.HTTP_201_CREATED)
@@ -189,6 +195,7 @@ def get_analysis_result(request, analysis_id: int):
     # 사용자 입력 값 (정수)
     target = int(analysis.target_amount)
     monthly = int(analysis.monthly_amount)
+    current_savings = int(getattr(analysis, "current_savings", 0) or 0)
 
     enriched_items = []
     for it in stored_items:
@@ -283,12 +290,60 @@ def get_analysis_result(request, analysis_id: int):
             "max_limit": opt.max_limit,
         }
 
+        # -------------------------
+        # fit_score 재계산: 목표달성률 + 우대조건 난이도 + 채널 가산 + 한도 적합성
+        # 종합적인 적합도를 계산하여 사용자에게 제공
+        # -------------------------
+        opt_rate = float(opt.intr_rate2 or opt.intr_rate or 3.5)
+        
+        # 1) 목표 달성률 (0~1)
+        if kind == "saving" and monthly > 0 and term > 0:
+            principal = monthly * term
+            saving_interest = monthly * term * (term + 1) / 2 * ((opt_rate / 100) / 12)
+            deposit_interest = current_savings * (3.5 / 100) * (term / 12)
+            total_with_interest = current_savings + deposit_interest + principal + saving_interest
+            goal_achievement = min(1.0, total_with_interest / target) if target > 0 else 1.0
+        elif kind == "deposit" and current_savings > 0 and term > 0:
+            deposit_interest = current_savings * (opt_rate / 100) * (term / 12)
+            if monthly > 0:
+                saving_principal = monthly * term
+                saving_interest = monthly * term * (term + 1) / 2 * ((4.0 / 100) / 12)
+                total_with_interest = current_savings + deposit_interest + saving_principal + saving_interest
+            else:
+                total_with_interest = current_savings + deposit_interest
+            goal_achievement = min(1.0, total_with_interest / target) if target > 0 else 1.0
+        else:
+            goal_achievement = it.get("fit_score") or 0.5
+        
+        # 2) 우대조건 난이도 감점 (0~0.4 범위, 어려울수록 높음)
+        cond_penalty = condition_penalty(p.spcl_cnd or "")
+        
+        # 3) 채널 가산 (모바일/인터넷 가입 가능 시 +0.1~0.17)
+        chan_bonus = channel_bonus(p.join_way or "")
+        
+        # 4) 한도 적합성 (-0.25 ~ +0.1)
+        lim_fit = limit_fitness(opt.max_limit, target, monthly, term)
+        
+        # 종합 적합도 계산
+        # 목표달성률(70%) + 우대조건(-20%p) + 채널(+10%p) + 한도(±10%p)
+        # 가중치 조정으로 0~1 범위 유지
+        raw_fit_score = (
+            goal_achievement * 0.70  # 목표 달성이 가장 중요
+            - cond_penalty * 0.25    # 우대조건 어려우면 감점 (최대 -10%p)
+            + chan_bonus * 0.60      # 비대면 가입 가능하면 가산 (최대 +10%p)
+            + lim_fit * 0.40         # 한도 적합하면 가산 (최대 +4%p)
+            + 0.30                   # 기본점 (최소 적합도 보장)
+        )
+        calculated_fit_score = max(0.0, min(1.0, raw_fit_score))
+
         enriched_items.append(
             {
                 "kind": kind,
                 "option_id": int(option_id),
                 "product_id": int(it.get("product_id") or p.id),
-                "fit_score": it.get("fit_score"),
+                "fit_score": calculated_fit_score,
+                "goal_achievement": goal_achievement,  # 순수 목표달성률 (참고용)
+                "condition_difficulty": round(cond_penalty, 3),  # 우대조건 난이도 (참고용)
                 "reason": it.get("reason"),
                 "detail": detail,
                 "plan": plan,  # 핵심 추가
@@ -311,33 +366,46 @@ def get_analysis_result(request, analysis_id: int):
         "savings_purpose_detail": getattr(analysis, "savings_purpose_detail", ""),
     }
 
-    # GPT 추천 상품 중 최적 상품 찾기 (적합도 순위 기준)
-    # stored_items는 GPT가 적합도 순으로 정렬한 것
-    # 전략별 최적 상품 = 추천 상품 중 예금/적금 각각 적합도 1위
+    # GPT 추천 상품 중 최적 상품 찾기 (적합도 + 금리 기준)
+    # enriched_items는 서버에서 재계산한 fit_score가 포함됨
+    # 전략별 최적 상품 = 추천 상품 중 예금/적금 각각 (적합도 1위 중 금리 최고)
     best_deposit_opt = None
     best_deposit_rate = 0
     best_saving_opt = None
     best_saving_rate = 0
 
-    # stored_items(적합도 순) 순서대로 순회하여 예금/적금 각각 첫 번째(=적합도 1위) 찾기
-    for it in stored_items:
+    # 1단계: 예금/적금 각각 모든 후보 수집 (enriched_items에서 재계산된 fit_score 사용!)
+    deposit_candidates = []
+    saving_candidates = []
+    
+    for it in enriched_items:  # ★ stored_items → enriched_items 변경
         kind = it.get("kind")
         option_id = it.get("option_id")
+        fit_score = it.get("fit_score", 0)  # 서버에서 재계산한 fit_score
 
-        if kind == "deposit" and best_deposit_opt is None:
+        if kind == "deposit":
             opt = deposit_map.get(option_id)
             if opt:
-                best_deposit_opt = opt
-                best_deposit_rate = float(opt.intr_rate2 or opt.intr_rate or 0)
-        elif kind == "saving" and best_saving_opt is None:
+                rate = float(opt.intr_rate2 or opt.intr_rate or 0)
+                deposit_candidates.append((fit_score, rate, opt))
+        elif kind == "saving":
             opt = saving_map.get(option_id)
             if opt:
-                best_saving_opt = opt
-                best_saving_rate = float(opt.intr_rate2 or opt.intr_rate or 0)
+                rate = float(opt.intr_rate2 or opt.intr_rate or 0)
+                saving_candidates.append((fit_score, rate, opt))
 
-        # 둘 다 찾았으면 종료
-        if best_deposit_opt and best_saving_opt:
-            break
+    # 2단계: 적합도 1위 → 같으면 금리 높은 순으로 정렬 후 첫 번째 선택
+    if deposit_candidates:
+        # 적합도 내림차순 → 금리 내림차순
+        deposit_candidates.sort(key=lambda x: (x[0], x[1]), reverse=True)
+        best_deposit_opt = deposit_candidates[0][2]
+        best_deposit_rate = deposit_candidates[0][1]
+
+    if saving_candidates:
+        # 적합도 내림차순 → 금리 내림차순
+        saving_candidates.sort(key=lambda x: (x[0], x[1]), reverse=True)
+        best_saving_opt = saving_candidates[0][2]
+        best_saving_rate = saving_candidates[0][1]
 
     # goal_math 계산 시 실제 상품 금리 적용
     goal_math = compute_goal_math(
@@ -774,8 +842,18 @@ def get_analysis_result(request, analysis_id: int):
         except Exception as e:
             print(f"❌ 유튜브 검색 실패: {e}")
 
-    # AI 최종 판단 (GPT 요약에서 추출 가능)
-    ai_verdict = result.summary  # 기본적으로 요약을 사용
+    # AI 최종 판단 (GPT가 생성한 ai_verdict 사용, 없으면 summary fallback)
+    ai_verdict = result.ai_verdict if result.ai_verdict else result.summary
+
+    # 추천 상품 정렬: 적합도 내림차순 → 금리 내림차순
+    sorted_items = sorted(
+        enriched_items,
+        key=lambda x: (
+            x.get("fit_score", 0),
+            float(x.get("detail", {}).get("intr_rate2", 0) or x.get("detail", {}).get("intr_rate", 0) or 0)
+        ),
+        reverse=True
+    )
 
     return Response(
         {
@@ -789,7 +867,7 @@ def get_analysis_result(request, analysis_id: int):
             "related_youtube": related_youtube,
             "recommended_destinations": recommended_destinations,  # 추천 여행지 추가
             "ai_verdict": ai_verdict,
-            "items": enriched_items,
+            "items": sorted_items,  # ★ 정렬된 items
             "created_at": result.created_at,
         }
     )
