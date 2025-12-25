@@ -1,3 +1,23 @@
+"""
+파일명: exchange/views.py
+설명: 환율 정보 API 뷰
+
+기능:
+    - 한국수출입은행 API에서 환율 데이터 수집
+    - 주요 통화 환율 목록 조회
+    - 영업일 기준 최신 환율 자동 조회
+
+API 엔드포인트:
+    - POST /exchange/fetch/  : 환율 데이터 수집 (수출입은행 API)
+    - GET /exchange/         : 환율 목록 조회
+
+외부 API:
+    - 한국수출입은행 환율 API
+
+지원 통화:
+    USD, EUR, JPY(100), CNH, GBP, THB, SGD, HKD
+"""
+
 import os
 import requests
 from datetime import datetime
@@ -39,29 +59,19 @@ def fetch_exchange_rates(request):
         # API 호출
         params = {"authkey": api_key, "searchdate": search_date, "data": "AP01"}
 
-        print(f"🔍 API 호출 시작")
-        print(f"   URL: {base_url}")
-        print(f"   날짜: {search_date}")
-        print(f"   API 키 존재: {bool(api_key)}")
-
         # certifi를 사용한 안전한 SSL 인증서 검증
         try:
             # verify=certifi.where() :  작동 안되서 개발때는 verify=false로 설정
             response = requests.get(base_url, params=params, timeout=10, verify=False)
         except Exception as ssl_error:
             # certifi로도 실패하면 시스템 기본 인증서 사용
-            print(f"⚠️ certifi 인증서로 연결 실패, 기본 인증서 사용: {ssl_error}")
             response = requests.get(base_url, params=params, timeout=10)
-
-        print(f"✅ 응답 상태 코드: {response.status_code}")
-        print(f"   응답 헤더: {dict(response.headers)}")
 
         response.raise_for_status()
 
         data = response.json()
 
-        # 디버깅: API 응답 확인
-        print(f"API 응답 데이터 개수: {len(data)}")
+        # 주말/공휴일인 경우 가장 최근 영업일 데이터 조회 시도
         if len(data) == 0:
             # 주말/공휴일인 경우 가장 최근 영업일 데이터 조회 시도
             # 최대
@@ -82,7 +92,6 @@ def fetch_exchange_rates(request):
                 data = response.json()
                 if len(data) > 0:
                     search_date = params["searchdate"]
-                    print(f"영업일 데이터 발견: {search_date}")
                     break
 
         # 주요 통화만 필터링하여 DB에 저장/업데이트

@@ -177,7 +177,7 @@ const onUpdateArticle = () => {
       alert('수정되었습니다.')
     })
     .catch((err) => {
-      console.log(err)
+      console.error('게시글 수정 실패:', err)
       alert('수정에 실패했습니다.')
     })
 }
@@ -234,7 +234,7 @@ const onToggleArticleLike = () => {
   store.toggleArticleLike(articleId)
     .then(() => {})
     .catch((err) => {
-      console.log(err)
+      console.error('게시글 좋아요 실패:', err)
       alert('좋아요 처리에 실패했습니다.')
     })
 }
@@ -243,7 +243,7 @@ const onToggleCommentLike = (commentId) => {
   store.toggleCommentLike(commentId)
     .then(() => {})
     .catch((err) => {
-      console.log(err)
+      console.error('댓글 좋아요 실패:', err)
       alert('댓글 좋아요 처리에 실패했습니다.')
     })
 }

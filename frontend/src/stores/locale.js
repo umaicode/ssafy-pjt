@@ -1,7 +1,22 @@
+/**
+ * @파일명 locale.js
+ * @설명 다국어(i18n) 지원 스토어
+ * @기능
+ *   - 한국어/영어 언어 전환
+ *   - 번역 텍스트 조회 (t 함수)
+ *   - 언어 설정 localStorage 저장
+ * @사용법
+ *   - t('nav.products') → '금융상품' (한국어) / 'Products' (영어)
+ *   - toggleLocale() → 언어 전환
+ * @저장 localStorage에 'locale' 키로 저장
+ */
+
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 
-// 번역 데이터
+// ========================================
+// 번역 데이터 (Translations)
+// ========================================
 const translations = {
   ko: {
     // Navigation

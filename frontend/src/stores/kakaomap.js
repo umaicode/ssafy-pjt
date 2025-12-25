@@ -1,48 +1,95 @@
+/**
+ * @파일명 kakaomap.js
+ * @설명 카카오맵 API 통합 스토어
+ * @기능
+ *   - 카카오맵 SDK 로드 및 지도 초기화
+ *   - 현재 위치 기반 지도 표시
+ *   - 은행 검색 (키워드, 주변, 지역별)
+ *   - 출발지/목적지 경로 안내
+ *   - 마커 및 인포윈도우 관리
+ * @외부API
+ *   - Kakao Maps SDK: 지도 표시, 장소 검색
+ *   - Kakao Mobility API: 경로 안내
+ * @환경변수
+ *   - VITE_KAKAO_API_KEY: 카카오맵 JavaScript SDK 키
+ *   - VITE_KAKAO_REST_API_KEY: 카카오 REST API 키 (경로 안내용)
+ */
+
 import { defineStore } from "pinia";
 import { ref, reactive } from "vue";
 
 export const useKakaoMapStore = defineStore("kakaomap", () => {
-  // 상태 정의
-  // 1. 지도 객체
+  // ========================================
+  // 상태 (State) - 지도 관련 객체
+  // ========================================
+  
+  /** @type {Ref<Object|null>} 카카오맵 객체 */
   const map = ref(null);
-  // 2. 장소 검색 객체
+  /** @type {Ref<Object|null>} 장소 검색 서비스 객체 */
   const places = ref(null);
-  // 3. 인포윈도우 객체
+  /** @type {Ref<Object|null>} 인포윈도우 객체 */
   const infoWindow = ref(null);
-  // 4. 현재 지도에 표시된 마커들
+  /** @type {Array} 현재 지도에 표시된 마커 배열 */
   const markers = reactive([]);
-  // 5. 시/도 옵션
+
+  // ========================================
+  // 상태 (State) - 지역 선택 관련
+  // ========================================
+  
+  /** @type {Ref<Array>} 시/도 목록 */
   const cityOptions = ref([]);
-  // 6. 시/군/구 옵션
+  /** @type {Ref<Array>} 시/군/구 목록 */
   const districtOptions = ref([]);
-  // 7. 선택된 시/도
+  /** @type {Ref<string|null>} 선택된 시/도 */
   const selectedCity = ref(null);
-  // 8. 선택된 시/군/구
+  /** @type {Ref<string|null>} 선택된 시/군/구 */
   const selectedDistrict = ref(null);
-  // 9. 선택된 은행
+  /** @type {Ref<string>} 선택된 은행명 */
   const selectedBank = ref('');
-  // 10. 은행 옵션
+  /** @type {Ref<Array>} 은행 목록 */
   const bankOptions = ref([]);
-  // 11. data.json 모든 데이터
+  /** @type {Ref<Object|null>} data.json에서 로드한 전체 데이터 */
   const allData = ref(null);
-  // 12. 현재 위치 좌표
+
+  // ========================================
+  // 상태 (State) - 위치 및 경로 관련
+  // ========================================
+  
+  /** @type {Ref<{lat: number, lng: number}|null>} 현재 위치 좌표 */
   const currentLocation = ref(null);
-  // 13. 경로 표시용 Polyline
+  /** @type {Ref<Object|null>} 경로 표시용 Polyline 객체 */
   const routePolyline = ref(null);
-  // 14. 출발지 정보 (이름, 좌표)
+  /** @type {Ref<{lat: number, lng: number, name: string}|null>} 출발지 정보 */
   const originLocation = ref(null);
-  // 15. 출발지 검색어
+  /** @type {Ref<string>} 출발지 검색 키워드 */
   const originSearchKeyword = ref('');
-  // 16. 출발지 마커
+  /** @type {Ref<Object|null>} 출발지 마커 객체 */
   const originMarker = ref(null);
-  // 17. 검색 결과 목록
+
+  // ========================================
+  // 상태 (State) - 검색 결과 관련
+  // ========================================
+  
+  /** @type {Ref<Array>} 검색 결과 목록 */
   const searchResults = ref([]);
-  // 18. 선택된 장소
+  /** @type {Ref<Object|null>} 선택된 장소 정보 */
   const selectedPlace = ref(null);
-  // 19. 현재 위치 마커
+  /** @type {Ref<Object|null>} 현재 위치 마커 객체 */
   const currentLocationMarker = ref(null);
 
-  // 카카오 지도 API 스크립트 로드 (containerId: 지도 컨테이너 ID, options: 추가 옵션)
+  // ========================================
+  // 액션 (Actions) - 지도 초기화
+  // ========================================
+
+  /**
+   * 카카오맵 SDK 스크립트 로드
+   * @description 카카오맵 JavaScript SDK를 동적으로 로드하고 지도를 초기화합니다
+   * @param {string} containerId - 지도를 표시할 DOM 요소 ID (기본값: 'map')
+   * @param {Object} options - 초기화 옵션
+   * @param {boolean} options.autoSearch - 자동 검색 여부
+   * @param {string} options.bankName - 검색할 은행명
+   * @param {boolean} options.showCurrentLocationMarker - 현재 위치 마커 표시 여부
+   */
   const loadKakaoScript = (containerId = 'map', options = {}) => {
     // 이미 카카오 스크립트가 로드되어 있으면 바로 초기화
     if (window.kakao && window.kakao.maps) {
@@ -58,7 +105,12 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     document.head.appendChild(script);
   };
 
-  // 지도 초기화 (containerId: 지도 컨테이너 ID, options: { autoSearch: boolean, bankName: string, showCurrentLocationMarker: boolean })
+  /**
+   * 지도 초기화
+   * @description 카카오맵 SDK 로드 후 지도 객체를 생성하고 현재 위치를 설정합니다
+   * @param {string} containerId - 지도 컨테이너 ID
+   * @param {Object} options - 지도 옵션
+   */
   const initializeMap = (containerId = 'map', options = {}) => {
     if (!window.kakao || !window.kakao.maps) {
       console.error('Kakao maps script not loaded');
@@ -116,11 +168,9 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
             if (options.autoSearch && options.bankName) {
               searchBankNearby(options.bankName, lat, lng);
             }
-            
-            console.log('현재 위치로 지도 설정:', lat, lng);
           },
           (error) => {
-            console.warn('현재 위치를 가져올 수 없습니다. 기본 위치(강남역)를 사용합니다.', error);
+            console.error('현재 위치를 가져올 수 없습니다. 기본 위치(강남역)를 사용합니다.', error);
             // 기본 위치로 출발지 설정
             if (options.autoSetOrigin !== false) {
               currentLocation.value = { lat: defaultLat, lng: defaultLng };
@@ -128,14 +178,21 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
           }
         );
       } else {
-        console.warn('Geolocation을 지원하지 않는 브라우저입니다.');
+        console.error('Geolocation을 지원하지 않는 브라우저입니다.');
       }
-      
-      console.log('Map initialized successfully');
     });
   };
 
-  // 현재 위치 마커 표시
+  // ========================================
+  // 액션 (Actions) - 마커 관리
+  // ========================================
+
+  /**
+   * 현재 위치 마커 표시
+   * @description 현재 위치에 마커를 표시하고 역지오코딩으로 주소를 표시합니다
+   * @param {number} lat - 위도
+   * @param {number} lng - 경도
+   */
   const displayCurrentLocationMarker = (lat, lng) => {
     // 기존 마커 제거
     if (currentLocationMarker.value) {
@@ -187,14 +244,25 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     });
   };
 
-  // data.json 로드
+  // ========================================
+  // 액션 (Actions) - 데이터 로드
+  // ========================================
+
+  /**
+   * data.json 데이터 로드
+   * @description 시/도, 시/군/구, 은행 목록 데이터를 로드합니다
+   * @param {Object} data - 로드할 데이터 객체
+   */
   const loadData = (data) => {
     allData.value = data;
     cityOptions.value = data.mapInfo.map((sido) => sido.name);
     bankOptions.value = data.bankInfo || [];
   };
 
-  // 시/도 선택 시 시/군/구 업데이트
+  /**
+   * 시/군/구 옵션 업데이트
+   * @description 선택된 시/도에 해당하는 시/군/구 목록을 갱신합니다
+   */
   const updateDistrictOptions = () => {
     const selectedCityValue = selectedCity.value;
     if (!selectedCityValue) {
@@ -205,7 +273,16 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     districtOptions.value = sido ? sido.countries : [];
   };
 
-  // 장소 검색 콜백
+  // ========================================
+  // 액션 (Actions) - 장소 검색
+  // ========================================
+
+  /**
+   * 장소 검색 콜백 함수
+   * @description 카카오 장소 검색 결과를 처리하고 마커를 표시합니다
+   * @param {Array} result - 검색 결과 배열
+   * @param {string} status - 검색 상태
+   */
   const placesSearchCallback = (result, status) => {
     if (status !== window.kakao.maps.services.Status.OK) {
       alert('검색 결과가 없습니다.');
@@ -258,8 +335,6 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
         const origin = originLocation.value || currentLocation.value;
         if (origin) {
           drawRoute(origin.lat, origin.lng, place.y, place.x);
-        } else {
-          console.log('출발지를 먼저 설정해주세요.');
         }
       });
     });
@@ -267,13 +342,27 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     map.value.setBounds(bounds);
   };
 
-  // 마커 지우기
+  /**
+   * 모든 마커 제거
+   * @description 지도에 표시된 모든 마커를 제거합니다
+   */
   const clearMarkers = () => {
     markers.forEach((marker) => marker.setMap(null));
     markers.length = 0; // 마커 배열 비우기
   };
 
-  // 경로 그리기 함수
+  // ========================================
+  // 액션 (Actions) - 경로 안내
+  // ========================================
+
+  /**
+   * 경로 그리기
+   * @description Kakao Mobility API를 사용하여 출발지에서 목적지까지 경로를 표시합니다
+   * @param {number} originLat - 출발지 위도
+   * @param {number} originLng - 출발지 경도
+   * @param {number} destLat - 목적지 위도
+   * @param {number} destLng - 목적지 경도
+   */
   const drawRoute = async (originLat, originLng, destLat, destLng) => {
     try {
       // 기존 경로 제거
@@ -329,16 +418,16 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
         
         // 지도에 표시
         routePolyline.value.setMap(map.value);
-        
-        console.log('경로 표시 완료:', route.summary);
       }
     } catch (error) {
       console.error('경로 그리기 오류:', error);
-      alert('경로를 표시할 수 없습니다.');
     }
   };
-  
-  // 검색 처리
+
+  /**
+   * 은행 검색 실행
+   * @description 선택된 시/도, 시/군/구, 은행명으로 검색합니다
+   */
   const handleSearch = () => {
     // 지도가 초기화되지 않았으면 경고
     if (!places.value) {
@@ -353,7 +442,14 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     places.value.keywordSearch(keyword, placesSearchCallback);
   };
 
-  // 출발지를 현재 위치로 설정
+  // ========================================
+  // 액션 (Actions) - 출발지 관리
+  // ========================================
+
+  /**
+   * 출발지를 현재 위치로 설정
+   * @description GPS 현재 위치를 출발지로 설정합니다
+   */
   const setOriginToCurrentLocation = () => {
     if (!currentLocation.value) {
       alert('현재 위치를 가져올 수 없습니다.');
@@ -380,8 +476,15 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
       setOrigin(lat, lng, '현재 위치', placeInfo);
     });
   };
-  
-  // 출발지 설정 (공통 함수)
+
+  /**
+   * 출발지 설정 (공통 함수)
+   * @description 지정된 좌표를 출발지로 설정하고 마커를 표시합니다
+   * @param {number} lat - 위도
+   * @param {number} lng - 경도
+   * @param {string} name - 출발지 이름
+   * @param {Object|null} placeInfo - 장소 상세 정보
+   */
   const setOrigin = (lat, lng, name, placeInfo = null) => {
     originLocation.value = { lat, lng, name };
     
@@ -438,11 +541,12 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
       removable: true
     });
     originInfo.open(map.value, originMarker.value);
-    
-    console.log('출발지 설정:', name, lat, lng);
   };
-  
-  // 출발지 검색
+
+  /**
+   * 출발지 검색
+   * @description 키워드로 출발지를 검색하고 첫 번째 결과를 출발지로 설정합니다
+   */
   const searchOrigin = () => {
     if (!originSearchKeyword.value.trim()) {
       alert('출발지를 입력해주세요.');
@@ -475,7 +579,17 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     });
   };
 
-  // 특정 은행 주변 검색 (ProductDetailView용)
+  // ========================================
+  // 액션 (Actions) - 은행 검색 (ProductDetailView용)
+  // ========================================
+
+  /**
+   * 특정 은행 주변 검색
+   * @description 지정된 위치 주변 5km 반경 내 은행을 검색합니다
+   * @param {string} bankName - 검색할 은행명
+   * @param {number} lat - 중심 위도
+   * @param {number} lng - 중심 경도
+   */
   const searchBankNearby = (bankName, lat, lng) => {
     if (!places.value) {
       console.error('Places 객체가 초기화되지 않았습니다.');
@@ -488,7 +602,6 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
       `${bankName}`,
       (result, status) => {
         if (status !== window.kakao.maps.services.Status.OK) {
-          console.log('주변 은행 검색 결과 없음');
           searchResults.value = [];
           return;
         }
@@ -503,7 +616,11 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     );
   };
 
-  // 지역 + 은행명으로 검색 (ProductDetailView용)
+  /**
+   * 지역 + 은행명으로 검색
+   * @description 선택된 지역 내에서 특정 은행을 검색합니다
+   * @param {string} bankName - 검색할 은행명
+   */
   const searchBankByRegion = (bankName) => {
     if (!places.value) {
       alert('지도가 아직 로딩 중입니다.');
@@ -528,7 +645,11 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     });
   };
 
-  // 은행 마커 표시 (검색 결과용)
+  /**
+   * 은행 마커 표시
+   * @description 검색 결과를 마커로 표시하고 클릭 이벤트를 설정합니다
+   * @param {Array} results - 검색 결과 배열
+   */
   const displayBankMarkers = (results) => {
     clearMarkers();
     searchResults.value = results;
@@ -563,7 +684,12 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     map.value.setBounds(bounds);
   };
 
-  // 은행 인포윈도우 표시
+  /**
+   * 은행 인포윈도우 표시
+   * @description 은행 상세 정보를 인포윈도우로 표시합니다
+   * @param {Object} place - 장소 정보
+   * @param {Object} marker - 마커 객체
+   */
   const showBankInfoWindow = (place, marker) => {
     const html = `
       <div style="padding:10px; min-width:200px;">
@@ -595,7 +721,11 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     infoWindow.value.open(map.value, marker);
   };
 
-  // 은행 선택 (리스트에서 클릭 시)
+  /**
+   * 은행 선택
+   * @description 리스트에서 은행 클릭 시 해당 마커로 이동하고 경로를 표시합니다
+   * @param {Object} place - 선택된 장소 정보
+   */
   const selectBank = (place) => {
     selectedPlace.value = place;
     
@@ -615,7 +745,14 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     }
   };
 
-  // 지도 정리 (컴포넌트 언마운트 시)
+  // ========================================
+  // 액션 (Actions) - 정리
+  // ========================================
+
+  /**
+   * 지도 자원 정리
+   * @description 컴포넌트 언마운트 시 모든 지도 관련 자원을 정리합니다
+   */
   const cleanup = () => {
     clearMarkers();
     if (originMarker.value) {
@@ -638,11 +775,16 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     infoWindow.value = null;
   };
 
+  // ========================================
+  // 반환 (Export)
+  // ========================================
   return {
+    // 상태 - 지도 객체
     map,
     places,
     infoWindow,
     markers,
+    // 상태 - 지역 선택
     cityOptions,
     districtOptions,
     bankOptions,
@@ -650,30 +792,37 @@ export const useKakaoMapStore = defineStore("kakaomap", () => {
     selectedDistrict,
     selectedBank,
     allData,
+    // 상태 - 위치/경로
     currentLocation,
     routePolyline,
     originLocation,
     originSearchKeyword,
     originMarker,
+    // 상태 - 검색 결과
     searchResults,
     selectedPlace,
     currentLocationMarker,
+    // 액션 - 지도 초기화
     loadKakaoScript,
     initializeMap,
     loadData,
     updateDistrictOptions,
+    // 액션 - 검색
     placesSearchCallback,
     clearMarkers,
     handleSearch,
+    // 액션 - 경로
     drawRoute,
     setOriginToCurrentLocation,
     setOrigin,
     searchOrigin,
+    // 액션 - 은행 검색
     searchBankNearby,
     searchBankByRegion,
     displayBankMarkers,
     showBankInfoWindow,
     selectBank,
+    // 액션 - 정리
     cleanup,
   };
 })

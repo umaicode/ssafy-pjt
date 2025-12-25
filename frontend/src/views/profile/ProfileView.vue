@@ -72,7 +72,7 @@ const onDeleteAccount = async () => {
   try {
     await accountStore.deleteUser()
   } catch (e) {
-    console.log(e)
+    console.error('회원 탈퇴 실패:', e)
   }
 }
 </script>

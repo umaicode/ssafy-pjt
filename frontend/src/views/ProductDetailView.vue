@@ -243,7 +243,7 @@ const toggleLike = function () {
   likeStore.toggleLike(payload)
     .then(() => {})
     .catch((err) => {
-      console.log(err)
+      console.error('좋아요 처리 실패:', err)
       alert('좋아요 처리에 실패했습니다.')
     })
 }
@@ -268,7 +268,7 @@ onMounted(() => {
       likeStore.liked = res.data.is_liked ?? res.data.liked ?? false
       likeStore.likesCount = res.data.likes_count ?? 0
     })
-    .catch((err) => console.log(err))
+    .catch((err) => console.error('상품 정보 로드 실패:', err))
 })
 </script>
 

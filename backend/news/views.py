@@ -1,3 +1,22 @@
+"""
+파일명: news/views.py
+설명: 뉴스 검색 및 관리 API 뷰
+
+기능:
+    - 네이버 검색 API를 통한 뉴스 검색
+    - 사용자별 뉴스 저장 및 조회
+    - 뉴스 북마크 기능
+
+API 엔드포인트:
+    - POST /news/fetch/           : 뉴스 검색 및 저장
+    - GET /news/                  : 내 뉴스 목록
+    - GET /news/<pk>/             : 뉴스 상세
+    - POST /news/<pk>/bookmark/   : 북마크 토글
+
+외부 API:
+    - Naver 뉴스 검색 API
+"""
+
 import requests
 
 from django.conf import settings
@@ -31,8 +50,6 @@ def format_pubdate(pubdate: str) -> str:
     dt = datetime.strptime(pubdate, "%a, %d %b %Y %H:%M:%S %z")
     return dt.strftime("%Y-%m-%d %H:%M")
 
-
-# Create your views here.
 @api_view(["POST"])
 def fetch_news(request):
     query = request.data.get("query")
