@@ -292,6 +292,29 @@
 </template>
 
 <script setup>
+/**
+ * @컴포넌트 ChatBot.vue
+ * @설명 AI 챗봇 플로팅 컴포넌트
+ * 
+ * @기능
+ *   - 플로팅 버튼으로 챗봇 열기/닫기
+ *   - 다양한 메시지 타입 렌더링 (텍스트, 상품 카드, 뉴스, 유튜브, 지도)
+ *   - 의도별 응답 처리 (은행 위치, 상품 검색, 뉴스, 투자 조언, 여행 등)
+ *   - 위치 기반 서비스 (은행 찾기)
+ *   - 추천 질문 표시
+ * 
+ * @메시지타입
+ *   - general_chat: 일반 대화
+ *   - product_search: 금융 상품 검색 결과
+ *   - bank_location: 은행 위치 (카카오맵 연동)
+ *   - news_search: 뉴스 검색 결과
+ *   - investment_advice: 투자 조언 (뉴스/유튜브 포함)
+ *   - travel_budget: 여행 예산 정보
+ *   - stock_sentiment: 종목 여론 분석
+ * 
+ * @스토어 useChatbotStore - 채팅 상태 및 메시지 관리
+ */
+
 import { ref, watch, nextTick, onMounted } from 'vue'
 import { useChatbotStore } from '@/stores/chatbot'
 
@@ -300,7 +323,12 @@ const inputMessage = ref('')
 const messagesContainer = ref(null)
 const unreadCount = ref(0)
 
-// 챗봇 열기
+/**
+ * 챗봇 창 열기
+ * - 인사말 초기화
+ * - 추천 질문 로드
+ * - 읽지 않은 메시지 카운트 초기화
+ */
 const openChatbot = () => {
   chatbotStore.openChat()
   chatbotStore.initGreeting()
@@ -308,19 +336,31 @@ const openChatbot = () => {
   unreadCount.value = 0
 }
 
-// 메시지 전송
+/**
+ * 메시지 전송
+ * - 입력된 메시지를 스토어로 전달
+ * - 입력창 초기화
+ */
 const sendMessage = () => {
   if (!inputMessage.value.trim()) return
   chatbotStore.sendMessage(inputMessage.value)
   inputMessage.value = ''
 }
 
-// 추천 질문 전송
+/**
+ * 추천 질문 클릭 시 자동 전송
+ * @param {string} question - 추천 질문 텍스트
+ */
 const sendSuggestion = (question) => {
   chatbotStore.sendMessage(question)
 }
 
-// 위치 요청 함수
+/**
+ * 사용자 위치 요청 및 은행 검색
+ * - Geolocation API 사용
+ * - 위치 권한 거부 시 안내 메시지 표시
+ * @param {string} bankName - 검색할 은행명
+ */
 const requestLocation = (bankName) => {
   if (!navigator.geolocation) {
     chatbotStore.addMessage({
