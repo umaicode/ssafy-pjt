@@ -94,16 +94,16 @@ const onDeleteAccount = async () => {
   display: flex;
   align-items: center;
   gap: 24px;
-  margin-bottom: 40px;
-  padding: 32px;
+  margin-bottom: 30px;
+  padding: 30px;
   background: white;
   border-radius: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .profile-avatar {
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   background: linear-gradient(135deg, #E1AFD1 0%, #AD88C6 50%, #7469B6 100%);
   border-radius: 24px;
   display: flex;
@@ -137,26 +137,25 @@ const onDeleteAccount = async () => {
 /* Profile Body */
 .profile-body {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 32px;
+  grid-template-columns: 220px 1fr;
 }
 
 /* Sidebar Menu */
 .sidebar-menu {
   background: white;
   border-radius: 20px;
-  padding: 20px;
+  padding: 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   height: fit-content;
   position: sticky;
   top: 100px;
+  width: 200px;
 }
 
 .menu-section {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-}
+  gap: 4px;}
 
 .menu-label {
   font-size: 0.75rem;
@@ -187,7 +186,7 @@ const onDeleteAccount = async () => {
 }
 
 .menu-link svg {
-  width: 20px;
+  width: 15px;
   height: 20px;
   flex-shrink: 0;
 }
