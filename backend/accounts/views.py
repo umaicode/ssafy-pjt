@@ -1,26 +1,41 @@
+"""
+파일명: accounts/views.py
+설명: 사용자 계정 관련 API 뷰
 
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+API 엔드포인트:
+- PATCH /accounts/update/ : 회원정보 수정 (닉네임, 비밀번호)
+- DELETE /accounts/delete/ : 회원 탈퇴
+"""
+
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def update_user(request):
     """
-    사용자 정보(닉네임, 비밀번호) 수정 API
-    PATCH: /accounts/user
-    - 닉네임 변경
-    - 비밀번호 변경
-
-    설계 의도:
-    - PATCH는 "부분 수정"이므로, 들어온 필드만 반영한다.
-    - 단, 비밀번호 변경은 보안상 '부분' 허용이 위험하므로 3개 필드(old/new1/new2)가 모두 있을 떄만 처리한다.
+    회원정보 수정 API
+    
+    사용자의 닉네임 또는 비밀번호를 수정합니다.
+    
+    Request Body:
+        - nickname (str, optional): 변경할 닉네임
+        - old_password (str, optional): 현재 비밀번호 (비밀번호 변경 시 필수)
+        - new_password1 (str, optional): 새 비밀번호
+        - new_password2 (str, optional): 새 비밀번호 확인
+        
+    Returns:
+        200: 수정 성공
+        400: 유효성 검사 실패
     """
-    user = request.user  # 현재 인증된 사용자 객체
-    data = request.data  # 요청 데이터
+    user = request.user
+    data = request.data
 
-    # 1. 닉네임 변경 처리
+    # ========================================
+    # 닉네임 변경
+    # ========================================
     nickname = data.get('nickname')
     if nickname is not None:
         nickname = nickname.strip()  # 앞뒤 공백 제거
@@ -32,13 +47,14 @@ def update_user(request):
             )
         user.nickname = nickname  # 닉네임 변경
 
-    # 2. 비밀번호 변경 처리
-    # 비밀번호 관련 필드 추출
+    # ========================================
+    # 비밀번호 변경
+    # ========================================
     old_password = data.get('old_password')
     new_password1 = data.get('new_password1')
     new_password2 = data.get('new_password2')
 
-    # 비밀번호 관련 필드가 하나라도 있으면 비밀번호 변경 로직 실행
+    # 비밀번호 관련 필드가 하나라도 오면 비밀번호 변경 로직 실행
     if old_password or new_password1 or new_password2:
         # 2-1. 모든 필드가 입력되었는지 확인
         if not all([old_password, new_password1, new_password2]):
@@ -61,7 +77,7 @@ def update_user(request):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # 2-4. 비밀번호 변경 (set_password: 해시 적용)
+        # 비밀번호 변경 (중요: set_password로 해싱 처리)
         user.set_password(new_password1)
 
     # 3. 변경된 정보 저장
@@ -76,16 +92,18 @@ def update_user(request):
         status=status.HTTP_200_OK
     )
 
+
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete(request):
     """
-    DELETE /accounts/user/
-    - 현재 로그인한 사용자 계정 삭제
+    회원 탈퇴 API
     
-    설계 의도:
-    - request.user는 인증된 사용자만 존재하므로 IsAuthenticated를 붙인다.
+    현재 로그인된 사용자의 계정을 삭제합니다.
+    
+    Returns:
+        204: 삭제 성공 (No Content)
     """
-    request.user.delete()  # 현재 로그인한 사용자 삭제
-    return Response(status=status.HTTP_204_NO_CONTENT)  # 성공 시 204 반환
+    request.user.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 

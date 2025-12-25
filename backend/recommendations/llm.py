@@ -1,3 +1,25 @@
+"""
+파일명: recommendations/llm.py
+설명: GPT API 통합 및 프롬프트 관리 모듈
+
+기능:
+    - OpenAI GPT API 호출 (call_gpt_json)
+    - 금융 상품 추천 전문가 시스템 프롬프트
+    - 사용자 입력 기반 프롬프트 생성 (build_user_prompt)
+    - 목적별 컨텍스트 구성 (build_purpose_context)
+
+핵심 구성요소:
+    - SYSTEM_PROMPT: GPT가 금융 전문가 역할을 하도록 하는 시스템 프롬프트
+    - build_user_prompt: 사용자 입력과 후보 상품을 기반으로 프롬프트 생성
+    - call_gpt_json: GPT API 호출 및 JSON 응답 파싱
+
+응답 스키마:
+    - summary: 종합 분석 요약
+    - strategy: 예금/적금 활용 전략
+    - recommendations: 추천 상품 목록
+    - alternative_suggestions: 대안 제안
+"""
+
 import json
 from django.conf import settings
 from openai import OpenAI
@@ -84,7 +106,7 @@ def build_user_prompt(user_input: dict, candidates: list[dict], top_k: int = 5) 
 
 {purpose_context}
 
-[서버 계산 결과] ★★★ 절대 변경 금지 - 이 숫자가 정답입니다 ★★★
+[서버 계산 결과] 절대 변경 금지 - 이 숫자가 정답입니다
 
 ┌─────────────────────────────────────────────────────────────┐
 │  [자금 계산]                                                  │
@@ -103,7 +125,7 @@ def build_user_prompt(user_input: dict, candidates: list[dict], top_k: int = 5) 
 │  ▶ 판정: {"✅ 달성 가능" if calc["achievable_in_period"] else "❌ 달성 불가"} ({total_before_tax:,}원 {">" if calc["achievable_in_period"] else "<"} {calc["target_amount"]:,}원)     │
 └─────────────────────────────────────────────────────────────┘
 
-★★★ [필수] summary 필드에 아래 문장을 반드시 포함하세요 ★★★
+[필수] summary 필드에 아래 문장을 반드시 포함하세요
 {mandatory_summary_start}
 
 [보유금 활용 전략]

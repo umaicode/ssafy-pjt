@@ -1,3 +1,25 @@
+"""
+파일명: recommendations/services.py
+설명: AI 추천 시스템 핵심 비즈니스 로직
+
+기능:
+    - 목표 달성 가능성 수학적 계산 (compute_goal_math)
+    - 후보 상품 점수화 및 필터링 (pick_candidates_scored)
+    - 예금/적금 최적 조합 계산 (optimize_deposit_saving_combination)
+    - 목적별 맞춤 대안 제안 (build_smart_alternative_plans)
+    - 캐시 키 생성 및 검증 유틸리티
+
+핵심 상수:
+    - INTEREST_TAX_RATE: 한국 이자소득세율 15.4%
+      (소득세 14% + 지방소득세 1.4%)
+
+주요 함수:
+    - compute_goal_math: 목표금액 달성 여부 계산
+    - pick_candidates_scored: 조건에 맞는 상품 후보 점수화
+    - optimize_deposit_saving_combination: 예적금 조합 최적화
+    - build_purpose_specific_data: 목적별 데이터 구성
+"""
+
 import re, math
 from typing import Any, Dict, List, Tuple, Optional
 
@@ -331,7 +353,7 @@ def candidate_score(
         getattr(opt, "max_limit", None), target_amount, monthly_amount, period_months
     )  # -0.25~+0.1
 
-    # ✅ 가중치 조합 (너가 원하는대로 조정 가능)
+    # 가중치 조합 (너가 원하는대로 조정 가능)
     # 달성가능성을 가장 중요하게(0.55), 금리(0.35), 나머지 보정
     final = (
         0.55 * feas
@@ -399,7 +421,7 @@ def pick_candidates_scored(
     monthly_amount = int(user_input.get("monthly_amount", 0))
     current_savings = int(user_input.get("current_savings", 0))
 
-    # ✅ 중요: 월 납입액이 있으면 적금 중심, 목돈이 있으면 예금도 고려
+    # 중요: 월 납입액이 있으면 적금 중심, 목돈이 있으면 예금도 고려
     # 월 납입만 있고 목돈이 없으면 -> 적금만 추천
     # 목돈이 있으면 -> 예금+적금 조합 추천
 
@@ -468,12 +490,12 @@ def option_to_compact_dict(opt: Any, kind: str) -> Dict[str, Any]:
         "period_months": int(getattr(opt, "save_trm", 0) or 0),
         "base_rate": float(getattr(opt, "intr_rate", 0) or 0),
         "max_rate": float(getattr(opt, "intr_rate2", 0) or 0),
-        # ✅ 옵션 한도 (네 모델 기준)
+        # 옵션 한도 (네 모델 기준)
         "max_limit": getattr(opt, "max_limit", None),
-        # ✅ 채널
+        # 채널
         "join_way": str(getattr(p, "join_way", "") or ""),
         "join_member": str(getattr(p, "join_member", "") or ""),
-        # ✅ 우대조건
+        # 우대조건
         "spcl_cnd_short": sp["short"],
         "spcl_cnd_keywords": sp["keywords"],
     }
@@ -534,7 +556,7 @@ def validate_reco_payload(
             continue
 
         cand = cand_map[oid]
-        # ✅ kind/product_id는 후보 기준으로 강제 교정
+        # kind/product_id는 후보 기준으로 강제 교정
         kind = cand["kind"]
         pid = int(cand["product_id"])
 
@@ -719,7 +741,7 @@ def optimize_deposit_saving_combination(
 ) -> dict:
     """
     예금과 적금을 어떻게 조합하면 최적인지 계산
-    ★★★ 실제 상품의 가입 기간(save_trm)을 기준으로 계산 ★★★
+    실제 상품의 가입 기간(save_trm)을 기준으로 계산
 
     전략 1: 예금 + 적금 병행 (보유금은 예금, 월납입은 적금)
     전략 2: 전액 적금 (보유금을 분할해서 월 납입액에 추가)
@@ -1032,7 +1054,7 @@ def build_smart_alternative_plans_with_products(
         }
     )
 
-    # ★ 합리적인 기간 제한: 목표 기간의 2배 또는 +12개월 중 작은 값
+    # 합리적인 기간 제한: 목표 기간의 2배 또는 +12개월 중 작은 값
     max_allowed_period = min(period * 2, period + 12)
 
     # 제한된 기간 내의 상품만 필터링

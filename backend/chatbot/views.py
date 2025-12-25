@@ -1,3 +1,30 @@
+"""
+파일명: chatbot/views.py
+설명: AI 챗봇 API 뷰
+
+기능:
+    - OpenAI GPT를 활용한 의도 분류 및 응답 생성
+    - 다양한 의도 처리 (은행 위치, 상품 검색, 여행 예산, 뉴스, 투자 조언)
+    - 카카오맵 API 연동 (은행 위치 검색)
+    - 네이버 뉴스 API 연동 (뉴스 검색)
+
+API 엔드포인트:
+    - POST /chatbot/chat/ : AI 채팅 메시지 처리
+
+외부 API:
+    - OpenAI GPT API: 의도 분류 및 응답 생성
+    - Kakao Maps API: 은행 위치 검색
+    - Naver News API: 뉴스 검색
+
+의도 분류 카테고리:
+    - bank_location: 은행 위치 찾기
+    - product_search: 금융 상품 검색
+    - travel_budget: 여행 예산 문의
+    - news_search: 뉴스 검색
+    - investment_advice: 투자 조언
+    - general_chat: 일반 대화
+"""
+
 import json
 import re
 import requests

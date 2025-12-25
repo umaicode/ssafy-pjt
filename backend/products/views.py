@@ -1,3 +1,24 @@
+"""
+파일명: products/views.py
+설명: 금융 상품(예금/적금) API 뷰
+
+기능:
+    - 금융감독원 API에서 예금/적금 상품 데이터 수집
+    - 상품 목록 조회 및 상세 조회
+    - 상품 좋아요 토글 기능
+    - 내 좋아요 목록 조회
+
+API 엔드포인트:
+    - GET /products/save-deposit/     : 예금 상품 데이터 수집 (금감원 API)
+    - GET /products/deposits/         : 예금 상품 목록
+    - GET /products/deposits/<fin_prdt_cd>/ : 예금 상품 상세
+    - GET /products/save-saving/      : 적금 상품 데이터 수집 (금감원 API)
+    - GET /products/savings/          : 적금 상품 목록
+    - GET /products/savings/<fin_prdt_cd>/  : 적금 상품 상세
+    - POST /products/toggle-like/     : 좋아요 토글
+    - GET /products/my-likes/         : 내 좋아요 목록
+"""
+
 import requests
 from django.conf import settings
 from rest_framework import status
@@ -12,7 +33,6 @@ from rest_framework.permissions import IsAuthenticated
 from .models import DepositProduct, DepositOption, SavingProduct, SavingOption, Like
 from .serializers import DepositProductSerializer, SavingProductSerializer, LikeSerializer
 
-# Create your views here.
 @api_view(['GET'])
 def save_deposit_products(request):
     API_KEY = settings.API_KEY
@@ -228,7 +248,7 @@ def deposit_product_detail(request, fin_prdt_cd):
             product_type="deposit",
         ).exists()
     
-    # ✅ 좋아요 수(로그인 상관없이 계산 가능)
+    # 좋아요 수(로그인 상관없이 계산 가능)
     likes_count = Like.objects.filter(
         fin_prdt_cd=fin_prdt_cd,
         product_type="deposit",
@@ -290,7 +310,7 @@ def toggle_like(request):
     return Response({"liked": liked, "likes_count": likes_count}, status=status.HTTP_200_OK)
 
 
-# ✅ 내 좋아요 목록 읽기
+# 내 좋아요 목록 읽기
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def my_likes(request):

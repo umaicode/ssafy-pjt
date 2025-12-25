@@ -1,3 +1,21 @@
+"""
+파일명: metals/views.py
+설명: 현물 자산(금, 은) 시세 API 뷰
+
+기능:
+    - 금/은 과거 시세 데이터 조회
+    - 기간별 필터링 지원
+    - Excel 데이터 파일 파싱
+
+API 엔드포인트:
+    - GET /metals/?metal=gold&start=YYYY-MM-DD&end=YYYY-MM-DD : 금 시세
+    - GET /metals/?metal=silver&start=YYYY-MM-DD&end=YYYY-MM-DD : 은 시세
+
+데이터 소스:
+    - data/Gold_prices.xlsx
+    - data/Silver_prices.xlsx
+"""
+
 import pandas as pd
 import os
 
@@ -8,7 +26,6 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-# Create your views here.
 @api_view(['GET'])
 def metal_prices(request):
     metal = request.GET.get('metal')

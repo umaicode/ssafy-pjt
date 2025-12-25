@@ -89,7 +89,7 @@ const onSubmit = () => {
       router.push({ name: 'CommunityView' })
     })
     .catch((err) => {
-      console.log(err)
+      console.error('게시글 작성 실패:', err)
       alert(`저장 실패: ${JSON.stringify(err.response?.data)}`)
     })
 }

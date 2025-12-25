@@ -1,3 +1,20 @@
+"""
+파일명: articles/serializers.py
+설명: 커뮤니티 게시판 시리얼라이저
+
+클래스:
+    - ArticleCreateSerializer: 게시글 생성/수정용
+    - ArticleSerializer: 게시글 상세 조회용 (댓글, 좋아요 포함)
+    - ArticleListSerializer: 게시글 목록 조회용
+    - CommentSerializer: 댓글 시리얼라이저
+
+주요 기능:
+    - 좋아요 수(likes_count) 자동 계산
+    - 현재 사용자 좋아요 여부(is_liked) 확인
+    - 댓글 수(comments_count) 자동 계산
+    - 작성자 닉네임(author_nickname) 자동 포함
+"""
+
 from rest_framework import serializers
 from .models import Article, Comment
 
@@ -24,10 +41,10 @@ class CommentSerializer(serializers.ModelSerializer):
 
     def get_is_liked(self, obj):
         request = self.context.get("request")
-        # ✅ request가 없거나 로그인 안 했으면 False
+        # request가 없거나 로그인 안 했으면 False
         if not request or not request.user.is_authenticated:
             return False
-        # ✅ 로그인 했으면 내가 좋아요 눌렀는지 체크
+        # 로그인 했으면 내가 좋아요 눌렀는지 체크
         return obj.like_users.filter(pk=request.user.pk).exists()
 
 

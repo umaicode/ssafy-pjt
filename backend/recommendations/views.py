@@ -1,3 +1,24 @@
+"""
+파일명: recommendations/views.py
+설명: AI 금융 상품 추천 API 뷰
+
+기능:
+    - 사용자 재무 목표 분석
+    - GPT 기반 맞춤형 상품 추천
+    - 예금/적금 최적 조합 계산
+    - 추천 결과 캐싱
+
+API 엔드포인트:
+    - POST /recommendations/analyze/       : 분석 요청 생성
+    - GET /recommendations/<id>/result/    : 추천 결과 조회
+    - GET /recommendations/history/        : 내 분석 이력
+
+핵심 알고리즘:
+    - 후보 상품 점수화 (pick_candidates_scored)
+    - 예적금 조합 최적화 (optimize_deposit_saving_combination)
+    - 목적별 맞춤 데이터 구성 (build_purpose_specific_data)
+"""
+
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -98,10 +119,8 @@ def create_analysis(request):
         return Response({"analysis_id": analysis.id}, status=status.HTTP_201_CREATED)
 
     except Exception as e:
-        print("========== GPT FAILED ==========")
-        print("ERROR:", repr(e))
-        traceback.print_exc()
-        print("================================")
+        # GPT API 호출 실패 시 폴백(내부 점수 기반 추천) 처리
+        # 개발/디버깅 시에만 traceback 확인 필요
 
         fallback_items = []
         for score, opt, kind, dbg in scored[:5]:
@@ -136,10 +155,10 @@ def create_analysis(request):
 def get_analysis_result(request, analysis_id: int):
     """
     [GET] /api/v1/analysis/<analysis_id>/result/
-    ✅ items에 product/option 상세 + plan(목표 달성 계산) 포함해서 내려줌
-    ✅ goal_math(전체 계획) + alternative_plans(기간별 필요 월납입) 포함
-    ✅ combination_strategy(예금+적금 조합 최적화) 포함
-    ✅ purpose_specific_data(목적별 분석 데이터) 포함
+    items에 product/option 상세 + plan(목표 달성 계산) 포함해서 내려줌
+    goal_math(전체 계획) + alternative_plans(기간별 필요 월납입) 포함
+    combination_strategy(예금+적금 조합 최적화) 포함
+    purpose_specific_data(목적별 분석 데이터) 포함
     """
     analysis = AnalysisRequest.objects.filter(id=analysis_id, user=request.user).first()
     if not analysis or not hasattr(analysis, "result"):
@@ -167,7 +186,7 @@ def get_analysis_result(request, analysis_id: int):
     deposit_map = {opt.id: opt for opt in deposit_opts}
     saving_map = {opt.id: opt for opt in saving_opts}
 
-    # ✅ 사용자 입력 값 (정수)
+    # 사용자 입력 값 (정수)
     target = int(analysis.target_amount)
     monthly = int(analysis.monthly_amount)
 
@@ -194,10 +213,10 @@ def get_analysis_result(request, analysis_id: int):
             continue
 
         p = opt.product
-        term = int(opt.save_trm)  # ✅ 이 추천 옵션의 기간
+        term = int(opt.save_trm)  # 이 추천 옵션의 기간
 
         # -------------------------
-        # ✅ plan(추천 카드 하단용 계산)
+        # plan(추천 카드 하단용 계산)
         # -------------------------
         if kind == "saving":
             # 적금: 월납 기준 계산
@@ -242,7 +261,7 @@ def get_analysis_result(request, analysis_id: int):
             }
 
         # -------------------------
-        # ✅ detail(기존 유지)
+        # detail(기존 유지)
         # -------------------------
         detail = {
             "kind": kind,
@@ -272,11 +291,11 @@ def get_analysis_result(request, analysis_id: int):
                 "fit_score": it.get("fit_score"),
                 "reason": it.get("reason"),
                 "detail": detail,
-                "plan": plan,  # ✅ 핵심 추가
+                "plan": plan,  # 핵심 추가
             }
         )
 
-    # ✅ 전체 계획(사용자 입력 기간 기준)
+    # 전체 계획(사용자 입력 기간 기준)
     user_input = {
         "purpose": analysis.purpose,
         "period_months": analysis.period_months,
@@ -292,7 +311,7 @@ def get_analysis_result(request, analysis_id: int):
         "savings_purpose_detail": getattr(analysis, "savings_purpose_detail", ""),
     }
 
-    # ✅ GPT 추천 상품 중 최적 상품 찾기 (적합도 순위 기준)
+    # GPT 추천 상품 중 최적 상품 찾기 (적합도 순위 기준)
     # stored_items는 GPT가 적합도 순으로 정렬한 것
     # 전략별 최적 상품 = 추천 상품 중 예금/적금 각각 적합도 1위
     best_deposit_opt = None
@@ -320,14 +339,14 @@ def get_analysis_result(request, analysis_id: int):
         if best_deposit_opt and best_saving_opt:
             break
 
-    # ✅ goal_math 계산 시 실제 상품 금리 적용
+    # goal_math 계산 시 실제 상품 금리 적용
     goal_math = compute_goal_math(
         user_input,
         deposit_rate=best_deposit_rate if best_deposit_rate > 0 else 3.5,
         saving_rate=best_saving_rate if best_saving_rate > 0 else 4.0,
     )
 
-    # ✅ 기간 대안표(목표/월납 기준) - 상품 포함된 스마트 대안
+    # 기간 대안표(목표/월납 기준) - 상품 포함된 스마트 대안
     alt_plans = build_smart_alternative_plans_with_products(user_input, goal_math)
 
     # 기존 대안도 포함 (fallback)
@@ -338,7 +357,7 @@ def get_analysis_result(request, analysis_id: int):
         }
     )
 
-    # ✅ 예금+적금 조합 최적화
+    # 예금+적금 조합 최적화
     combination_strategy = None
     current_savings = int(user_input.get("current_savings") or 0)
 
@@ -411,10 +430,10 @@ def get_analysis_result(request, analysis_id: int):
         combination_strategy["recommended_deposit"] = recommended_deposit
         combination_strategy["recommended_saving"] = recommended_saving
 
-    # ✅ 목적별 추가 분석 데이터
+    # 목적별 추가 분석 데이터
     purpose_data = build_purpose_specific_data(user_input, analysis.purpose)
 
-    # ✅ 환율 정보 (여행 목적일 때)
+    # 환율 정보 (여행 목적일 때)
     exchange_rate_info = None
     if analysis.purpose == "travel" and user_input.get("travel_country_code"):
         try:
@@ -455,7 +474,7 @@ def get_analysis_result(request, analysis_id: int):
                     cur_unit = item.get("cur_unit", "")
                     if country_code in cur_unit:
                         print(
-                            f"✅ 환율 찾음: {cur_unit} | {item.get('cur_nm')} | {item.get('deal_bas_r')}"
+                            f"환율 찾음: {cur_unit} | {item.get('cur_nm')} | {item.get('deal_bas_r')}"
                         )
                         target_krw = int(analysis.target_amount)
                         deal_bas_r_str = str(item.get("deal_bas_r", "0")).replace(
@@ -469,7 +488,7 @@ def get_analysis_result(request, analysis_id: int):
 
                         foreign_amount = round(target_krw / deal_bas_r, 2)
 
-                        # ✅ best_strategy에서 계산된 결과 사용
+                        # best_strategy에서 계산된 결과 사용
                         best_strategy = combination_strategy.get("best_strategy", {})
 
                         # best_strategy에서 이미 계산된 값 가져오기
@@ -511,7 +530,7 @@ def get_analysis_result(request, analysis_id: int):
                             "target_krw": target_krw,
                             "target_foreign": foreign_amount,
                             "updated_at": search_date,
-                            # ✅ best_strategy 기반 정보
+                            # best_strategy 기반 정보
                             "strategy_name": strategy_name,
                             "strategy_type": strategy_type,
                             # 예금 정보
@@ -542,14 +561,14 @@ def get_analysis_result(request, analysis_id: int):
 
             traceback.print_exc()
 
-    # ✅ 관련 뉴스 (목적별 키워드 기반)
+    # 관련 뉴스 (목적별 키워드 기반)
     related_news = []
     search_keywords = purpose_data.get("search_keywords", [])
     try:
-        print(f"🔍 뉴스 검색 키워드: {search_keywords}")
+        print(f"뉴스 검색 키워드: {search_keywords}")
 
         if search_keywords:
-            # ✅ 실시간 네이버 뉴스 API 호출
+            # 실시간 네이버 뉴스 API 호출
             import requests
             from django.conf import settings
             from django.utils.html import strip_tags
@@ -565,7 +584,7 @@ def get_analysis_result(request, analysis_id: int):
             if naver_client_id and naver_client_secret:
                 # 첫 번째 키워드로 검색
                 search_query = search_keywords[0]
-                print(f"📰 네이버 뉴스 API 호출: {search_query}")
+                print(f"네이버 뉴스 API 호출: {search_query}")
 
                 try:
                     url = "https://openapi.naver.com/v1/search/news.json"
@@ -578,7 +597,7 @@ def get_analysis_result(request, analysis_id: int):
                     res = requests.get(url, headers=headers, params=params, timeout=5)
                     if res.status_code == 200:
                         items = res.json().get("items", [])
-                        print(f"✅ 네이버 뉴스 {len(items)}개 검색됨")
+                        print(f"네이버 뉴스 {len(items)}개 검색됨")
 
                         related_news = [
                             {
@@ -590,21 +609,21 @@ def get_analysis_result(request, analysis_id: int):
                             for item in items
                         ]
                     else:
-                        print(f"⚠️ 네이버 뉴스 API 실패: {res.status_code}")
+                        print(f"네이버 뉴스 API 실패: {res.status_code}")
                 except Exception as e:
                     print(f"❌ 네이버 뉴스 API 오류: {e}")
             else:
-                print("⚠️ 네이버 API 키가 설정되지 않았습니다")
+                print("네이버 API 키가 설정되지 않았습니다")
         else:
-            print("⚠️ 검색 키워드가 없습니다")
+            print("검색 키워드가 없습니다")
     except Exception as e:
         print(f"❌ 뉴스 정보 조회 실패: {e}")
         import traceback
 
         traceback.print_exc()
 
-    # ✅ 유튜브 검색 (여행 목적일 때)
-    # ✅ 유튜브 검색 (여행 목적일 때 추천 여행지 탐색)
+    # 유튜브 검색 (여행 목적일 때)
+    # 유튜브 검색 (여행 목적일 때 추천 여행지 탐색)
     related_youtube = []
     recommended_destinations = []  # 유튜브 제목에서 추출한 추천 여행지
 
@@ -623,7 +642,7 @@ def get_analysis_result(request, analysis_id: int):
 
             youtube_api_key = getattr(settings, "YOUTUBE_API_KEY", None)
             if youtube_api_key:
-                print(f"🎬 유튜브 API 호출: {youtube_query}")
+                print(f"유튜브 API 호출: {youtube_query}")
 
                 url = "https://www.googleapis.com/youtube/v3/search"
                 params = {
@@ -637,7 +656,7 @@ def get_analysis_result(request, analysis_id: int):
                 res = requests.get(url, params=params, timeout=5)
                 if res.status_code == 200:
                     items = res.json().get("items", [])
-                    print(f"✅ 유튜브 {len(items)}개 검색됨")
+                    print(f"유튜브 {len(items)}개 검색됨")
 
                     related_youtube = [
                         {
@@ -649,7 +668,7 @@ def get_analysis_result(request, analysis_id: int):
                         for item in items[:5]  # 표시용은 5개만
                     ]
 
-                    # ✅ 여행 목적일 때: 유튜브 제목에서 추천 여행지 추출
+                    # 여행 목적일 때: 유튜브 제목에서 추천 여행지 추출
                     if analysis.purpose == "travel":
                         country_name = purpose_data.get("country_name", "")
                         popular_cities = purpose_data.get("popular_cities", [])
@@ -747,15 +766,15 @@ def get_analysis_result(request, analysis_id: int):
                             p for p in extracted_places if p not in priority_places
                         ]
                         recommended_destinations = (priority_places + other_places)[:5]
-                        print(f"🗺️ 추출된 추천 여행지: {recommended_destinations}")
+                        print(f"추출된 추천 여행지: {recommended_destinations}")
                 else:
-                    print(f"⚠️ 유튜브 API 실패: {res.status_code}")
+                    print(f"유튜브 API 실패: {res.status_code}")
             else:
-                print("⚠️ 유튜브 API 키가 설정되지 않았습니다 (YOUTUBE_API_KEY)")
+                print("유튜브 API 키가 설정되지 않았습니다 (YOUTUBE_API_KEY)")
         except Exception as e:
             print(f"❌ 유튜브 검색 실패: {e}")
 
-    # ✅ AI 최종 판단 (GPT 요약에서 추출 가능)
+    # AI 최종 판단 (GPT 요약에서 추출 가능)
     ai_verdict = result.summary  # 기본적으로 요약을 사용
 
     return Response(
@@ -768,7 +787,7 @@ def get_analysis_result(request, analysis_id: int):
             "exchange_rate_info": exchange_rate_info,
             "related_news": related_news,
             "related_youtube": related_youtube,
-            "recommended_destinations": recommended_destinations,  # ✅ 추천 여행지 추가
+            "recommended_destinations": recommended_destinations,  # 추천 여행지 추가
             "ai_verdict": ai_verdict,
             "items": enriched_items,
             "created_at": result.created_at,
