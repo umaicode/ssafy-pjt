@@ -1,59 +1,75 @@
 <template>
   <div class="stock-page">
-    <!-- Left Sidebar - Stock List -->
-    <aside class="stock-sidebar">
-      <!-- Search -->
-      <div class="sidebar-search">
-        <div class="search-box">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    <!-- Page Header -->
+    <header class="page-header">
+      <div class="header-content">
+        <div class="header-title">
+          <svg class="title-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+            <polyline points="16 7 22 7 22 13"/>
           </svg>
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="종목명, 심볼 검색"
-            class="search-input"
-            @input="handleSearch"
-            @focus="showSearchResults = true"
-          />
+          <span>주식</span>
         </div>
 
-        <!-- Search Results -->
-        <div v-if="showSearchResults && searchResults.length > 0" class="search-dropdown">
-          <div 
-            v-for="result in searchResults" 
-            :key="result.symbol"
-            class="search-result"
-            @click="selectStock(result.symbol)"
-          >
-            <span class="result-symbol">{{ result.symbol }}</span>
-            <span class="result-name">{{ result.name }}</span>
+        <div class="header-controls">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="종목명, 심볼 검색"
+              @input="handleSearch"
+              @focus="showSearchResults = true"
+            />
+          </div>
+
+          <!-- Search Results Dropdown -->
+          <div v-if="showSearchResults && searchResults.length > 0" class="search-dropdown">
+            <div 
+              v-for="result in searchResults" 
+              :key="result.symbol"
+              class="search-result"
+              @click="selectStock(result.symbol)"
+            >
+              <span class="result-symbol">{{ result.symbol }}</span>
+              <span class="result-name">{{ result.name }}</span>
+            </div>
+          </div>
+
+          <div class="filter-tabs">
+            <button 
+              :class="['filter-tab', { active: store.selectedMarket === 'BOOKMARK' }]"
+              @click="store.setMarket('BOOKMARK')"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+              </svg>
+              북마크
+            </button>
+            <button 
+              :class="['filter-tab', { active: store.selectedMarket === 'KR' }]"
+              @click="store.setMarket('KR')"
+            >
+              국내
+            </button>
+            <button 
+              :class="['filter-tab', { active: store.selectedMarket === 'US' }]"
+              @click="store.setMarket('US')"
+            >
+              해외
+            </button>
           </div>
         </div>
       </div>
+    </header>
 
-      <!-- Market Tabs -->
-      <div class="market-tabs">
-        <button 
-          :class="['tab-btn', { active: store.selectedMarket === 'BOOKMARK' }]"
-          @click="store.setMarket('BOOKMARK')"
-        >
-          내 북마크
-        </button>
-        <button 
-          :class="['tab-btn', { active: store.selectedMarket === 'KR' }]"
-          @click="store.setMarket('KR')"
-        >
-          국내
-        </button>
-        <button 
-          :class="['tab-btn', { active: store.selectedMarket === 'US' }]"
-          @click="store.setMarket('US')"
-        >
-          해외
-        </button>
-      </div>
+    <main class="stock-container">
+      <div class="stock-layout">
+        <!-- Left Sidebar - Stock List -->
+        <aside class="stock-sidebar">
 
       <!-- Refresh Bar -->
       <div class="refresh-bar">
@@ -128,8 +144,8 @@
       </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="stock-main">
+        <!-- Main Content -->
+        <section class="stock-main">
       <!-- No Stock Selected -->
       <div v-if="!store.hasSelectedStock && !store.loading" class="empty-state">
         <div class="empty-icon">
@@ -322,7 +338,7 @@
       <div v-else class="loading-state">
         <div class="spinner large"></div>
       </div>
-    </main>
+    </section>
 
     <!-- Right Sidebar - Market Info -->
     <aside class="market-sidebar">
@@ -364,6 +380,8 @@
         </div>
       </div>
     </aside>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -673,80 +691,102 @@ const formatNewsDate = (dateStr) => {
 </script>
 
 <style scoped>
+/* ═══════════════════════════════════════════════════════════════
+   Page Layout
+   ═══════════════════════════════════════════════════════════════ */
 .stock-page {
-  display: grid;
-  grid-template-columns: 360px 1fr 280px;
-  min-height: calc(100vh - 72px);
+  min-height: 100vh;
   background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
-  max-width: 1600px;
-  margin: 0 auto;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   Left Sidebar
+   Page Header - NewsHeader Style
    ═══════════════════════════════════════════════════════════════ */
-.stock-sidebar {
-  background: white;
-  border-right: 1px solid #ebebeb;
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 72px);
-  position: sticky;
-  top: 72px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+.page-header {
+  background: linear-gradient(135deg, #5b5b6d 0%, #6d698f 100%);
+  padding: 20px 24px;
 }
 
-.sidebar-search {
-  padding: 20px;
-  border-bottom: 1px solid #f0f0f0;
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+}
+
+.title-icon {
+  width: 24px;
+  height: 24px;
+  color: #E1AFD1;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
   position: relative;
 }
 
 .search-box {
   display: flex;
   align-items: center;
-  background: #f5f6f8;
-  border-radius: 12px;
-  padding: 0 14px;
+  gap: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: all 0.2s;
 }
 
 .search-box:focus-within {
-  background: #eef0f3;
-  box-shadow: 0 0 0 2px rgba(116, 105, 182, 0.2);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(116, 105, 182, 0.5);
 }
 
 .search-icon {
   width: 18px;
   height: 18px;
-  color: #999;
-  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 12px;
 }
 
-.search-input {
-  flex: 1;
-  border: none;
+.search-box input {
+  width: 200px;
+  padding: 10px 12px;
+  font-size: 0.9375rem;
   background: transparent;
-  padding: 12px 10px;
-  font-size: 14px;
+  border: none;
   outline: none;
-  color: #1a1a1a;
+  color: white;
 }
 
-.search-input::placeholder {
-  color: #aaa;
+.search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .search-dropdown {
   position: absolute;
-  top: calc(100% + 4px);
-  left: 16px;
-  right: 16px;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 320px;
   background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   z-index: 100;
-  max-height: 280px;
+  max-height: 300px;
   overflow-y: auto;
 }
 
@@ -779,35 +819,69 @@ const formatNewsDate = (dateStr) => {
   font-size: 12px;
 }
 
-/* Market Tabs */
-.market-tabs {
+.filter-tabs {
   display: flex;
-  padding: 10px 14px;
-  gap: 6px;
-  border-bottom: 1px solid #f0f0f0;
+  gap: 8px;
 }
 
-.tab-btn {
-  flex: 1;
-  padding: 8px;
-  border: none;
-  background: #f5f6f8;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #888;
+.filter-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid transparent;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
-.tab-btn:hover {
-  background: #eef0f3;
+.filter-tab svg {
+  width: 16px;
+  height: 16px;
 }
 
-.tab-btn.active {
-  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+.filter-tab:hover {
   color: white;
-  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.filter-tab.active {
+  color: #7469B6;
+  background: white;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Main Container
+   ═══════════════════════════════════════════════════════════════ */
+.stock-container {
+  padding: 24px;
+}
+
+.stock-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr 280px;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Left Sidebar - Stock List
+   ═══════════════════════════════════════════════════════════════ */
+.stock-sidebar {
+  background: white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+  position: sticky;
+  top: 96px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
 }
 
 /* Refresh Bar */
@@ -815,7 +889,7 @@ const formatNewsDate = (dateStr) => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 14px;
+  padding: 12px 16px;
   background: #f9fafb;
   border-bottom: 1px solid #f0f0f0;
 }
@@ -1036,8 +1110,7 @@ const formatNewsDate = (dateStr) => {
 .stock-main {
   overflow-y: auto;
   background: transparent;
-  height: calc(100vh - 72px);
-  padding: 24px;
+  min-height: calc(100vh - 200px);
 }
 
 .empty-state {
@@ -1045,12 +1118,12 @@ const formatNewsDate = (dateStr) => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  height: 400px;
   color: #888;
   text-align: center;
   padding: 40px;
   background: white;
-  border-radius: 24px;
+  border-radius: 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
@@ -1088,7 +1161,7 @@ const formatNewsDate = (dateStr) => {
 /* Stock Detail */
 .stock-detail {
   background: white;
-  border-radius: 24px;
+  border-radius: 20px;
   padding: 28px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
@@ -1473,13 +1546,13 @@ const formatNewsDate = (dateStr) => {
    ═══════════════════════════════════════════════════════════════ */
 .market-sidebar {
   background: white;
-  border-left: 1px solid #ebebeb;
+  border-radius: 20px;
   padding: 24px 20px;
-  height: calc(100vh - 72px);
+  height: calc(100vh - 200px);
   position: sticky;
-  top: 72px;
+  top: 96px;
   overflow-y: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .sidebar-title {
@@ -1655,15 +1728,9 @@ const formatNewsDate = (dateStr) => {
 /* ═══════════════════════════════════════════════════════════════
    Responsive
    ═══════════════════════════════════════════════════════════════ */
-@media (max-width: 1400px) {
-  .stock-page {
-    grid-template-columns: 300px 1fr 240px;
-  }
-}
-
 @media (max-width: 1200px) {
-  .stock-page {
-    grid-template-columns: 280px 1fr;
+  .stock-layout {
+    grid-template-columns: 320px 1fr;
   }
 
   .market-sidebar {
@@ -1672,7 +1739,7 @@ const formatNewsDate = (dateStr) => {
 }
 
 @media (max-width: 900px) {
-  .stock-page {
+  .stock-layout {
     grid-template-columns: 1fr;
   }
 
@@ -1680,32 +1747,38 @@ const formatNewsDate = (dateStr) => {
     position: relative;
     top: 0;
     height: auto;
-    max-height: 40vh;
-    border-right: none;
-    border-bottom: 1px solid #ebebeb;
+    max-height: 350px;
   }
 
   .stock-main {
-    height: auto;
-    min-height: 60vh;
+    min-height: auto;
   }
 
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+
+  .filter-tabs {
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
+  .stock-container {
+    padding: 16px;
+  }
+
   .stock-sidebar {
-    max-height: 35vh;
-  }
-
-  .sidebar-search {
-    padding: 12px;
-  }
-
-  .market-tabs {
-    padding: 8px 12px;
+    max-height: 300px;
   }
 
   .stock-item {
@@ -1728,8 +1801,280 @@ const formatNewsDate = (dateStr) => {
   .stats-section,
   .info-section,
   .news-section {
-    border-radius: 12px;
+    border-radius: 14px;
     padding: 16px;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Dark Mode
+   ═══════════════════════════════════════════════════════════════ */
+[data-theme="dark"] .stock-page {
+  background: linear-gradient(180deg, #0a0a0a 0%, #18181b 50%, #0f0f0f 100%);
+}
+
+[data-theme="dark"] .page-header {
+  background: linear-gradient(135deg, #1a1a1f 0%, #2a2a35 100%);
+}
+
+[data-theme="dark"] .search-dropdown {
+  background: #1f1f23;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .search-result {
+  border-bottom-color: #2a2a2f;
+}
+
+[data-theme="dark"] .search-result:hover {
+  background: #2a2a30;
+}
+
+[data-theme="dark"] .result-name {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .stock-sidebar {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .refresh-bar {
+  background: #1f1f23;
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .update-info {
+  color: #71717a;
+}
+
+[data-theme="dark"] .refresh-btn {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .refresh-btn:hover:not(:disabled) {
+  border-color: #7469B6;
+  color: #7469B6;
+  background: #2a2a35;
+}
+
+[data-theme="dark"] .stock-item {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .stock-item:hover {
+  background: #1f1f23;
+}
+
+[data-theme="dark"] .stock-item.active {
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.15) 0%, rgba(225, 175, 209, 0.08) 100%);
+}
+
+[data-theme="dark"] .stock-rank {
+  background: #27272a;
+  color: #71717a;
+}
+
+[data-theme="dark"] .stock-item.active .stock-rank {
+  background: #7469B6;
+  color: white;
+}
+
+[data-theme="dark"] .stock-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .stock-symbol {
+  color: #71717a;
+}
+
+[data-theme="dark"] .stock-price {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .pagination {
+  background: #18181b;
+  border-top-color: #27272a;
+}
+
+[data-theme="dark"] .page-btn {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .page-btn:hover:not(:disabled) {
+  background: #7469B6;
+  border-color: #7469B6;
+  color: white;
+}
+
+[data-theme="dark"] .page-info {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .empty-state {
+  background: #18181b;
+}
+
+[data-theme="dark"] .empty-state h2 {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .empty-state p {
+  color: #71717a;
+}
+
+[data-theme="dark"] .empty-icon {
+  background: linear-gradient(135deg, rgba(116, 105, 182, 0.2) 0%, rgba(225, 175, 209, 0.12) 100%);
+}
+
+[data-theme="dark"] .stock-detail {
+  background: #18181b;
+}
+
+[data-theme="dark"] .detail-header {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .detail-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .detail-symbol,
+[data-theme="dark"] .detail-exchange {
+  background: #27272a;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .detail-symbol {
+  color: #AD88C6;
+}
+
+[data-theme="dark"] .detail-price {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .bookmark-btn {
+  background: #27272a;
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .bookmark-btn svg {
+  color: #71717a;
+}
+
+[data-theme="dark"] .bookmark-btn:hover:not(:disabled) {
+  border-color: #7469B6;
+  background: rgba(116, 105, 182, 0.15);
+}
+
+[data-theme="dark"] .bookmark-btn:hover:not(:disabled) svg {
+  color: #AD88C6;
+}
+
+[data-theme="dark"] .chart-section,
+[data-theme="dark"] .stats-section,
+[data-theme="dark"] .info-section,
+[data-theme="dark"] .news-section {
+  background: #1f1f23;
+}
+
+[data-theme="dark"] .section-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .chart-tab {
+  color: #71717a;
+}
+
+[data-theme="dark"] .chart-tab:hover {
+  background: #27272a;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .stat-card {
+  background: #27272a;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #71717a;
+}
+
+[data-theme="dark"] .stat-value {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .company-desc {
+  background: #27272a;
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .meta-tag {
+  background: #27272a;
+  color: #AD88C6;
+}
+
+[data-theme="dark"] .news-item {
+  background: #27272a;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .news-item:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .news-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .news-desc {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .news-date {
+  color: #71717a;
+}
+
+[data-theme="dark"] .news-empty {
+  background: #27272a;
+  color: #71717a;
+}
+
+[data-theme="dark"] .market-sidebar {
+  background: #18181b;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .sidebar-title {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .index-card {
+  background: #1f1f23;
+}
+
+[data-theme="dark"] .index-card:hover {
+  background: #27272a;
+}
+
+[data-theme="dark"] .index-name {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .index-price {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .market-empty {
+  color: #71717a;
+}
+
+[data-theme="dark"] .spinner {
+  border-color: #27272a;
+  border-top-color: #7469B6;
 }
 </style>
