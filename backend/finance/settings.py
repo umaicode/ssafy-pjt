@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "articles",
     "exchange",
     "chatbot",
+    "stocks",
     # third party
     "rest_framework",
     "rest_framework.authtoken",
