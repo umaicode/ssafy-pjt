@@ -414,19 +414,6 @@ const periods = [
   { label: '1년', value: '1y' },
 ]
 
-// 통화별 이모지
-const getCurrencyEmoji = (unit) => {
-  const emojis = {
-    'USD': '🇺🇸',
-    'EUR': '🇪🇺',
-    'JPY(100)': '🇯🇵',
-    'CNH': '🇨🇳',
-    'GBP': '🇬🇧',
-    'AUD': '🇦🇺',
-  }
-  return emojis[unit] || '💱'
-}
-
 onMounted(async () => {
   // 갱신 상태 조회
   await store.fetchUpdateStatus()

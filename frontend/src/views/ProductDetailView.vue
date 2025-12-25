@@ -221,18 +221,6 @@ const product = ref(null)
 const options = ref([])
 const showMap = ref(false)
 
-const joinDenyText = computed(() => {
-  if (!product.value) return ''
-  const map = { 1: '제한 없음', 2: '서민 전용', 3: '일부 제한' }
-  return map[product.value.join_deny]
-})
-
-const joinDenyClass = computed(() => {
-  if (!product.value) return ''
-  const classMap = { 1: 'badge-success', 2: 'badge-warning', 3: 'badge-info' }
-  return classMap[product.value.join_deny]
-})
-
 const toggleLike = function () {
   const payload = {
     fin_prdt_cd: route.params.fin_prdt_cd,
