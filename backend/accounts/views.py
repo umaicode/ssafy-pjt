@@ -1,15 +1,21 @@
 
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
 @api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
 def update_user(request):
     """
-    사용자 정보(닉네임, 비밀번호) 수-정 API
+    사용자 정보(닉네임, 비밀번호) 수정 API
     PATCH: /accounts/user
     - 닉네임 변경
     - 비밀번호 변경
+
+    설계 의도:
+    - PATCH는 "부분 수정"이므로, 들어온 필드만 반영한다.
+    - 단, 비밀번호 변경은 보안상 '부분' 허용이 위험하므로 3개 필드(old/new1/new2)가 모두 있을 떄만 처리한다.
     """
     user = request.user  # 현재 인증된 사용자 객체
     data = request.data  # 요청 데이터
@@ -71,10 +77,14 @@ def update_user(request):
     )
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def delete(request):
     """
-    회원 탈퇴(사용자 삭제) API
-    DELETE: /accounts/user
+    DELETE /accounts/user/
+    - 현재 로그인한 사용자 계정 삭제
+    
+    설계 의도:
+    - request.user는 인증된 사용자만 존재하므로 IsAuthenticated를 붙인다.
     """
     request.user.delete()  # 현재 로그인한 사용자 삭제
     return Response(status=status.HTTP_204_NO_CONTENT)  # 성공 시 204 반환
