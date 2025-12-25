@@ -13,6 +13,7 @@ from rest_framework import status
 
 
 @api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
 def update_user(request):
     """
     회원정보 수정 API
@@ -37,13 +38,14 @@ def update_user(request):
     # ========================================
     nickname = data.get('nickname')
     if nickname is not None:
-        nickname = nickname.strip()
+        nickname = nickname.strip()  # 앞뒤 공백 제거
         if not nickname:
+            # 닉네임이 비어 있으면 에러 반환
             return Response(
                 {"nickname": ["닉네임은 비어 있을 수 없습니다."]},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        user.nickname = nickname
+        user.nickname = nickname  # 닉네임 변경
 
     # ========================================
     # 비밀번호 변경
@@ -54,21 +56,21 @@ def update_user(request):
 
     # 비밀번호 관련 필드가 하나라도 오면 비밀번호 변경 로직 실행
     if old_password or new_password1 or new_password2:
-        # 필수 필드 체크
+        # 2-1. 모든 필드가 입력되었는지 확인
         if not all([old_password, new_password1, new_password2]):
             return Response(
                 {"password": ["비밀번호 변경에는 모든 필드가 필요합니다."]},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # 현재 비밀번호 검증
+        # 2-2. 현재 비밀번호가 올바른지 검증
         if not user.check_password(old_password):
             return Response(
                 {"old_password": ["현재 비밀번호가 올바르지 않습니다."]},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # 새 비밀번호 일치 확인
+        # 2-3. 새 비밀번호 두 개가 일치하는지 확인
         if new_password1 != new_password2:
             return Response(
                 {"new_password": ["새 비밀번호가 서로 일치하지 않습니다."]},
@@ -77,12 +79,14 @@ def update_user(request):
 
         # 비밀번호 변경 (중요: set_password로 해싱 처리)
         user.set_password(new_password1)
-        
+
+    # 3. 변경된 정보 저장
     user.save()
 
+    # 4. 응답 반환
     return Response(
         {
-            "nickname": user.nickname,
+            "nickname": user.nickname,  # 변경된 닉네임
             "detail": "회원정보가 수정되었습니다."
         },
         status=status.HTTP_200_OK
@@ -90,6 +94,7 @@ def update_user(request):
 
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def delete(request):
     """
     회원 탈퇴 API

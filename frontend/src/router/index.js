@@ -28,6 +28,7 @@ import YoutubeSearchView from '@/views/youtube/YoutubeSearchView.vue'
 import YoutubeVideoDetailView from '@/views/youtube/YoutubeVideoDetailView.vue'
 import YoutubeSavedLayoutView from '@/views/youtube/YoutubeSavedLayoutView.vue'
 import MetalView from '@/views/MetalView.vue'
+import StockView from '@/views/StockView.vue'
 
 // 커뮤니티
 import CommunityView from '@/views/community/CommunityView.vue'
@@ -140,6 +141,12 @@ const router = createRouter({
       path: '/metals',
       name: 'MetalView',
       component: MetalView,
+    },
+    // 주식
+    {
+      path: '/stocks',
+      name: 'StockView',
+      component: StockView,
     },
     // 커뮤니티
     { path: '/community', name: 'CommunityView', component: CommunityView },
