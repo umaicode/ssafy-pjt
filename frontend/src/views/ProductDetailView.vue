@@ -450,6 +450,7 @@ onMounted(() => {
   padding: 32px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   margin-bottom: 40px;
+  margin-top: 30px;
 }
 
 .card-title {

@@ -78,7 +78,7 @@ def build_user_prompt(user_input: dict, candidates: list[dict], top_k: int = 5) 
     {{"type":"string","description":"string","detail":"string"}}
   ],
   "purpose_specific_advice": "string (목적별 맞춤 조언)",
-  "ai_verdict": "string (최종 판단 및 추천 이유)"
+  "ai_verdict": "string (★ summary와 다른 내용! 추천 상품의 핵심 장단점, 가입 시 주의사항, 우대금리 달성 난이도 등 실행 관점의 조언)"
 }}
 """.strip()
 
@@ -153,7 +153,8 @@ def build_user_prompt(user_input: dict, candidates: list[dict], top_k: int = 5) 
 - option_id/product_id/kind는 후보에 존재해야 함
 - usage 필드: 해당 상품을 예금용/적금용/조합용 중 어디에 활용하면 좋을지 표시
 - purpose_specific_advice: 사용자의 목적({user_input.get("purpose")})에 맞는 구체적 조언
-- ai_verdict: 최종적으로 이 추천이 적절한지, 주의할 점은 무엇인지 종합 판단
+- summary: 목표 달성 가능 여부와 예상 금액 중심의 '분석 요약' (숫자 중심)
+- ai_verdict: summary와 절대 중복되지 않는 '실행 조언' (추천 상품들의 우대금리 달성 난이도, 가입 시 주의사항, 조합 활용 팁 등 실질적 조언)
 """.strip()
 
 

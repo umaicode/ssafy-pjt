@@ -190,16 +190,34 @@ const searchOriginAndRefresh = () => {
 
 // 현재 위치로 설정 후 은행 재검색
 const setCurrentAndRefresh = () => {
-  kakaoMapStore.setOriginToCurrentLocation()
-  setTimeout(() => {
-    if (kakaoMapStore.currentLocation) {
-      kakaoMapStore.searchBankNearby(
-        props.bankName,
-        kakaoMapStore.currentLocation.lat,
-        kakaoMapStore.currentLocation.lng
+  // 현재 위치가 이미 있으면 바로 사용
+  if (kakaoMapStore.currentLocation) {
+    kakaoMapStore.setOriginToCurrentLocation()
+    kakaoMapStore.searchBankNearby(
+      props.bankName,
+      kakaoMapStore.currentLocation.lat,
+      kakaoMapStore.currentLocation.lng
+    )
+  } else {
+    // 현재 위치를 새로 가져오기
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude
+          const lng = position.coords.longitude
+          kakaoMapStore.currentLocation = { lat, lng }
+          kakaoMapStore.setOriginToCurrentLocation()
+          kakaoMapStore.searchBankNearby(props.bankName, lat, lng)
+        },
+        (error) => {
+          console.error('현재 위치를 가져올 수 없습니다:', error)
+          alert('현재 위치를 가져올 수 없습니다. 위치 권한을 확인해주세요.')
+        }
       )
+    } else {
+      alert('이 브라우저에서는 위치 서비스를 지원하지 않습니다.')
     }
-  }, 500)
+  }
 }
 
 // 지역 선택으로 검색
