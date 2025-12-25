@@ -10,59 +10,6 @@
           </svg>
           <span>주식</span>
         </div>
-
-        <div class="header-controls">
-          <div class="search-box">
-            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"/>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-            </svg>
-            <input
-              v-model="searchQuery"
-              type="text"
-              placeholder="종목명, 심볼 검색"
-              @input="handleSearch"
-              @focus="showSearchResults = true"
-            />
-          </div>
-
-          <!-- Search Results Dropdown -->
-          <div v-if="showSearchResults && searchResults.length > 0" class="search-dropdown">
-            <div 
-              v-for="result in searchResults" 
-              :key="result.symbol"
-              class="search-result"
-              @click="selectStock(result.symbol)"
-            >
-              <span class="result-symbol">{{ result.symbol }}</span>
-              <span class="result-name">{{ result.name }}</span>
-            </div>
-          </div>
-
-          <div class="filter-tabs">
-            <button 
-              :class="['filter-tab', { active: store.selectedMarket === 'BOOKMARK' }]"
-              @click="store.setMarket('BOOKMARK')"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
-              </svg>
-              북마크
-            </button>
-            <button 
-              :class="['filter-tab', { active: store.selectedMarket === 'KR' }]"
-              @click="store.setMarket('KR')"
-            >
-              국내
-            </button>
-            <button 
-              :class="['filter-tab', { active: store.selectedMarket === 'US' }]"
-              @click="store.setMarket('US')"
-            >
-              해외
-            </button>
-          </div>
-        </div>
       </div>
     </header>
 
@@ -70,6 +17,60 @@
       <div class="stock-layout">
         <!-- Left Sidebar - Stock List -->
         <aside class="stock-sidebar">
+
+      <!-- Search Box -->
+      <div class="sidebar-search">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="종목명, 심볼 검색"
+            @input="handleSearch"
+            @focus="showSearchResults = true"
+          />
+        </div>
+        <!-- Search Results Dropdown -->
+        <div v-if="showSearchResults && searchResults.length > 0" class="search-dropdown">
+          <div 
+            v-for="result in searchResults" 
+            :key="result.symbol"
+            class="search-result"
+            @click="selectStock(result.symbol)"
+          >
+            <span class="result-symbol">{{ result.symbol }}</span>
+            <span class="result-name">{{ result.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <button 
+          :class="['filter-tab', { active: store.selectedMarket === 'BOOKMARK' }]"
+          @click="store.setMarket('BOOKMARK')"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>
+          </svg>
+          북마크
+        </button>
+        <button 
+          :class="['filter-tab', { active: store.selectedMarket === 'KR' }]"
+          @click="store.setMarket('KR')"
+        >
+          국내
+        </button>
+        <button 
+          :class="['filter-tab', { active: store.selectedMarket === 'US' }]"
+          @click="store.setMarket('US')"
+        >
+          해외
+        </button>
+      </div>
 
       <!-- Refresh Bar -->
       <div class="refresh-bar">
@@ -692,16 +693,12 @@ const formatNewsDate = (dateStr) => {
 .page-header {
   background: linear-gradient(135deg, #5b5b6d 0%, #6d698f 100%);
   padding: 20px 24px;
+  margin-bottom: 0px;
 }
 
 .header-content {
   max-width: 1400px;
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
 }
 
 .header-title {
@@ -719,126 +716,46 @@ const formatNewsDate = (dateStr) => {
   color: #E1AFD1;
 }
 
-.header-controls {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  position: relative;
-}
-
-.search-box {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  padding: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.2s;
-}
-
-.search-box:focus-within {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(116, 105, 182, 0.5);
-}
-
-.search-icon {
-  width: 18px;
-  height: 18px;
-  color: rgba(255, 255, 255, 0.5);
-  margin-left: 12px;
-}
-
-.search-box input {
-  width: 200px;
-  padding: 10px 12px;
-  font-size: 0.9375rem;
-  background: transparent;
-  border: none;
-  outline: none;
-  color: white;
-}
-
-.search-box input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.search-dropdown {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  width: 320px;
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-  z-index: 100;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.search-result {
-  padding: 12px 16px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  border-bottom: 1px solid #f5f5f5;
-  transition: background 0.15s;
-}
-
-.search-result:last-child {
-  border-bottom: none;
-}
-
-.search-result:hover {
-  background: #f9f9fb;
-}
-
-.result-symbol {
-  font-weight: 600;
-  color: #7469B6;
-  font-size: 13px;
-}
-
-.result-name {
-  color: #666;
-  font-size: 12px;
-}
-
 .filter-tabs {
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  padding: 12px 14px;
+  background: #f9fafb;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .filter-tab {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 10px 16px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid transparent;
+  justify-content: center;
+  gap: 5px;
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #666;
+  background: white;
+  border: 1px solid #e5e5e5;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s;
 }
 
 .filter-tab svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
 .filter-tab:hover {
-  color: white;
-  background: rgba(255, 255, 255, 0.15);
+  color: #7469B6;
+  border-color: #7469B6;
 }
 
 .filter-tab.active {
-  color: #7469B6;
-  background: white;
+  color: white;
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+  border-color: transparent;
+  box-shadow: 0 2px 8px rgba(116, 105, 182, 0.3);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -869,6 +786,94 @@ const formatNewsDate = (dateStr) => {
   top: 96px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+}
+
+/* Sidebar Search */
+.sidebar-search {
+  position: relative;
+  padding: 14px;
+  background: white;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebar-search .search-box {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: #f5f6f8;
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid #e5e5e5;
+  transition: all 0.2s;
+}
+
+.sidebar-search .search-box:focus-within {
+  background: white;
+  border-color: #7469B6;
+  box-shadow: 0 0 0 3px rgba(116, 105, 182, 0.1);
+}
+
+.sidebar-search .search-icon {
+  width: 18px;
+  height: 18px;
+  color: #999;
+  margin-left: 12px;
+}
+
+.sidebar-search .search-box input {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 0.875rem;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #1a1a1a;
+}
+
+.sidebar-search .search-box input::placeholder {
+  color: #999;
+}
+
+.sidebar-search .search-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 14px;
+  right: 14px;
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.search-result {
+  padding: 12px 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-bottom: 1px solid #f5f5f5;
+  transition: background 0.15s;
+}
+
+.search-result:last-child {
+  border-bottom: none;
+}
+
+.search-result:hover {
+  background: #f9f9fb;
+}
+
+.result-symbol {
+  font-weight: 600;
+  color: #7469B6;
+  font-size: 13px;
+}
+
+.result-name {
+  color: #666;
+  font-size: 12px;
 }
 
 /* Refresh Bar */
@@ -1824,6 +1829,73 @@ const formatNewsDate = (dateStr) => {
 [data-theme="dark"] .stock-sidebar {
   background: #18181b;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .sidebar-search {
+  background: #18181b;
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .sidebar-search .search-box {
+  background: #27272a;
+  border-color: #3f3f46;
+}
+
+[data-theme="dark"] .sidebar-search .search-box:focus-within {
+  background: #1f1f23;
+  border-color: #7469B6;
+  box-shadow: 0 0 0 3px rgba(116, 105, 182, 0.2);
+}
+
+[data-theme="dark"] .sidebar-search .search-icon {
+  color: #71717a;
+}
+
+[data-theme="dark"] .sidebar-search .search-box input {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .sidebar-search .search-box input::placeholder {
+  color: #71717a;
+}
+
+[data-theme="dark"] .sidebar-search .search-dropdown {
+  background: #1f1f23;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .search-result {
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .search-result:hover {
+  background: #27272a;
+}
+
+[data-theme="dark"] .result-name {
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .filter-tabs {
+  background: #1f1f23;
+  border-bottom-color: #27272a;
+}
+
+[data-theme="dark"] .filter-tab {
+  background: #27272a;
+  border-color: #3f3f46;
+  color: #a1a1aa;
+}
+
+[data-theme="dark"] .filter-tab:hover {
+  color: #AD88C6;
+  border-color: #7469B6;
+}
+
+[data-theme="dark"] .filter-tab.active {
+  color: white;
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+  border-color: transparent;
 }
 
 [data-theme="dark"] .refresh-bar {
