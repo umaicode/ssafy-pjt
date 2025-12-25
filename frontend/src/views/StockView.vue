@@ -430,7 +430,7 @@ onMounted(async () => {
   
   store.fetchMarketIndices()  // 주요 지표 로드
   if (exchangeStore.rates.length === 0) {
-    exchangeStore.fetchRates()
+    exchangeStore.getExchangeRates()
   }
   document.addEventListener('click', handleClickOutside)
 })
