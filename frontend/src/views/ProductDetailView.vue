@@ -33,6 +33,39 @@
           
           <h1 class="product-title">{{ product.fin_prdt_nm }}</h1>
 
+        <!-- Details Card -->
+        <div class="details-card">
+          <h2 class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <path d="M14 2v6h6"/>
+              <path d="M16 13H8"/>
+              <path d="M16 17H8"/>
+              <path d="M10 9H8"/>
+            </svg>
+            상품 상세정보
+          </h2>
+          
+          <div class="detail-grid">
+            <div class="detail-item">
+              <span class="detail-label">가입 대상</span>
+              <span class="detail-value">{{ product.join_member || '-' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">가입 방법</span>
+              <span class="detail-value">{{ product.join_way || '-' }}</span>
+            </div>
+            <div class="detail-item detail-full">
+              <span class="detail-label">우대조건</span>
+              <span class="detail-value">{{ product.spcl_cnd || '-' }}</span>
+            </div>
+            <div class="detail-item detail-full">
+              <span class="detail-label">기타 사항</span>
+              <span class="detail-value">{{ product.etc_note || '-' }}</span>
+            </div>
+          </div>
+        </div>
+
           <!-- Action Buttons -->
           <div class="action-buttons">
             <button
@@ -108,41 +141,7 @@
             </table>
           </div>
         </div>
-
-        <!-- Details Card -->
-        <div class="details-card">
-          <h2 class="card-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-              <path d="M14 2v6h6"/>
-              <path d="M16 13H8"/>
-              <path d="M16 17H8"/>
-              <path d="M10 9H8"/>
-            </svg>
-            상품 상세정보
-          </h2>
-          
-          <div class="detail-grid">
-            <div class="detail-item">
-              <span class="detail-label">가입 대상</span>
-              <span class="detail-value">{{ product.join_member || '-' }}</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">가입 방법</span>
-              <span class="detail-value">{{ product.join_way || '-' }}</span>
-            </div>
-            <div class="detail-item detail-full">
-              <span class="detail-label">우대조건</span>
-              <span class="detail-value">{{ product.spcl_cnd || '-' }}</span>
-            </div>
-            <div class="detail-item detail-full">
-              <span class="detail-label">기타 사항</span>
-              <span class="detail-value">{{ product.etc_note || '-' }}</span>
-            </div>
-          </div>
-        </div>
       </div>
-
       <!-- Loading State -->
       <div v-else class="loading-state">
         <div class="loading-spinner"></div>
@@ -162,13 +161,13 @@ import { useAccountStore } from '@/stores/accounts'
 import ProductBankMap from '@/components/products/ProductBankMap.vue'
 
 
-/* ✅ banks 폴더 png 전체 import */
+/* banks 폴더 png 전체 import */
 const bankLogos = import.meta.glob('@/assets/banks/*.png', {
   eager: true,
   import: 'default',
 })
 
-/* ✅ 은행명 → 파일명 매핑 */
+/* 은행명 → 파일명 매핑 */
 const BANK_FILE_MAP = {
   국민은행: "국민은행.png",
   신한은행: "신한은행.png",
@@ -196,7 +195,7 @@ const BANK_FILE_MAP = {
   한국스탠다드차타드은행: "sc제일은행.png",
 }
 
-/* ✅ 상세페이지용 은행 로고 src */
+/* 상세페이지용 은행 로고 src */
 const bankLogoSrc = computed(() => {
   if (!product.value?.kor_co_nm) return null
 
@@ -354,13 +353,12 @@ onMounted(() => {
 }
 
 .bank-logo-large {
-  width: 130px;
-  height: 48px;
+  width: 90px;
+  height: 30px;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .bank-logo-large svg {
@@ -376,12 +374,12 @@ onMounted(() => {
 }
 
 .product-title {
-  font-size: 1.55rem;
+  font-size: 1.35rem;
   font-weight: 600;
   color: #18181b;
   line-height: 1.3;
   margin-bottom: 70px;
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 /* Action Buttons */
@@ -455,28 +453,30 @@ onMounted(() => {
 }
 
 /* Options Card */
-.options-card,
 .details-card {
+  margin-bottom: 50px;
+}
+.options-card{
   background: white;
   border-radius: 24px;
   padding: 32px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 }
 
 .card-title {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 500;
   color: #18181b;
   margin-bottom: 24px;
 }
 
 .card-title svg {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   color: #7469B6;
 }
 
@@ -620,12 +620,6 @@ onMounted(() => {
     justify-content: center;
   }
 }
-
-/* .bank-logo-img-large {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-} */
 
 /* Dark Mode */
 [data-theme="dark"] .product-detail-page {

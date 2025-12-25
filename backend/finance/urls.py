@@ -52,9 +52,11 @@ urlpatterns = [
     # 환율 정보
     path("api/exchange/", include("exchange.urls")),
     
+    # 주식
+    path("api/stocks/", include("stocks.urls")),
+    
     # AI 챗봇
     path("api/chatbot/", include("chatbot.urls")),
-    
     # ========================================
     # API 문서 (drf-spectacular)
     # ========================================
