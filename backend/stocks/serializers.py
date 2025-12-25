@@ -1,12 +1,13 @@
+"""
+stocks/serializers.py
+주식 관련 시리얼라이저
+
+실제 사용 중인 시리얼라이저만 유지:
+- StockDetailSerializer: 종목 상세 정보
+- StockNewsSerializer: 종목 뉴스
+- PopularStockSerializer: 인기 종목 목록
+"""
 from rest_framework import serializers
-
-
-class StockSearchSerializer(serializers.Serializer):
-    """주식 검색 결과용 시리얼라이저"""
-    symbol = serializers.CharField()
-    name = serializers.CharField()
-    exchange = serializers.CharField(required=False, allow_null=True)
-    type = serializers.CharField(required=False, allow_null=True)
 
 
 class StockDetailSerializer(serializers.Serializer):
@@ -38,24 +39,6 @@ class StockDetailSerializer(serializers.Serializer):
     change_percent = serializers.FloatField(required=False, allow_null=True)
 
 
-class StockChartDataSerializer(serializers.Serializer):
-    """주식 차트 데이터용 시리얼라이저"""
-    date = serializers.DateTimeField()
-    open = serializers.FloatField()
-    high = serializers.FloatField()
-    low = serializers.FloatField()
-    close = serializers.FloatField()
-    volume = serializers.IntegerField()
-
-
-class StockChartResponseSerializer(serializers.Serializer):
-    """주식 차트 응답용 시리얼라이저"""
-    symbol = serializers.CharField()
-    period = serializers.CharField()
-    interval = serializers.CharField()
-    data = StockChartDataSerializer(many=True)
-
-
 class StockNewsSerializer(serializers.Serializer):
     """주식 뉴스용 시리얼라이저"""
     title = serializers.CharField()
@@ -68,8 +51,10 @@ class StockNewsSerializer(serializers.Serializer):
 class PopularStockSerializer(serializers.Serializer):
     """인기 종목용 시리얼라이저"""
     symbol = serializers.CharField()
+    code = serializers.CharField(required=False, allow_null=True)
     name = serializers.CharField()
     current_price = serializers.FloatField(required=False, allow_null=True)
     change = serializers.FloatField(required=False, allow_null=True)
     change_percent = serializers.FloatField(required=False, allow_null=True)
+    market_cap = serializers.IntegerField(required=False, allow_null=True)
     market = serializers.CharField()  # 'KR' or 'US'

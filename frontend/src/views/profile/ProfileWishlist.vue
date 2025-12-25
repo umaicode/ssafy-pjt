@@ -30,6 +30,19 @@
 
       <button
         class="category-tab"
+        :class="{ active: activeTab === 'stocks' }"
+        @click="activeTab = 'stocks'"
+        type="button"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+          <polyline points="16 7 22 7 22 13"/>
+        </svg>
+        주식
+      </button>
+
+      <button
+        class="category-tab"
         :class="{ active: activeTab === 'news' }"
         @click="activeTab = 'news'"
         type="button"
@@ -74,6 +87,63 @@
           :product="item"
           :type="item.product_type"
         />
+      </div>
+    </section>
+
+    <!-- Stocks Section -->
+    <section v-else-if="activeTab === 'stocks'" class="content-section">
+      <div v-if="stocksLoading" class="loading-state">
+        <div class="spinner"></div>
+      </div>
+
+      <div v-else-if="!stockStore.bookmarkedStocks.length" class="empty-state">
+        <div class="empty-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+            <polyline points="16 7 22 7 22 13"/>
+          </svg>
+        </div>
+        <p class="empty-title">아직 북마크한 주식이 없어요</p>
+        <span class="empty-text">주식 페이지에서 관심있는 종목을 북마크해보세요</span>
+        <RouterLink :to="{ name: 'StockView' }" class="action-link">
+          주식 살펴보기
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </RouterLink>
+      </div>
+
+      <div v-else class="stock-grid">
+        <div 
+          v-for="stock in stockStore.bookmarkedStocks" 
+          :key="stock.symbol"
+          class="stock-card"
+          @click="goToStock(stock.symbol)"
+        >
+          <div class="stock-card-header">
+            <div class="stock-badge" :class="stock.market === 'KR' ? 'kr' : 'us'">
+              {{ stock.market === 'KR' ? 'KRX' : 'US' }}
+            </div>
+            <button 
+              class="remove-bookmark-btn"
+              @click.stop="removeStockBookmark(stock.symbol)"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+              </svg>
+            </button>
+          </div>
+          <div class="stock-card-body">
+            <h4 class="stock-card-name">{{ stock.name }}</h4>
+            <span class="stock-card-symbol">{{ stock.code || stock.symbol }}</span>
+          </div>
+          <div class="stock-card-footer">
+            <span class="stock-card-price">{{ formatPrice(stock.current_price, stock.market) }}</span>
+            <span :class="['stock-card-change', getChangeClass(stock.change_percent)]">
+              {{ formatChangePercent(stock.change_percent) }}
+            </span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -221,6 +291,7 @@
 
 <script setup>
 import { onMounted, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { useLikeStore } from '@/stores/like'
 import ProductListItem from '@/components/products/ProductListItem.vue'
@@ -232,24 +303,64 @@ import NewsDetail from '@/components/news/NewsDetail.vue'
 import { useVideoStore } from '@/stores/youtube/videos'
 import { useChannelStore } from '@/stores/youtube/channels'
 
+import { useStocksStore } from '@/stores/stocks'
+
+const router = useRouter()
 const likeStore = useLikeStore()
 const newsStore = useNewsStore()
 const videoStore = useVideoStore()
 const channelStore = useChannelStore()
+const stockStore = useStocksStore()
 
 const activeTab = ref('products')
 const youtubeTab = ref('videos')
+const stocksLoading = ref(false)
 
 onMounted(() => {
   likeStore.getLikes()
 })
 
-watch(activeTab, (tab) => {
+watch(activeTab, async (tab) => {
   if (tab === 'news') {
     newsStore.setMode('bookmark')
     newsStore.clearDetail()
+  } else if (tab === 'stocks') {
+    stocksLoading.value = true
+    await stockStore.fetchBookmarkedStocks()
+    stocksLoading.value = false
   }
 })
+
+// 주식 관련 함수
+const goToStock = (symbol) => {
+  router.push({ name: 'StockView' })
+  stockStore.fetchStockDetail(symbol)
+}
+
+const removeStockBookmark = async (symbol) => {
+  await stockStore.removeBookmark(symbol)
+}
+
+const formatPrice = (price, market) => {
+  if (!price) return '-'
+  if (market === 'KR') {
+    return new Intl.NumberFormat('ko-KR').format(price) + '원'
+  }
+  return '$' + new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(price)
+}
+
+const formatChangePercent = (percent) => {
+  if (percent === null || percent === undefined) return '-'
+  const numPercent = Number(percent)
+  const prefix = numPercent > 0 ? '+' : ''
+  return prefix + numPercent.toFixed(2) + '%'
+}
+
+const getChangeClass = (change) => {
+  if (change > 0) return 'up'
+  if (change < 0) return 'down'
+  return ''
+}
 </script>
 
 <style scoped>
@@ -789,5 +900,182 @@ watch(activeTab, (tab) => {
 
 [data-theme="dark"] .channel-id {
   color: #71717a;
+}
+
+/* Stock Grid */
+.stock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.stock-card {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid #f0f0f0;
+}
+
+.stock-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.stock-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.stock-badge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.stock-badge.kr {
+  background: rgba(116, 105, 182, 0.1);
+  color: #7469B6;
+}
+
+.stock-badge.us {
+  background: rgba(74, 144, 217, 0.1);
+  color: #4a90d9;
+}
+
+.remove-bookmark-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.remove-bookmark-btn svg {
+  width: 18px;
+  height: 18px;
+  color: #7469B6;
+}
+
+.remove-bookmark-btn:hover {
+  background: rgba(116, 105, 182, 0.1);
+}
+
+.stock-card-body {
+  margin-bottom: 14px;
+}
+
+.stock-card-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stock-card-symbol {
+  font-size: 0.8125rem;
+  color: #888;
+}
+
+.stock-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stock-card-price {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #1a1a1a;
+}
+
+.stock-card-change {
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+.stock-card-change.up {
+  background: rgba(229, 91, 91, 0.1);
+  color: #e55b5b;
+}
+
+.stock-card-change.down {
+  background: rgba(74, 144, 217, 0.1);
+  color: #4a90d9;
+}
+
+/* Action Link */
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.action-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+.action-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f0f0f0;
+  border-top-color: #7469B6;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Dark Mode for Stock */
+[data-theme="dark"] .stock-card {
+  background: #18181b;
+  border-color: #27272a;
+}
+
+[data-theme="dark"] .stock-card-name {
+  color: #e4e4e7;
+}
+
+[data-theme="dark"] .stock-card-price {
+  color: #e4e4e7;
 }
 </style>

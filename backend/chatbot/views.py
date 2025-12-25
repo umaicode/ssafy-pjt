@@ -58,7 +58,8 @@ INTENT_CLASSIFICATION_PROMPT = """당신은 사용자의 질문을 분류하는 
 3. "travel_budget" - 여행 예산/준비 (예: "일본 여행 비용", "태국 여행 얼마", "해외여행 예산")
 4. "news_search" - 뉴스/시사 검색 (예: "오늘 증시 뉴스", "해외 증시", "경제 뉴스", "부동산 뉴스")
 5. "investment_advice" - 투자/부동산 조언 (예: "지금 집 사는게 좋아?", "주식 투자 어때?", "부동산 전망")
-6. "general_chat" - 일반 대화 (예: "오늘 날씨 어때?", "점심 뭐 먹을까", "안녕", 일상적인 대화)
+6. "stock_sentiment" - 특정 종목 매수/매도 의견 (예: "삼성전자 사야할까?", "테슬라 팔아야해?", "애플 지금 매수?", "카카오 전망 어때?")
+7. "general_chat" - 일반 대화 (예: "오늘 날씨 어때?", "점심 뭐 먹을까", "안녕", 일상적인 대화)
 
 반드시 다음 JSON 형식으로만 응답하세요:
 {
@@ -69,6 +70,7 @@ INTENT_CLASSIFICATION_PROMPT = """당신은 사용자의 질문을 분류하는 
     "product_type": "deposit 또는 saving (있을 경우)",
     "destination": "여행지 (있을 경우)",
     "news_topic": "뉴스 주제 (있을 경우)",
+    "stock_name": "종목명 (있을 경우, 예: 삼성전자, 테슬라, 애플)",
     "keywords": ["추출된 키워드들"]
   },
   "confidence": 0.0~1.0
@@ -409,12 +411,12 @@ def search_youtube(query: str, max_results: int = 3) -> list:
             return [
                 {
                     "video_id": item.get("id", {}).get("videoId"),
-                    "title": item.get("snippet", {}).get("title", ""),
+                    "title": unescape(item.get("snippet", {}).get("title", "")),
                     "thumbnail": item.get("snippet", {})
                     .get("thumbnails", {})
                     .get("medium", {})
                     .get("url", ""),
-                    "channel": item.get("snippet", {}).get("channelTitle", ""),
+                    "channel": unescape(item.get("snippet", {}).get("channelTitle", "")),
                     "url": f"https://www.youtube.com/watch?v={item.get('id', {}).get('videoId')}",
                 }
                 for item in data.get("items", [])
@@ -490,6 +492,161 @@ def generate_investment_advice_response(entities: dict, user_message: str) -> di
         "message": ai_message,
         "news": all_news,
         "youtube_videos": youtube_videos,
+    }
+
+
+# ==================== 종목 여론 분석 (토스증권 크롤링) ====================
+def generate_stock_sentiment_response(entities: dict, user_message: str) -> dict:
+    """
+    토스증권 커뮤니티를 크롤링하여 종목에 대한 여론을 분석하고
+    매수/매도 의견을 제시합니다.
+    """
+    from .toss_crawler import fetch_toss_comments, analyze_stock_sentiment
+    
+    client = get_openai_client()
+    stock_name = entities.get("stock_name", "")
+    keywords = entities.get("keywords", [])
+    
+    # 종목명 추출
+    if not stock_name:
+        # 키워드에서 종목명 추출 시도
+        for kw in keywords:
+            if kw and len(kw) >= 2:
+                stock_name = kw
+                break
+    
+    if not stock_name:
+        return {
+            "type": "stock_sentiment",
+            "message": "어떤 종목에 대해 분석해 드릴까요? 종목명을 말씀해 주세요! 📊\n\n예: '삼성전자 사야할까?', '테슬라 전망 어때?'",
+            "need_stock_name": True
+        }
+    
+    # 사용자에게 분석 중임을 알리기 위한 초기 응답 (실제로는 크롤링 후 반환)
+    print(f"[종목 분석] 분석 시작: {stock_name}")
+    
+    # 1. 토스증권 커뮤니티 크롤링
+    crawl_result = fetch_toss_comments(stock_name, limit=20, max_scroll=5)
+    
+    if not crawl_result.get("success"):
+        # 크롤링 실패 시 뉴스와 AI 의견으로 대체
+        error_msg = crawl_result.get("error", "크롤링에 실패했습니다.")
+        print(f"[종목 분석] 크롤링 실패: {error_msg}")
+        
+        # 뉴스로 대체 분석
+        news = search_news(f"{stock_name} 주식", display=5)
+        youtube_videos = search_youtube(f"{stock_name} 주식 분석", max_results=3)
+        
+        # AI로 뉴스 기반 분석
+        news_summary = "\n".join([f"- {n['title']}" for n in news[:5]]) if news else "관련 뉴스 없음"
+        
+        try:
+            response = client.chat.completions.create(
+                model=getattr(settings, "OPENAI_MODEL", "gpt-4.1-mini"),
+                messages=[
+                    {
+                        "role": "system",
+                        "content": """당신은 주식 투자 전문가입니다. 
+뉴스를 바탕으로 종목에 대한 의견을 제시하세요.
+매수/매도/보유 중 하나를 추천하되, 투자는 본인 판단이라는 점을 언급하세요."""
+                    },
+                    {
+                        "role": "user",
+                        "content": f"종목: {stock_name}\n\n관련 뉴스:\n{news_summary}\n\n이 종목에 대한 의견을 말해주세요."
+                    }
+                ],
+                max_tokens=500,
+                temperature=0.7
+            )
+            ai_message = response.choices[0].message.content.strip()
+        except:
+            ai_message = f"'{stock_name}'에 대한 커뮤니티 여론을 수집하지 못했습니다. 관련 뉴스와 영상을 참고해 주세요."
+        
+        return {
+            "type": "stock_sentiment",
+            "message": ai_message,
+            "stock_name": stock_name,
+            "crawling_failed": True,
+            "news": news,
+            "youtube_videos": youtube_videos,
+            "recommendation": "보유",
+            "confidence": 30,
+            "comments_count": 0,
+            "analysis": "커뮤니티 데이터를 수집하지 못해 뉴스 기반으로 분석했습니다."
+        }
+    
+    # 2. 댓글 감성 분석
+    comments = crawl_result.get("comments", [])
+    analysis = analyze_stock_sentiment(comments, stock_name, client)
+    
+    # 3. 관련 뉴스 검색
+    news = search_news(f"{stock_name} 주식", display=5)
+    
+    # 4. 관련 유튜브 검색
+    youtube_videos = search_youtube(f"{stock_name} 주식 분석", max_results=3)
+    
+    # 5. 종합 응답 생성
+    sentiment_emoji = {
+        "positive": "📈",
+        "negative": "📉",
+        "neutral": "➖"
+    }
+    
+    recommendation_text = {
+        "buy": "매수 🟢",
+        "sell": "매도 🔴",
+        "hold": "보유 🟡"
+    }
+    
+    sentiment = analysis.get("sentiment", "neutral")
+    recommendation = analysis.get("recommendation", "hold")
+    confidence = analysis.get("confidence", 0.5)
+    summary = analysis.get("summary", "")
+    key_opinions = analysis.get("key_opinions", [])
+    
+    # 추천 텍스트 한글 매핑
+    recommendation_korean = {
+        "buy": "매수",
+        "sell": "매도",
+        "hold": "보유"
+    }
+    
+    # 메시지 생성
+    message = f"""## {stock_name} 여론 분석 결과 {sentiment_emoji.get(sentiment, '📊')}
+
+### 📊 AI 추천: {recommendation_text.get(recommendation, '보유 🟡')}
+**신뢰도**: {int(confidence * 100)}%
+
+### 💬 커뮤니티 여론 요약
+{summary}
+
+"""
+    
+    if key_opinions:
+        message += "### 🔍 주요 의견\n"
+        for i, opinion in enumerate(key_opinions[:3], 1):
+            message += f"{i}. {opinion}\n"
+        message += "\n"
+    
+    if analysis.get("positive_points"):
+        message += "**✅ 긍정적 요소**: " + ", ".join(analysis["positive_points"][:3]) + "\n"
+    
+    if analysis.get("negative_points"):
+        message += "**⚠️ 부정적 요소**: " + ", ".join(analysis["negative_points"][:3]) + "\n"
+    
+    message += "\n---\n⚠️ *본 분석은 투자자 커뮤니티 여론을 AI가 분석한 것으로, 투자 판단은 본인의 책임입니다.*"
+    
+    return {
+        "type": "stock_sentiment",
+        "message": message,
+        "stock_name": stock_name,
+        "stock_code": crawl_result.get("stock_code"),
+        "comments_count": len(comments),
+        "recommendation": recommendation_korean.get(recommendation, "보유"),
+        "confidence": int(confidence * 100),
+        "analysis": summary,
+        "news": news,
+        "youtube_videos": youtube_videos
     }
 
 
@@ -680,11 +837,11 @@ def search_youtube_for_travel(destination: str) -> list:
                         all_videos.append(
                             {
                                 "video_id": video_id,
-                                "title": snippet.get("title", ""),
+                                "title": unescape(snippet.get("title", "")),
                                 "thumbnail": snippet.get("thumbnails", {})
                                 .get("medium", {})
                                 .get("url", ""),
-                                "channel": snippet.get("channelTitle", ""),
+                                "channel": unescape(snippet.get("channelTitle", "")),
                                 "url": f"https://www.youtube.com/watch?v={video_id}",
                             }
                         )
@@ -852,6 +1009,9 @@ def chat(request):
 
         elif intent == "investment_advice":
             response_data = generate_investment_advice_response(entities, user_message)
+
+        elif intent == "stock_sentiment":
+            response_data = generate_stock_sentiment_response(entities, user_message)
 
         else:  # general_chat
             response_data = generate_general_chat_response(user_message)
