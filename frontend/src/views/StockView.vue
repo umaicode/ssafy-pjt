@@ -36,10 +36,10 @@
       <!-- Market Tabs -->
       <div class="market-tabs">
         <button 
-          :class="['tab-btn', { active: store.selectedMarket === 'ALL' }]"
-          @click="store.setMarket('ALL')"
+          :class="['tab-btn', { active: store.selectedMarket === 'BOOKMARK' }]"
+          @click="store.setMarket('BOOKMARK')"
         >
-          전체
+          내 북마크
         </button>
         <button 
           :class="['tab-btn', { active: store.selectedMarket === 'KR' }]"
@@ -52,6 +52,32 @@
           @click="store.setMarket('US')"
         >
           해외
+        </button>
+      </div>
+
+      <!-- Refresh Bar -->
+      <div class="refresh-bar">
+        <span class="update-info">
+          <template v-if="store.selectedMarket === 'BOOKMARK'">
+            {{ store.bookmarkRefreshTime ? formatLastUpdated(store.bookmarkRefreshTime) : '갱신하여 최신 가격 확인' }}
+          </template>
+          <template v-else>
+            {{ formatLastUpdated(store.updateStatus[store.selectedMarket]?.last_updated) }}
+          </template>
+        </span>
+        <button 
+          class="refresh-btn"
+          :disabled="store.refreshLoading || store.bookmarkRefreshLoading"
+          @click="store.selectedMarket === 'BOOKMARK' ? handleBookmarkRefresh() : handleRefresh()"
+        >
+          <svg v-if="store.refreshLoading || store.bookmarkRefreshLoading" class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="32"/>
+          </svg>
+          <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+          {{ (store.refreshLoading || store.bookmarkRefreshLoading) ? '갱신 중...' : '갱신' }}
         </button>
       </div>
 
@@ -121,7 +147,27 @@
         <!-- Header -->
         <header class="detail-header">
           <div class="header-left">
-            <h1 class="detail-name">{{ store.selectedStock.name }}</h1>
+            <div class="header-title-row">
+              <h1 class="detail-name">{{ store.selectedStock.name }}</h1>
+              <!-- 북마크 버튼 -->
+              <button 
+                v-if="isLoggedIn"
+                class="bookmark-btn"
+                :class="{ active: isCurrentStockBookmarked }"
+                :disabled="bookmarkLoading"
+                @click="toggleBookmark"
+              >
+                <svg v-if="bookmarkLoading" class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="32"/>
+                </svg>
+                <svg v-else-if="isCurrentStockBookmarked" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                </svg>
+                <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                </svg>
+              </button>
+            </div>
             <div class="detail-meta">
               <span class="detail-symbol">{{ store.selectedStock.symbol }}</span>
               <span v-if="store.selectedStock.exchange" class="detail-exchange">{{ store.selectedStock.exchange }}</span>
@@ -325,17 +371,22 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useStocksStore } from '@/stores/stocks'
 import { useExchangeStore } from '@/stores/exchange'
+import { useAccountStore } from '@/stores/accounts'
 import StockChart from '@/components/stocks/StockChart.vue'
 
 const store = useStocksStore()
 const exchangeStore = useExchangeStore()
+const accountStore = useAccountStore()
 
 const searchQuery = ref('')
 const showSearchResults = ref(false)
 const searchTimeout = ref(null)
 const selectedSymbol = ref(null)
+const bookmarkLoading = ref(false)
+const isCurrentStockBookmarked = ref(false)
 
 const searchResults = computed(() => store.searchResults)
+const isLoggedIn = computed(() => !!accountStore.token)
 
 const periods = [
   { label: '1일', value: '1d' },
@@ -358,8 +409,19 @@ const getCurrencyEmoji = (unit) => {
   return emojis[unit] || '💱'
 }
 
-onMounted(() => {
-  store.fetchStockList()  // DB 기반 종목 목록
+onMounted(async () => {
+  // 갱신 상태 조회
+  await store.fetchUpdateStatus()
+  
+  // 현재 마켓에 따라 데이터 로드 (페이지네이션 정보 포함)
+  if (store.selectedMarket === 'KR') {
+    await store.fetchKrStocks(1, store.perPage)
+  } else if (store.selectedMarket === 'US') {
+    await store.fetchUsStocks(1, store.perPage)
+  } else if (store.selectedMarket === 'BOOKMARK') {
+    await store.fetchBookmarkedStocks()
+  }
+  
   store.fetchMarketIndices()  // 주요 지표 로드
   if (exchangeStore.rates.length === 0) {
     exchangeStore.fetchRates()
@@ -371,9 +433,14 @@ onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
 })
 
-// 종목 변경 시 번역 초기화
-watch(() => store.selectedStock?.symbol, () => {
+// 종목 변경 시 번역 초기화 및 북마크 상태 확인
+watch(() => store.selectedStock?.symbol, async (newSymbol) => {
   store.translatedDescription = null
+  if (newSymbol && isLoggedIn.value) {
+    isCurrentStockBookmarked.value = await store.checkBookmark(newSymbol)
+  } else {
+    isCurrentStockBookmarked.value = false
+  }
 })
 
 const handleSearch = () => {
@@ -414,15 +481,80 @@ const handleTranslate = () => {
 }
 
 const changePage = (page) => {
-  const market = store.selectedMarket === 'ALL' ? '' : store.selectedMarket
-  store.fetchStockList(market, page)
+  store.changePage(page)
 }
 
-// 마켓 변경 시 목록 다시 로드
-watch(() => store.selectedMarket, (newMarket) => {
-  const market = newMarket === 'ALL' ? '' : newMarket
-  store.fetchStockList(market, 1)
-})
+// 북마크 토글 핸들러
+const toggleBookmark = async () => {
+  if (!store.selectedStock || bookmarkLoading.value) return
+  
+  bookmarkLoading.value = true
+  try {
+    if (isCurrentStockBookmarked.value) {
+      const success = await store.removeBookmark(store.selectedStock.symbol)
+      if (success) {
+        isCurrentStockBookmarked.value = false
+      }
+    } else {
+      const success = await store.addBookmark(
+        store.selectedStock.symbol,
+        store.selectedStock.name
+      )
+      if (success) {
+        isCurrentStockBookmarked.value = true
+      }
+    }
+  } finally {
+    bookmarkLoading.value = false
+  }
+}
+
+// 데이터 갱신 핸들러
+const handleRefresh = async () => {
+  const result = await store.refreshStocks(store.selectedMarket)
+  if (result.success) {
+    alert(result.message)
+  } else {
+    alert(result.message)
+  }
+}
+
+// 북마크 갱신 핸들러
+const handleBookmarkRefresh = async () => {
+  const result = await store.refreshBookmarkedStocks()
+  if (result.success) {
+    alert(result.message)
+  } else {
+    alert(result.message || '북마크 갱신에 실패했습니다.')
+  }
+}
+
+// 마지막 갱신 시간 포맷
+const formatLastUpdated = (dateStr) => {
+  if (!dateStr) return '갱신 필요'
+  
+  try {
+    const date = new Date(dateStr)
+    const now = new Date()
+    const diff = now - date
+    const minutes = Math.floor(diff / (1000 * 60))
+    
+    if (minutes < 1) return '방금 갱신'
+    if (minutes < 60) return `${minutes}분 전 갱신`
+    
+    const hours = Math.floor(minutes / 60)
+    if (hours < 24) return `${hours}시간 전 갱신`
+    
+    return date.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' }) + ' 갱신'
+  } catch {
+    return '갱신 필요'
+  }
+}
+
+// 마켓 변경 감지 (setMarket에서 이미 데이터를 로드하므로 여기서는 불필요)
+// watch(() => store.selectedMarket, (newMarket) => {
+//   // setMarket 내부에서 이미 데이터를 로드함
+// })
 
 const getChangeClass = (change) => {
   if (change > 0) return 'up'
@@ -503,7 +635,11 @@ const formatIndexPrice = (price, name) => {
 const getMiniChartPoints = (chartData) => {
   if (!chartData || chartData.length === 0) return ''
   
-  const prices = chartData.map(d => d.close || d.price || 0)
+  // 숫자 배열이거나 객체 배열인 경우 모두 처리
+  const prices = chartData.map(d => {
+    if (typeof d === 'number') return d
+    return d.close || d.price || 0
+  })
   const min = Math.min(...prices)
   const max = Math.max(...prices)
   const range = max - min || 1
@@ -539,9 +675,11 @@ const formatNewsDate = (dateStr) => {
 <style scoped>
 .stock-page {
   display: grid;
-  grid-template-columns: 320px 1fr 260px;
+  grid-template-columns: 360px 1fr 280px;
   min-height: calc(100vh - 72px);
-  background: #f7f8fa;
+  background: linear-gradient(180deg, #FDFBFD 0%, #FFF5F8 50%, #FAFAFA 100%);
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -555,10 +693,11 @@ const formatNewsDate = (dateStr) => {
   height: calc(100vh - 72px);
   position: sticky;
   top: 72px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .sidebar-search {
-  padding: 16px;
+  padding: 20px;
   border-bottom: 1px solid #f0f0f0;
   position: relative;
 }
@@ -669,6 +808,60 @@ const formatNewsDate = (dateStr) => {
   background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
+}
+
+/* Refresh Bar */
+.refresh-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: #f9fafb;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.update-info {
+  font-size: 11px;
+  color: #888;
+}
+
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refresh-btn:hover:not(:disabled) {
+  border-color: #7469B6;
+  color: #7469B6;
+}
+
+.refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.refresh-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.refresh-btn svg.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Stock List */
@@ -842,8 +1035,9 @@ const formatNewsDate = (dateStr) => {
    ═══════════════════════════════════════════════════════════════ */
 .stock-main {
   overflow-y: auto;
-  background: #f7f8fa;
+  background: transparent;
   height: calc(100vh - 72px);
+  padding: 24px;
 }
 
 .empty-state {
@@ -855,34 +1049,37 @@ const formatNewsDate = (dateStr) => {
   color: #888;
   text-align: center;
   padding: 40px;
+  background: white;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .empty-icon {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   background: linear-gradient(135deg, rgba(116, 105, 182, 0.12) 0%, rgba(225, 175, 209, 0.08) 100%);
-  border-radius: 24px;
+  border-radius: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .empty-icon svg {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
   color: #7469B6;
 }
 
 .empty-state h2 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 0 0 8px;
+  margin: 0 0 10px;
 }
 
 .empty-state p {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.6;
   margin: 0;
   color: #888;
@@ -890,37 +1087,96 @@ const formatNewsDate = (dateStr) => {
 
 /* Stock Detail */
 .stock-detail {
-  padding: 24px;
+  background: white;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
 .detail-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 24px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.header-title-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .detail-name {
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 800;
   color: #1a1a1a;
-  margin: 0 0 8px;
+  margin: 0;
   letter-spacing: -0.02em;
+}
+
+/* Bookmark Button */
+.bookmark-btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.bookmark-btn svg {
+  width: 22px;
+  height: 22px;
+  color: #888;
+}
+
+.bookmark-btn:hover:not(:disabled) {
+  border-color: #7469B6;
+  background: rgba(116, 105, 182, 0.05);
+}
+
+.bookmark-btn:hover:not(:disabled) svg {
+  color: #7469B6;
+}
+
+.bookmark-btn.active {
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
+}
+
+.bookmark-btn.active svg {
+  color: white;
+}
+
+.bookmark-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bookmark-btn svg.spin {
+  animation: spin 1s linear infinite;
 }
 
 .detail-meta {
   display: flex;
   gap: 6px;
+  margin-top: 8px;
 }
 
 .detail-symbol,
 .detail-exchange {
-  padding: 4px 10px;
+  padding: 5px 12px;
   background: #f5f6f8;
-  border-radius: 6px;
-  font-size: 11px;
+  border-radius: 8px;
+  font-size: 12px;
   color: #666;
 }
 
@@ -934,16 +1190,16 @@ const formatNewsDate = (dateStr) => {
 }
 
 .detail-price {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 800;
   color: #1a1a1a;
   letter-spacing: -0.02em;
 }
 
 .detail-change {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .detail-change.up { color: #e55b5b; }
@@ -951,25 +1207,24 @@ const formatNewsDate = (dateStr) => {
 
 /* Chart Section */
 .chart-section {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  background: #f9fafb;
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 24px;
 }
 
 .chart-tabs {
   display: flex;
-  gap: 4px;
-  margin-bottom: 16px;
+  gap: 6px;
+  margin-bottom: 20px;
 }
 
 .chart-tab {
-  padding: 8px 16px;
+  padding: 10px 18px;
   border: none;
   background: transparent;
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: 10px;
+  font-size: 14px;
   font-weight: 600;
   color: #888;
   cursor: pointer;
@@ -977,22 +1232,23 @@ const formatNewsDate = (dateStr) => {
 }
 
 .chart-tab:hover {
-  background: #f5f6f8;
+  background: white;
   color: #666;
 }
 
 .chart-tab.active {
-  background: #7469B6;
+  background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   color: white;
+  box-shadow: 0 4px 12px rgba(116, 105, 182, 0.3);
 }
 
 .chart-container {
-  height: 280px;
+  height: 320px;
 }
 
 .chart-loading,
 .chart-empty {
-  height: 280px;
+  height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1002,41 +1258,41 @@ const formatNewsDate = (dateStr) => {
 
 /* Stats Section */
 .stats-section {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  background: #f9fafb;
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 20px;
 }
 
 .section-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 
 .stat-card {
-  background: #f9fafb;
-  border-radius: 12px;
-  padding: 14px;
+  background: white;
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .stat-label {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   color: #888;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .stat-value {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: #1a1a1a;
 }
@@ -1046,18 +1302,17 @@ const formatNewsDate = (dateStr) => {
 
 /* Info Section */
 .info-section {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  background: #f9fafb;
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 20px;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .section-header .section-title {
@@ -1068,12 +1323,12 @@ const formatNewsDate = (dateStr) => {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 14px;
+  padding: 10px 16px;
   background: linear-gradient(135deg, #7469B6 0%, #AD88C6 100%);
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   color: white;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -1085,70 +1340,73 @@ const formatNewsDate = (dateStr) => {
 }
 
 .translate-btn svg {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
 }
 
 .translating-text {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 12px;
+  font-size: 13px;
   color: #7469B6;
 }
 
 .company-desc {
-  font-size: 14px;
-  line-height: 1.8;
+  font-size: 15px;
+  line-height: 1.9;
   color: #444;
-  margin: 0 0 16px;
+  margin: 0 0 18px;
+  background: white;
+  padding: 20px;
+  border-radius: 14px;
 }
 
 .company-meta {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .meta-tag {
-  padding: 6px 12px;
-  background: linear-gradient(135deg, rgba(116, 105, 182, 0.1) 0%, rgba(225, 175, 209, 0.06) 100%);
-  border-radius: 16px;
-  font-size: 12px;
+  padding: 8px 14px;
+  background: white;
+  border-radius: 20px;
+  font-size: 13px;
   font-weight: 500;
   color: #7469B6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 /* News Section */
 .news-section {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  background: #f9fafb;
+  border-radius: 20px;
+  padding: 24px;
+  margin-top: 20px;
 }
 
 .news-list {
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
 .news-item {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 16px 0;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 16px;
+  background: white;
+  border-radius: 14px;
   text-decoration: none;
   transition: all 0.15s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.news-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.news-item:first-child {
-  padding-top: 0;
+.news-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .news-item:hover .news-title {
@@ -1162,7 +1420,7 @@ const formatNewsDate = (dateStr) => {
 }
 
 .news-title {
-  font-size: 14px;
+  font-size: 15px;
   color: #1a1a1a;
   line-height: 1.5;
   font-weight: 600;
@@ -1174,7 +1432,7 @@ const formatNewsDate = (dateStr) => {
 }
 
 .news-desc {
-  font-size: 13px;
+  font-size: 14px;
   color: #666;
   line-height: 1.5;
   display: -webkit-box;
@@ -1185,26 +1443,29 @@ const formatNewsDate = (dateStr) => {
 
 .news-meta {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
+  margin-top: 4px;
 }
 
 .news-publisher {
-  font-size: 12px;
+  font-size: 13px;
   color: #7469B6;
   font-weight: 500;
 }
 
 .news-date {
-  font-size: 11px;
+  font-size: 12px;
   color: #999;
 }
 
 .news-empty {
-  padding: 40px;
+  padding: 48px;
   text-align: center;
   color: #888;
-  font-size: 14px;
+  font-size: 15px;
+  background: white;
+  border-radius: 14px;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1213,18 +1474,19 @@ const formatNewsDate = (dateStr) => {
 .market-sidebar {
   background: white;
   border-left: 1px solid #ebebeb;
-  padding: 20px 16px;
+  padding: 24px 20px;
   height: calc(100vh - 72px);
   position: sticky;
   top: 72px;
   overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }
 
 .sidebar-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
 }
 
 .market-section {
@@ -1232,25 +1494,25 @@ const formatNewsDate = (dateStr) => {
 }
 
 .market-subtitle {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: #888;
-  margin: 0 0 12px;
+  margin: 0 0 14px;
 }
 
 .market-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .market-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 12px;
+  padding: 12px 14px;
   background: #f9fafb;
-  border-radius: 10px;
+  border-radius: 12px;
   transition: all 0.15s;
 }
 
@@ -1261,15 +1523,15 @@ const formatNewsDate = (dateStr) => {
 .market-item-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .market-flag {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .market-name {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: #444;
 }
