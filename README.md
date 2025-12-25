@@ -62,8 +62,8 @@ AI는 증권사 커뮤니티 크롤링, 관련 뉴스, Youtube 영상을 근거�
 
 | 이름 | 담당 역할 | 주요 개발 내용 |
 |:---:|:---:|:---|
-| **박승찬** | Backend / AI | - Django REST API 설계 및 구현<br>- GPT 기반 금융 상품 추천 알고리즘 개발<br>- 챗봇 의도 분류 시스템 구현<br>- 주식/환율/금속 시세 API 연동 |
-| **문현지** | Frontend / Design | - Vue.js 컴포넌트 설계 및 구현<br>- 반응형 UI/UX 디자인<br>- Pinia 상태 관리<br>- 차트 시각화 (Chart.js) |
+| **박승찬** | Frontend / Backend / AI | - Django REST API 설계 및 구현<br>- GPT 기반 금융 상품 추천 알고리즘 개발<br>- 챗봇 의도 분류 시스템 구현<br>- 주식/환율/금속 시세 API 연동 |
+| **문현지** | Frontend / Backend / Design | - Vue.js 컴포넌트 설계 및 구현<br>- UI/UX 디자인<br>- 분류 및 검색기능 구현<br>- 차트 시각화 (Chart.js)<br>- 좋아요기능 구현<br>- 다크모드 |
 
 ---
 
